@@ -30,10 +30,24 @@
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </li> -->
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="nav-item dropdown btn btn-outline-secondary ml-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if request.user.is_authenticated %}
+            {{ request.user.username }}
+            {% else %}
+            Not authenticated
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu">
+            {% if request.user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url 'user:profile' %}">Profile <i class="bi bi-person-fill"></i></a></li>
+            <li><a class="dropdown-item text-danger-emphasis" href="{% url 'auth:logout' %}">Log out <i class="bi bi-box-arrow-left"></i></a></li>
+            {% else %}
+            <li><a class="dropdown-item" href="">Log in</a></li>
+            <li><a class="dropdown-item" href="">Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
