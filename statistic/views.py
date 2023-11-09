@@ -18,7 +18,6 @@ class IndexPage(TemplateView):
         context['sale_date'] = list(sales.keys())
         context['sale_values'] = list(sales.values())
         context['margin'] = margin
-        print(context)
         return context
 
 class SalesView(TemplateView):
