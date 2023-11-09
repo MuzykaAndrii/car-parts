@@ -5,10 +5,12 @@ from main.admin import admin_site
 from main.views import handler500 as h500
 import re
 from django.views.static import serve
+
+
 urlpatterns = [
     path('admin/', admin_site.urls),
-    path('', include('main.urls')),
-    path('stats/', include('statistic.urls')),
+    path('', include('main.urls', namespace='main')),
+    path('stats/', include('statistic.urls', namespace='stats')),
     re_path( r"^%s(?P<path>.*)$" % re.escape(settings.STATIC_URL.lstrip("/")), view=serve, kwargs = {'document_root':settings.STATIC_ROOT})
 ]
 if settings.DEBUG:
