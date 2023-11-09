@@ -11,7 +11,8 @@ urlpatterns = [
     path('admin/', admin_site.urls),
     path('', include('main.urls', namespace='main')),
     path('stats/', include('statistic.urls', namespace='stats')),
-    re_path( r"^%s(?P<path>.*)$" % re.escape(settings.STATIC_URL.lstrip("/")), view=serve, kwargs = {'document_root':settings.STATIC_ROOT})
+    re_path( r"^%s(?P<path>.*)$" % re.escape(settings.STATIC_URL.lstrip("/")), view=serve, kwargs = {'document_root':settings.STATIC_ROOT}),
+    path('user/', include('user.urls', namespace='user')),
 ]
 if settings.DEBUG:
     urlpatterns.append(path('500/', h500))

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'main',
     'statistic',
+    'user',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

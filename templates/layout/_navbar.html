@@ -40,11 +40,10 @@
           </a>
           <ul class="dropdown-menu">
             {% if request.user.is_authenticated %}
-            <li><a class="dropdown-item" href="{% url 'user:profile' %}">Profile <i class="bi bi-person-fill"></i></a></li>
-            <li><a class="dropdown-item text-danger-emphasis" href="{% url 'auth:logout' %}">Log out <i class="bi bi-box-arrow-left"></i></a></li>
+            <li><a class="dropdown-item text-danger-emphasis" href="{% url 'user:logout' %}">Log out <i class="bi bi-box-arrow-left"></i></a></li>
             {% else %}
-            <li><a class="dropdown-item" href="">Log in</a></li>
-            <li><a class="dropdown-item" href="">Register</a></li>
+            <li><a class="dropdown-item" href="{% url 'user:login' %}">Log in</a></li>
+            <li><a class="dropdown-item" href="{% url 'user:register' %}">Register</a></li>
             {% endif %}
           </ul>
         </div>
