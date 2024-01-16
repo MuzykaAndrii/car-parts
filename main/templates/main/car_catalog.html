@@ -1,10 +1,56 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
-
 {% block style %}
+<style>
+    .cars .card {
+        margin-bottom: 20px;
+        text-decoration: none;
+    }
+
+    .card:hover {
+        border-color: blue;
+    }
+</style>
 {% endblock style %}
 
 {% block content %}
-    <h1>Каталог машин</h1>
+<h1 class="text-center">Каталог машин</h1>
+
+<div class="cars">
+    {% for car in cars %}
+    
+    {% if forloop.counter0|divisibleby:2 %}
+    <div class="row">
+    {% endif %}
+
+        <div class="col-md-6">
+            <a href="#" class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ car.producer }} {{ car.model }}</h5>
+                            <p class="card-text">Щось про цю машину.</p>
+                            <!-- <a href="#" class="btn btn-primary">Каталог деталей</a> -->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>📅 Рік випуску: </b>{{ car.year_of_production }}</li>
+                            <li class="list-group-item"><b>🚀 Двигун: </b>{{ car.engine_volume }} л.</li>
+                            <li class="list-group-item"><b>🔄 Привід: </b>{{ car.get_wheel_drive_display }}</li>
+                            <li class="list-group-item"><b>⛽ Паливо: </b>{{ car.get_fuel_display }}</li>
+                            <li class="list-group-item"><b>🏎️ Кузов: </b>{{ car.get_body_display }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    {% if forloop.counter|divisibleby:2 or forloop.last %}
+    </div>
+    {% endif %}
+
+    {% endfor %}
+</div>
 {% endblock content %}

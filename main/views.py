@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.views import View
+from django.http import HttpRequest
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Part
+from .models import Part, Auto
 
 
 class IndexPage(TemplateView):
@@ -35,5 +36,6 @@ def handler500(request, template_name="500.html"):
 
 
 class CarCatalog(View):
-    def get(self, request):
-        return render(request, "main/car_catalog.html")
+    def get(self, request: HttpRequest):
+        cars = Auto.objects.all()
+        return render(request, "main/car_catalog.html", {"cars": cars})
