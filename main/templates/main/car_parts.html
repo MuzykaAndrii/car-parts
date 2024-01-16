@@ -15,6 +15,10 @@
 </style>
 {% endblock style %}
 
+{% block title %}
+Запчастини до: {{ car.producer }} {{ car.model }}
+{% endblock title %}
+
 {% block content %}
 <h1 class="text-center">Запчастини до: {{ car.producer }} {{ car.model }}</h1>
 
