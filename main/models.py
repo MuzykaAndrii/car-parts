@@ -1,4 +1,3 @@
-import datetime
 from django.db import models 
 
 class CarProducer(models.Model):
@@ -57,7 +56,7 @@ class Auto(models.Model):
     wheel_drive = models.CharField('Привід', max_length=255, choices=WHEEL_DRIVE_CHOICES)
     fuel = models.CharField('Тип палива', max_length=255, choices=FUEL_CHOICES)
     body = models.CharField('Тип кузова', max_length=255, choices=BODY_CHOICES)
-    
+
     def __str__(self) -> str:
         return f'{self.vin} | {self.producer} {self.model} {self.year_of_production}р.'
 

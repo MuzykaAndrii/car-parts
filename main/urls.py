@@ -1,6 +1,10 @@
 from django.urls import path
 
-from .views import *
+from .views import (
+    IndexPage,
+    ScannerPage,
+    PartByScanner
+)
 
 app_name = 'main'
 
