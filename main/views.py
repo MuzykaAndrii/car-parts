@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
+from django.views import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -31,3 +32,8 @@ def handler500(request, template_name="500.html"):
     response = render(request=request, template_name=template_name)
     response.status_code = 500
     return response
+
+
+class CarCatalog(View):
+    def get(self, request):
+        return render(request, "main/car_catalog.html")
