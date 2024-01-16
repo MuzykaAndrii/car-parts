@@ -74,8 +74,9 @@ class Part(models.Model):
     sell_price = models.FloatField('Роздрібна ціна', blank=True)
 
     belongs_to = models.ForeignKey(
-        verbose_name="Автомобіль", 
-        to=Auto, 
+        verbose_name="Автомобіль",
+        related_name="parts",
+        to=Auto,
         on_delete=models.CASCADE,
     )
 

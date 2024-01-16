@@ -39,3 +39,9 @@ class CarCatalog(View):
     def get(self, request: HttpRequest):
         cars = Auto.objects.all()
         return render(request, "main/car_catalog.html", {"cars": cars})
+
+
+class PartsCatalog(View):
+    def get(self, request: HttpRequest, car_pk: int):
+        # parts gathering
+        return render(request, "main/car_parts.html")
