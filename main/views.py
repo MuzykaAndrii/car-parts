@@ -43,5 +43,9 @@ class CarCatalog(View):
 
 class PartsCatalog(View):
     def get(self, request: HttpRequest, car_vin: str):
-        # parts gathering
+        car = Auto.objects.filter(vin=car_vin)
+        
+        if not car:
+            return render(request, "404.html")
+
         return render(request, "main/car_parts.html")
