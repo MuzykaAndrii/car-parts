@@ -42,6 +42,6 @@ class CarCatalog(View):
 
 
 class PartsCatalog(View):
-    def get(self, request: HttpRequest, car_pk: int):
+    def get(self, request: HttpRequest, car_vin: str):
         # parts gathering
         return render(request, "main/car_parts.html")

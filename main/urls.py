@@ -16,5 +16,5 @@ urlpatterns = [
     path('get_part_by_barcode/', PartByScanner.as_view(), name='part_by_barcode'),
 
     path('cars/catalog/', CarCatalog.as_view(), name="car_catalog"),
-    path('cars/<int:car_pk>/parts/', PartsCatalog.as_view(), name="parts_catalog"),
+    path('cars/<str:car_vin>/parts/', PartsCatalog.as_view(), name="parts_catalog"),
 ]
