@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.views import View
@@ -43,9 +43,6 @@ class CarCatalog(View):
 
 class PartsCatalog(View):
     def get(self, request: HttpRequest, car_vin: str):
-        car = Auto.objects.filter(vin=car_vin)
-        
-        if not car:
-            return render(request, "404.html")
+        car = get_object_or_404(Auto, vin=car_vin)
 
-        return render(request, "main/car_parts.html")
+        return render(request, "main/car_parts.html", {"car": car})

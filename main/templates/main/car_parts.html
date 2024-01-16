@@ -2,8 +2,46 @@
 {% load static %}
 
 {% block style %}
+<style>
+    .parts .card {
+        margin-right: 15px; /* Add some margin between cards */
+        margin-bottom: 15px;
+    }
+
+    /* Clear the margin for the last card in each row */
+    .parts .card:nth-child(4n) {
+        margin-right: 0;
+    }
+</style>
 {% endblock style %}
 
 {% block content %}
-<h1 class="text-center">Запчастини до: </h1>
+<h1 class="text-center">Запчастини до: {{ car.producer }} {{ car.model }}</h1>
+
+<div class="parts">
+    <div class="row">
+        {% for part in car.parts.all %}
+        <div class="col-md-3">
+            <div class="card mb-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ part.name }}</h5>
+                    <p class="card-text">
+                        {% if part.articul %}
+                            <b>Артикул: </b>{{ part.articul }} <br>
+                        {% endif %}
+                        <b>Ціна: </b>{{ part.sell_price }} грн.
+                    </p>
+                    <a href="#" class="btn btn-primary">Замовити</a>
+                </div>
+            </div>
+        </div>
+
+        {% if forloop.counter|divisibleby:4 or forloop.last %}
+    </div>
+    <div class="row">
+        {% endif %}
+
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
