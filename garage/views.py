@@ -18,7 +18,7 @@ class AddCarToGarageView(View):
         car_to_add = get_object_or_404(Auto, vin=car_vin)
         request.user.cars.add(car_to_add)
 
-        messages.success(request, "Car added successfully, check it out in garage!")
+        messages.success(request, "Машину успішно додана у ваш гараж!")
         return redirect("main:car_catalog", car_producer=car_to_add.producer.name)
 
 
@@ -27,5 +27,5 @@ class DeleteCarFromGarageView(View):
         car_to_delete = get_object_or_404(Auto, vin=car_vin)
         request.user.cars.remove(car_to_delete)
 
-        messages.success(request, "Car deleted successfully!")
+        messages.success(request, "Машина успішно видалена з вашого гаражу!")
         return redirect("garage:garage")
