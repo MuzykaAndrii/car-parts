@@ -19,4 +19,4 @@ class AddCarToGarageView(View):
         request.user.cars.add(car_to_add)
 
         messages.success(request, "Car added successfully, check it out in garage!")
-        return redirect("main:car_catalog", car_vin=car_vin)
+        return redirect("main:car_catalog", car_producer=car_to_add.producer.name)
