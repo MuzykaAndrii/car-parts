@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import CarProducer, Auto, Part, PartUnit
 
 class CustomAdminSite(admin.AdminSite):
-    site_header = "Курсовий проект Дениса Курмана"
+    site_header = "FDA.IF"
     site_title = 'FDA.if'
     index_title = 'FDA.if'
 

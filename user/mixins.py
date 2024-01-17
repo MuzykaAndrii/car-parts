@@ -7,4 +7,4 @@ class MyLoginRequiredMixin(LoginRequiredMixin):
 
 class AdminRequiredMixin(MyLoginRequiredMixin, UserPassesTestMixin):
     def test_func(self) -> bool:
-        return self.request.user.is_superuser()
+        return self.request.user.is_superuser
