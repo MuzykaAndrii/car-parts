@@ -1,4 +1,6 @@
-from django.db import models 
+from django.db import models
+from django.contrib.auth.models import User
+
 
 class CarProducer(models.Model):
     name = models.CharField("Назва", max_length=255, unique=True)
@@ -56,6 +58,8 @@ class Auto(models.Model):
     wheel_drive = models.CharField('Привід', max_length=255, choices=WHEEL_DRIVE_CHOICES)
     fuel = models.CharField('Тип палива', max_length=255, choices=FUEL_CHOICES)
     body = models.CharField('Тип кузова', max_length=255, choices=BODY_CHOICES)
+
+    owners = models.ManyToManyField(User, related_name="cars")
 
     def __str__(self) -> str:
         return f'{self.vin} | {self.producer} {self.model} {self.year_of_production}р.'
