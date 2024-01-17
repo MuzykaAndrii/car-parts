@@ -1,6 +1,7 @@
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from django.contrib import messages
 
 from main.models import Auto
 
@@ -17,4 +18,5 @@ class AddCarToGarageView(View):
         car_to_add = get_object_or_404(Auto, vin=car_vin)
         request.user.cars.add(car_to_add)
 
+        messages.success(request, "Car added successfully, check it out in garage!")
         return redirect("main:car_catalog", car_vin=car_vin)
