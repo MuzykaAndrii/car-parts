@@ -16,7 +16,7 @@ class ScannerPage(TemplateView):
     template_name='scanner.html'
 
 class PartByScanner(APIView):
-    def post(self, request):
+    def post(self, request: HttpRequest):
         barcode = request.data.get('barcode')
         if not barcode: 
             return Response({'error' : True, 'msg' : 'Missing barcode value'})
@@ -29,7 +29,7 @@ class PartByScanner(APIView):
         else:
             return Response({'error' : False, 'msg' : 'Success', 'data' : part.id })
 
-def handler500(request, template_name="500.html"):
+def handler500(request, template_name="status_pages/500.html"):
     response = render(request=request, template_name=template_name)
     response.status_code = 500
     return response
