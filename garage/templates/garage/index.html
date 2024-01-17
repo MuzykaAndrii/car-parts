@@ -18,8 +18,8 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ car.producer }} {{ car.model }} {{ car.year_of_production }}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">{{ car.engine_volume }} {{ car.fuel_type }}, {{
-                car.wheel_drive }} привід.</h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ car.engine_volume }}л. {{ car.get_fuel_display }},
+                {{ car.get_wheel_drive_display }} привід.</h6>
             <a href="{% url 'main:parts_catalog' car.pk %}" class="card-link">Дивитись запчастини</a>
             <a href="#" class="card-link">Історія покупок</a>
             <a href="#" class="card-link">Видалити машину</a>

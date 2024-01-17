@@ -35,7 +35,10 @@
                             </div>
                             <div class="car-actions">
                                 <a href="{% url 'main:parts_catalog' car.pk %}" class="btn btn-primary btn-sm">Каталог деталей</a>
-                                <a href="#" class="btn btn-secondary btn-sm">Додати в гараж</a>
+                                <form class="d-inline" action="{% url 'garage:add_car' car.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-secondary btn-sm">Додати в гараж</button>
+                                </form>
                             </div>
                         </div>
                     </div>
