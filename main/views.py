@@ -45,4 +45,4 @@ class PartsCatalog(View):
     def get(self, request: HttpRequest, car_vin: str):
         car = get_object_or_404(Auto, vin=car_vin)
 
-        return render(request, "main/car_parts.html", {"car": car})
+        return render(request, "main/parts_catalog.html", {"car": car})
