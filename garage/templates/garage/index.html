@@ -22,7 +22,10 @@
                 {{ car.get_wheel_drive_display }} привід.</h6>
             <a href="{% url 'main:parts_catalog' car.pk %}" class="card-link">Дивитись запчастини</a>
             <a href="#" class="card-link">Історія покупок</a>
-            <a href="#" class="card-link">Видалити машину</a>
+            <form action="{% url 'garage:delete_car' car.pk %}" class="d-inline" method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger">Видалити машину</button>
+            </form>
         </div>
     </div>
     {% endfor %}

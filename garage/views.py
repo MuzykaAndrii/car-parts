@@ -20,3 +20,12 @@ class AddCarToGarageView(View):
 
         messages.success(request, "Car added successfully, check it out in garage!")
         return redirect("main:car_catalog", car_producer=car_to_add.producer.name)
+
+
+class DeleteCarFromGarageView(View):
+    def post(self, request: HttpRequest, car_vin: str):
+        car_to_delete = get_object_or_404(Auto, vin=car_vin)
+        request.user.cars.remove(car_to_delete)
+
+        messages.success(request, "Car deleted successfully!")
+        return redirect("garage:garage")
