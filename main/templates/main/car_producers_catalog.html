@@ -21,7 +21,7 @@
     <div class="row">
         {% for producer in car_producers %}
         <div class="col-md-2 mb-3">
-            <a class="card">
+            <a href="{% url 'main:car_catalog' producer.name %}" class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ producer.name }}</h5>
                 </div>

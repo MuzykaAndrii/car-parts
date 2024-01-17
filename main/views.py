@@ -16,7 +16,7 @@ class ScannerPage(TemplateView):
     template_name='scanner.html'
 
 class PartByScanner(APIView):
-    def post(self, request: HttpRequest):
+    def post(self, request):
         barcode = request.data.get('barcode')
         if not barcode: 
             return Response({'error' : True, 'msg' : 'Missing barcode value'})
@@ -42,8 +42,8 @@ class CarProducerCatalog(View):
 
 
 class CarCatalog(View):
-    def get(self, request: HttpRequest):
-        cars = Auto.objects.all()
+    def get(self, request: HttpRequest, car_producer: str):
+        cars = Auto.objects.filter(producer__name=car_producer)
         return render(request, "main/car_catalog.html", {"cars": cars})
 
 
