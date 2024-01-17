@@ -6,17 +6,20 @@ from django.http import HttpRequest
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from user.mixins import AdminRequiredMixin
+
 from .models import CarProducer, Part, Auto
 
 
 class IndexPage(TemplateView):
     template_name='index.html'
 
-class ScannerPage(TemplateView):
+class ScannerPage(AdminRequiredMixin, TemplateView):
     template_name='scanner.html'
 
 class PartByScanner(APIView):
     def post(self, request):
+        # TODO: add permission checking
         barcode = request.data.get('barcode')
         if not barcode: 
             return Response({'error' : True, 'msg' : 'Missing barcode value'})

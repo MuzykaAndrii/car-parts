@@ -3,9 +3,11 @@ from typing import Any
 from django.views.generic import TemplateView
 
 from main.models import PartUnit
+from user.mixins import AdminRequiredMixin
 
-class IndexPage(TemplateView):
+class IndexPage(TemplateView, AdminRequiredMixin):
     template_name = 'statistic/index.html'
+    
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         
@@ -20,10 +22,3 @@ class IndexPage(TemplateView):
         context['sale_values'] = list(sales.values())
         context['margin'] = margin
         return context
-
-class SalesView(TemplateView):
-    template_name = 'statistic/sales.html'
-    
-
-class MarginView(TemplateView):
-    template_name = 'statistic/margin.html'
