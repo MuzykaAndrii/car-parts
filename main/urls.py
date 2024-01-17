@@ -6,6 +6,7 @@ from .views import (
     PartByScanner,
     CarCatalog,
     PartsCatalog,
+    CarProducerCatalog,
 )
 
 app_name = 'main'
@@ -15,6 +16,7 @@ urlpatterns = [
     path('scanner/', ScannerPage.as_view(), name='scanner'),
     path('get_part_by_barcode/', PartByScanner.as_view(), name='part_by_barcode'),
 
-    path('cars/catalog/', CarCatalog.as_view(), name="car_catalog"),
+    path('cars/producers/', CarProducerCatalog.as_view(), name='car_producers_catalog'),
+    path('cars/', CarCatalog.as_view(), name="car_catalog"),
     path('cars/<str:car_vin>/parts/', PartsCatalog.as_view(), name="parts_catalog"),
 ]

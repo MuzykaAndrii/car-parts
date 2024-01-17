@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Part, Auto
+from .models import CarProducer, Part, Auto
 
 
 class IndexPage(TemplateView):
@@ -33,6 +33,12 @@ def handler500(request, template_name="status_pages/500.html"):
     response = render(request=request, template_name=template_name)
     response.status_code = 500
     return response
+
+
+class CarProducerCatalog(View):
+    def get(self, request: HttpRequest):
+        car_producers = CarProducer.objects.all().order_by("name")
+        return render(request, "main/car_producers_catalog.html", {"car_producers": car_producers})
 
 
 class CarCatalog(View):

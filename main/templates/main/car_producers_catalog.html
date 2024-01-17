@@ -1,0 +1,33 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block style %}
+<style>
+    .car_producers .card {
+        text-decoration: none;
+    }
+
+    .card:hover {
+        border-color: blue;
+        cursor: pointer;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<h1 class="text-center mb-5">Каталог виробників: </h1>
+
+<div class="car_producers">
+    <div class="row">
+        {% for producer in car_producers %}
+        <div class="col-md-2 mb-3">
+            <a class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{ producer.name }}</h5>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
