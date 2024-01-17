@@ -1,7 +1,7 @@
 from django.db import models 
 
 class CarProducer(models.Model):
-    name = models.CharField("Назва", max_length=255)
+    name = models.CharField("Назва", max_length=255, unique=True)
 
     def __str__(self) -> str:
         return self.name
@@ -17,7 +17,7 @@ class CarProducer(models.Model):
 class Auto(models.Model):
     
     WHEEL_DRIVE_CHOICES = [
-        ('1','Повний'),   
+        ('1','Повний'),
         ('2','Передній'), 
         ('3','Задній'),   
     ]
