@@ -6,4 +6,28 @@
 
 {% block content %}
 <h1 class="text-center mb-4">Мій Гараж:</h1>
+{% if not cars %}
+<h3 class="text">Ваш гараж покищо порожній(</h3>
+<p>Ви можете додати машину в свій гараж через <a class="link" href="{% url 'main:car_producers_catalog' %}">каталог</a>.
+</p>
+{% else %}
+
+<div class="garage">
+
+    {% for car in cars %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ car.producer }} {{ car.model }} {{ car.year_of_production }}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ car.engine_volume }} {{ car.fuel_type }}, {{
+                car.wheel_drive }} привід.</h6>
+            <a href="{% url 'main:parts_catalog' car.pk %}" class="card-link">Дивитись запчастини</a>
+            <a href="#" class="card-link">Історія покупок</a>
+            <a href="#" class="card-link">Видалити машину</a>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endif %}
 {% endblock content %}

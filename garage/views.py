@@ -5,5 +5,6 @@ from django.views import View
 
 class GarageView(View):
     def get(self, request: HttpRequest):
-        # fetch user cars
-        return render(request, "garage/index.html")
+        user_cars = request.user.cars.all()
+
+        return render(request, "garage/index.html", {"cars": user_cars})
