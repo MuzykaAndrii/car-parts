@@ -1,11 +1,12 @@
-from typing import Any, Dict
+from typing import Any
+
 from django.views.generic import TemplateView
-import datetime
+
 from main.models import PartUnit
 
 class IndexPage(TemplateView):
     template_name = 'statistic/index.html'
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         
         queryset = PartUnit.objects.all()
