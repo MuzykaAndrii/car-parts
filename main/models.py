@@ -114,3 +114,7 @@ class PartUnit(models.Model):
     sale_date = models.DateTimeField('Дата продажі', auto_now=True)
     buy_price = models.FloatField('Закупочна ціна', blank=True)
     sell_price = models.FloatField('Роздрібна ціна', blank=True)
+
+    @property
+    def total_price(self) -> float:
+        return self.sell_price * self.quantity

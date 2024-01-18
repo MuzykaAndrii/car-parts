@@ -21,6 +21,10 @@ class Order(models.Model):
         default=OrderStatus.CREATED,
     )
 
+    @property
+    def total(self) -> float:
+        return sum((product.total_price for product in self.products.all()))
+
     def __str__(self) -> str:
         if self.customer is None:
             return f"Замовлення № {self.pk}"

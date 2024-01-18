@@ -11,20 +11,23 @@
 
 {% else %}
 <div class="checkout row">
-    <ol class="list-group list-group-numbered col-6">
-        {% for product in cart.products.all %}
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">{{ product.part.name }}</div>
-                {{ product.part.articul }}
-            </div>
-            <div>
-                <span class="badge bg-primary rounded-pill d-block">{{ product.quantity }}</span>
-                <a href="" class="link-danger d-block">Видалити</a>
-            </div>
-        </li>
-        {% endfor %}
-    </ol>
+    <div class="products col-6">
+        <ol class="list-group list-group-numbered">
+            {% for product in cart.products.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">{{ product.part.name }}</div>
+                    {{ product.total_price }} грн.
+                </div>
+                <div>
+                    <span class="badge bg-primary rounded-pill d-block">{{ product.quantity }}</span>
+                    <a href="" class="link-danger d-block">Видалити</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+        <b>Сумма: </b><span class="badge text-bg-info">{{ cart.total }}</span>
+    </div>
     <div class="shipping col-6">
         Дані доставки
     </div>
