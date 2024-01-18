@@ -19,7 +19,7 @@ class AddToOrderView(MyLoginRequiredMixin, View):
         
         actual_order = Order.objects.get_or_create(customer=request.user, status=Order.OrderStatus.CREATED)[0]
         part = get_object_or_404(Part, pk=form.cleaned_data.get("part_id"))
-        part_unit = PartUnit.objects.create(
+        PartUnit.objects.create(
             part=part,
             order=actual_order,
             quantity=form.cleaned_data.get("quantity"),
@@ -27,4 +27,5 @@ class AddToOrderView(MyLoginRequiredMixin, View):
             sell_price=part.sell_price,
         )
 
+        messages.success(request, "Товар доданий до корзини успішно")
         return redirect("main:parts_catalog", car_vin=part.belongs_to.pk)
