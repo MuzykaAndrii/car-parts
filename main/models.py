@@ -105,6 +105,7 @@ class PartUnit(models.Model):
         verbose_name="Замовлення",
         related_name="products",
         on_delete=models.CASCADE,
+        null=True,
     )
     quantity = models.PositiveSmallIntegerField(
         verbose_name="Кількість",

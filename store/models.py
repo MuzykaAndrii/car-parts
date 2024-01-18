@@ -3,10 +3,9 @@ from django.contrib.auth.models import User
 
 
 class Order(models.Model):
-    ORDER_STATUS_CHOICES = (
-        ("0", "Created"),
-        ("1", "Accepted"),
-    )
+    class OrderStatus(models.TextChoices):
+        CREATED = "0", "Created"
+        ACCEPTED = "1", "Accepted"
 
     customer = models.ForeignKey(
         User,
@@ -18,8 +17,8 @@ class Order(models.Model):
     status = models.CharField(
         max_length=40,
         verbose_name="Статус замовлення",
-        choices=ORDER_STATUS_CHOICES,
-        default="0",
+        choices=OrderStatus.choices,
+        default=OrderStatus.CREATED,
     )
 
     def __str__(self) -> str:
