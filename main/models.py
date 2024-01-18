@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from store.models import Order
+
 
 class CarProducer(models.Model):
     name = models.CharField("Назва", max_length=255, unique=True)
@@ -97,6 +99,16 @@ class PartUnit(models.Model):
         verbose_name="Назва", 
         to=Part,
         on_delete=models.CASCADE
+    )
+    order = models.ForeignKey(
+        Order,
+        verbose_name="Замовлення",
+        related_name="products",
+        on_delete=models.CASCADE,
+    )
+    quantity = models.PositiveSmallIntegerField(
+        verbose_name="Кількість",
+        default=1,
     )
     sale_date = models.DateTimeField('Дата продажі', auto_now=True)
     buy_price = models.FloatField('Закупочна ціна', blank=True)
