@@ -63,6 +63,10 @@ class Auto(models.Model):
 
     owners = models.ManyToManyField(User, related_name="cars")
 
+    @property
+    def name(self):
+        return f"{self.producer} {self.model}"
+
     def __str__(self) -> str:
         return f'{self.vin} | {self.producer} {self.model} {self.year_of_production}р.'
 
