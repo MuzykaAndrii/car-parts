@@ -38,6 +38,9 @@
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </li> -->
         </ul>
+        <div style="margin-right: 10px" class="nav-item">
+          <a href="{% url 'store:cart' %}" class="nav-link">Корзина</a>
+        </div>
         <div class="nav-item dropdown btn btn-outline-secondary ml-3">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {% if request.user.is_authenticated %}

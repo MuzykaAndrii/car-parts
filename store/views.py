@@ -29,3 +29,8 @@ class AddToOrderView(MyLoginRequiredMixin, View):
 
         messages.success(request, "Товар доданий до корзини успішно")
         return redirect("main:parts_catalog", car_vin=part.belongs_to.pk)
+
+
+class ShowOrderView(View):
+    def get(self, request: HttpRequest):
+        return render(request, "store/cart.html")
