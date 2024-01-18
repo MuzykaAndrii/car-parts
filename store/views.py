@@ -33,4 +33,5 @@ class AddToOrderView(MyLoginRequiredMixin, View):
 
 class ShowOrderView(View):
     def get(self, request: HttpRequest):
-        return render(request, "store/cart.html")
+        actual_order = request.user.orders.get(status=Order.OrderStatus.CREATED)
+        return render(request, "store/cart.html", {"cart": actual_order})

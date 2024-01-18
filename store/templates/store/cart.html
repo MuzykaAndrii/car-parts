@@ -5,5 +5,30 @@
 {% endblock style %}
 
 {% block content %}
-<h1 class="text-center mb-4">Ваша корзина:</h1>
+<h1 class="text-center mb-4">Корзина:</h1>
+{% if not cart %}
+<h3>Ваша корзина порожня(</h3>
+
+{% else %}
+<div class="checkout row">
+    <ol class="list-group list-group-numbered col-6">
+        {% for product in cart.products.all %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">{{ product.part.name }}</div>
+                {{ product.part.articul }}
+            </div>
+            <div>
+                <span class="badge bg-primary rounded-pill d-block">{{ product.quantity }}</span>
+                <a href="" class="link-danger d-block">Видалити</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ol>
+    <div class="shipping col-6">
+        Дані доставки
+    </div>
+</div>
+<button class="submit btn btn-primary mt-3">Замовити</button>
+{% endif %}
 {% endblock content %}
