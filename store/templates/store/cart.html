@@ -19,10 +19,12 @@
                     <div class="fw-bold">{{ product.part.name }}</div>
                     {{ product.total_price }} грн.
                 </div>
-                <div>
+                <form method="post" action="{% url 'store:delete_from_order' %}">
+                    {% csrf_token %}
                     <span class="badge bg-primary rounded-pill d-block">{{ product.quantity }}</span>
-                    <a href="" class="link-danger d-block">Видалити</a>
-                </div>
+                    <input type="hidden" name="part_unit_pk" value="{{ product.pk }}">
+                    <input type="submit" class="btn btn-outline-danger btn-sm mt-1" value="X">
+                </form>
             </li>
             {% endfor %}
         </ol>

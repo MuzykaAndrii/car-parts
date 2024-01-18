@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib import messages
 from main.models import Part, PartUnit
 
-from store.forms import AddToOrderForm
+from store.forms import AddToOrderForm, DeleteFromOrderForm
 from store.models import Order
 from user.mixins import MyLoginRequiredMixin
 
@@ -30,6 +30,28 @@ class AddToOrderView(MyLoginRequiredMixin, View):
         messages.success(request, "Товар доданий до корзини успішно")
         return redirect("main:parts_catalog", car_vin=part.belongs_to.pk)
 
+
+class DeleteFromOrderView(MyLoginRequiredMixin, View):
+    def post(self, request: HttpRequest):
+
+        form = DeleteFromOrderForm(request.POST)
+
+        if not form.is_valid():
+            return self.send_error(request)
+        
+        part_unit = get_object_or_404(PartUnit, pk=form.cleaned_data.get("part_unit_pk"))
+
+        if part_unit.order.customer != request.user:
+            return self.send_error(request)
+        
+        part_unit.delete()
+
+        messages.success(request, "Товар успішно видалений з корзини")
+        return redirect("store:cart")
+
+    def send_error(self, request):
+        messages.error(request, "Помилка, товар не видалений")
+        return redirect("store:cart")
 
 class ShowOrderView(View):
     def get(self, request: HttpRequest):
