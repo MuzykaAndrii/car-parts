@@ -34,7 +34,19 @@
                         {% endif %}
                         <b>Ціна: </b>{{ part.sell_price }} грн.
                     </p>
-                    <a href="#" class="btn btn-primary">Замовити</a>
+                    <form method="post" action="{% url 'store:add_to_order' %}">
+                        {% csrf_token %}
+                        
+                        <input type="hidden" name="part_id" value="{{ part.pk }}">
+                        <div class="row">
+                            <div class="col">
+                                <input type="submit" class="form-control btn btn-primary" value="В корзину"></input>
+                            </div>
+                            <div class="col">
+                                <input style="width: 50%" class="form-control" type="number" min="1" value="1" name="quantity">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
