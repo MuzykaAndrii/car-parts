@@ -7,6 +7,8 @@ from main.models import Part, PartUnit
 from store.forms import AddToOrderForm, DeleteFromOrderForm
 from store.models import Order
 from auth.mixins import MyLoginRequiredMixin
+from user import services as user_services
+
 
 
 class AddToOrderView(MyLoginRequiredMixin, View):
@@ -53,7 +55,10 @@ class DeleteFromOrderView(MyLoginRequiredMixin, View):
         messages.error(request, "Помилка, товар не видалений")
         return redirect("store:cart")
 
-class ShowOrderView(View):
+
+class ShowOrderView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         actual_order = request.user.orders.get(status=Order.OrderStatus.CREATED)
-        return render(request, "store/cart.html", {"cart": actual_order})
+        shipping = user_services.get_user_shipping_address(request.user)
+
+        return render(request, "store/cart.html", {"cart": actual_order, "shipping": shipping})

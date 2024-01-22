@@ -5,13 +5,14 @@
 {% endblock style %}
 
 {% block content %}
-<h1 class="text-center mb-4">Корзина:</h1>
+<h1 class="text-center mb-4">Ваше замовлення:</h1>
 {% if not cart %}
 <h3>Ваша корзина порожня(</h3>
 
 {% else %}
 <div class="checkout row">
-    <div class="products col-6">
+    <div class="products col-7">
+        <h4>Корзина:</h4>
         <ol class="list-group list-group-numbered">
             {% for product in cart.products.all %}
             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -30,8 +31,25 @@
         </ol>
         <b>Сумма: </b><span class="badge text-bg-info">{{ cart.total }}</span>
     </div>
-    <div class="shipping col-6">
-        Дані доставки
+    <div class="shipping col-5">
+        <h4>Адреса доставки:</h4>
+
+        {% if not shipping %}
+            Адресу не знайдено. Вкажіть адресу доставки в <a class="link-warning" href="{% url 'user:shipping' %}">налаштуваннях доставки</a>
+        {% else %}
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ shipping.first_name }} {{ shipping.last_name }}</h5>
+              <p class="card-text">
+                <strong>Номер телефону:</strong> {{ shipping.phone_number }}<br>
+                <strong>Область:</strong> {{ shipping.region }}<br>
+                <strong>Населений пункт:</strong> {{ shipping.city }}<br>
+                <strong>Номер відділення НП:</strong> {{ shipping.office_number }} <br>
+                <a class="link-primary" href="{% url 'user:shipping' %}">Змінити адресу</a>
+              </p>
+            </div>
+          </div>
+        {% endif %}
     </div>
 </div>
 <button class="submit btn btn-primary mt-3">Замовити</button>
