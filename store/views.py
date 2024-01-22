@@ -58,7 +58,17 @@ class DeleteFromOrderView(MyLoginRequiredMixin, View):
 
 class ShowOrderView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        actual_order = Order.objects.get_or_create(customer=request.user, status=Order.OrderStatus.GATHERING)[0]
+        actual_order = Order.objects.filter(customer=request.user, status=Order.OrderStatus.GATHERING).first()
         shipping = user_services.get_user_shipping_address(request.user)
 
         return render(request, "store/cart.html", {"cart": actual_order, "shipping": shipping})
+
+
+class SubmitOrderView(MyLoginRequiredMixin, View):
+    def post(self, request: HttpRequest):
+       order_to_submit = get_object_or_404(Order, customer=request.user, status=Order.OrderStatus.GATHERING)
+       order_to_submit.status = Order.OrderStatus.PROCESSING
+       order_to_submit.save()
+
+       messages.success(request, "Замовлення успішно надійшло на обробку! Ми звяжемося з вами найближчим часом)")
+       return redirect("main:index")

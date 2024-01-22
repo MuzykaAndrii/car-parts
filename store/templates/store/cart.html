@@ -52,6 +52,9 @@
         {% endif %}
     </div>
 </div>
-<button class="submit btn btn-primary mt-3">Замовити</button>
+<form action="{% url 'store:submit_order' %}" method="POST">
+    {% csrf_token %}
+    <button class="submit btn btn-primary mt-3">Замовити</button>
+</form>
 {% endif %}
 {% endblock content %}
