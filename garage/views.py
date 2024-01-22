@@ -48,7 +48,4 @@ class CarHistoryView(MyLoginRequiredMixin, View):
             date_purchased = str(part_unit.sale_date.date())
             purchased_part_units_by_date[date_purchased].append(part_unit)
 
-        from pprint import pprint
-        pprint(purchased_part_units_by_date)
-
         return render(request, "garage/history.html", {"parts": dict(purchased_part_units_by_date), "car": car})
