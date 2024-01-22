@@ -8,7 +8,7 @@ from user.forms import ShippingAddressForm
 from user.models import ShippingAddress
 
 
-class SettingsView(MyLoginRequiredMixin, View):
+class ShippingView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         try:
             shipping_address_instance = ShippingAddress.objects.get(user=request.user)
@@ -17,7 +17,7 @@ class SettingsView(MyLoginRequiredMixin, View):
 
         shipping_form = ShippingAddressForm(instance=shipping_address_instance)
 
-        return render(request, 'user/settings.html', {"shipping_form": shipping_form})
+        return render(request, 'user/shipping.html', {"shipping_form": shipping_form})
 
     def post(self, request: HttpRequest):
         # upd account data

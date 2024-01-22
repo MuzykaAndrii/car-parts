@@ -51,11 +51,11 @@
           </a>
           <ul class="dropdown-menu">
             {% if request.user.is_authenticated %}
-            <li><a class="dropdown-item" href="{% url 'user:settings' %}">Settings</a></li>
-            <li><a class="dropdown-item text-danger-emphasis" href="{% url 'auth:logout' %}">Log out <i class="bi bi-box-arrow-left"></i></a></li>
+            <li><a class="dropdown-item" href="{% url 'user:shipping' %}">Доставка</a></li>
+            <li><a class="dropdown-item text-danger-emphasis" href="{% url 'auth:logout' %}">Вийти <i class="bi bi-box-arrow-left"></i></a></li>
             {% else %}
-            <li><a class="dropdown-item" href="{% url 'auth:login' %}">Log in</a></li>
-            <li><a class="dropdown-item" href="{% url 'auth:register' %}">Register</a></li>
+            <li><a class="dropdown-item" href="{% url 'auth:login' %}">Увійти</a></li>
+            <li><a class="dropdown-item" href="{% url 'auth:register' %}">Реєстрація</a></li>
             {% endif %}
           </ul>
         </div>
