@@ -30,3 +30,9 @@ class DeleteCarFromGarageView(MyLoginRequiredMixin, View):
 
         messages.success(request, "Машина успішно видалена з вашого гаражу!")
         return redirect("garage:garage")
+
+
+class CarHistoryView(MyLoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+
+        return render(request, "garage/history.html")
