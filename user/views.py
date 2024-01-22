@@ -10,15 +10,28 @@ from user.models import ShippingAddress
 
 class ShippingView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        try:
-            shipping_address_instance = ShippingAddress.objects.get(user=request.user)
-        except ShippingAddress.DoesNotExist:
-            shipping_address_instance = None
+        shipping_address = self.get_user_shipping_address(request.user)
+        form = ShippingAddressForm(instance=shipping_address)
 
-        shipping_form = ShippingAddressForm(instance=shipping_address_instance)
-
-        return render(request, 'user/shipping.html', {"form": shipping_form})
+        return render(request, 'user/shipping.html', {"form": form})
 
     def post(self, request: HttpRequest):
-        # upd account data
-        pass
+        shipping_address = self.get_user_shipping_address(request.user)
+        form = ShippingAddressForm(instance=shipping_address, data=request.POST)
+
+        if not form.is_valid():
+            messages.error(request, "Помилка! Не правильно введені дані. Спробуйте будь-ласка ще раз.")
+            return render(request, 'user/shipping.html', {"form": form})
+        
+        new_shipping_address: ShippingAddress = form.save(commit=False)
+        new_shipping_address.user = request.user
+        new_shipping_address.save()
+
+        messages.success(request, "Дані доставки успішно оновлені!")
+        return render(request, 'user/shipping.html', {"form": form})
+
+    def get_user_shipping_address(self, user) -> ShippingAddress | None:
+        try:
+            return ShippingAddress.objects.get(user=user)
+        except ShippingAddress.DoesNotExist:
+            return None
