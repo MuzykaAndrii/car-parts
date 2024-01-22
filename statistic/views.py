@@ -13,7 +13,6 @@ class IndexPage(TemplateView, AdminRequiredMixin):
     template_name = 'statistic/index.html'
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        # TODO: calculate sell price according to quantity filed
         context = super().get_context_data(**kwargs)
         
         sold_with_orders = PartUnit.objects.filter(order__status=Order.OrderStatus.RECEIVED)
@@ -23,9 +22,9 @@ class IndexPage(TemplateView, AdminRequiredMixin):
         sales = defaultdict(float)
         for sold_product in sold_total:
             sold_at = str(sold_product.sale_date.date())
-            sales[sold_at] += sold_product.sell_price
+            sales[sold_at] += sold_product.sell_price * sold_product.quantity
         
-        margin = reduce(lambda acc, item: acc + item.sell_price - item.buy_price, sold_total, 0)
+        margin = reduce(lambda acc, item: acc + (item.sell_price - item.buy_price) * item.quantity, sold_total, 0)
 
         context['sale_date'] = list(sales.keys())
         context['sale_values'] = list(sales.values())
