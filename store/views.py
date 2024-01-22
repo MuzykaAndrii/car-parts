@@ -6,7 +6,7 @@ from main.models import Part, PartUnit
 
 from store.forms import AddToOrderForm, DeleteFromOrderForm
 from store.models import Order
-from user.mixins import MyLoginRequiredMixin
+from auth.mixins import MyLoginRequiredMixin
 
 
 class AddToOrderView(MyLoginRequiredMixin, View):

@@ -10,7 +10,7 @@ from main.views import handler500 as h500
 
 urlpatterns = [
     path('admin/', admin_site.urls),
-    path('auth/', include('auth.urls'), namespace='auth'),
+    path('auth/', include('auth.urls', namespace='auth')),
     path('', include('main.urls', namespace='main')),
     path('stats/', include('statistic.urls', namespace='stats')),
     re_path( r"^%s(?P<path>.*)$" % re.escape(settings.STATIC_URL.lstrip("/")), view=serve, kwargs = {'document_root':settings.STATIC_ROOT}),

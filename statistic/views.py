@@ -3,7 +3,7 @@ from typing import Any
 from django.views.generic import TemplateView
 
 from main.models import PartUnit
-from user.mixins import AdminRequiredMixin
+from auth.mixins import AdminRequiredMixin
 
 class IndexPage(TemplateView, AdminRequiredMixin):
     template_name = 'statistic/index.html'

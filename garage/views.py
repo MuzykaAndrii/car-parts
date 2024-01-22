@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib import messages
 
 from main.models import Auto
-from user.mixins import MyLoginRequiredMixin
+from auth.mixins import MyLoginRequiredMixin
 
 
 class GarageView(MyLoginRequiredMixin, View):

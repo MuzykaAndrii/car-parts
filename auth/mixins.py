@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 class MyLoginRequiredMixin(LoginRequiredMixin):
-    login_url = 'user:login'
+    login_url = 'auth:login'
 
 
 class AdminRequiredMixin(MyLoginRequiredMixin, UserPassesTestMixin):

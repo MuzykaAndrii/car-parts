@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from user.mixins import AdminRequiredMixin
+from auth.mixins import AdminRequiredMixin
 
 from .models import CarProducer, Part, Auto
 
