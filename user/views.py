@@ -7,7 +7,7 @@ from django.views import View
 class SettingsView(View):
     def get(self, request: HttpRequest):
         # Show settings page
-        pass
+        return render(request, 'user/settings.html')
 
     def post(self, request: HttpRequest):
         # upd account data
