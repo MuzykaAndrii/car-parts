@@ -15,34 +15,40 @@
       
       <div class="row mb-3">
         <div class="col-md-6">
-          <label for="{{ shipping_form.first_name.id_for_label }}">Імя</label>
-          {{ shipping_form.first_name|add_class:"form-control" }}
+          <label for="{{ form.first_name.id_for_label }}">Імя</label>
+          {{ form.first_name|add_class:"form-control" }}
+          {{ form.first_name.errors }}
         </div>
         <div class="col-md-6">
-          <label for="{{ shipping_form.last_name.id_for_label }}">Прізвище</label>
-          {{ shipping_form.last_name|add_class:"form-control" }}
+          <label for="{{ form.last_name.id_for_label }}">Прізвище</label>
+          {{ form.last_name|add_class:"form-control" }}
+          {{ form.last_name.errors }}
         </div>
       </div>
       
       <div class="row mb-3">
         <div class="col-md-12">
-          <label for="{{ shipping_form.phone_number.id_for_label }}">Номер телефону</label>
-          {{ shipping_form.phone_number|add_class:"form-control" }}
+          <label for="{{ form.phone_number.id_for_label }}">Номер телефону</label>
+          {{ form.phone_number|add_class:"form-control" }}
+          {{ form.phone_number.errors }}
         </div>
       </div>
       
       <div class="row mb-3">
         <div class="col-md-5">
-          <label for="{{ shipping_form.region.id_for_label }}">Область</label>
-          {{ shipping_form.region|add_class:"form-control" }}
+          <label for="{{ form.region.id_for_label }}">Область</label>
+          {{ form.region|add_class:"form-control" }}
+          {{ form.region.errors }}
         </div>
         <div class="col-md-5">
-          <label for="{{ shipping_form.city.id_for_label }}">Населений пункт</label>
-          {{ shipping_form.city|add_class:"form-control" }}
+          <label for="{{ form.city.id_for_label }}">Населений пункт</label>
+          {{ form.city|add_class:"form-control" }}
+          {{ form.city.errors }}
         </div>
         <div class="col-md-2">
-          <label for="{{ shipping_form.office_number.id_for_label }}">№ відділення</label>
-          {{ shipping_form.office_number|add_class:"form-control" }}
+          <label for="{{ form.office_number.id_for_label }}">№ відділення</label>
+          {{ form.office_number|add_class:"form-control" }}
+          {{ form.office_number.errors }}
         </div>
       </div>
       

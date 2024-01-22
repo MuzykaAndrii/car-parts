@@ -17,7 +17,7 @@ class ShippingView(MyLoginRequiredMixin, View):
 
         shipping_form = ShippingAddressForm(instance=shipping_address_instance)
 
-        return render(request, 'user/shipping.html', {"shipping_form": shipping_form})
+        return render(request, 'user/shipping.html', {"form": shipping_form})
 
     def post(self, request: HttpRequest):
         # upd account data
