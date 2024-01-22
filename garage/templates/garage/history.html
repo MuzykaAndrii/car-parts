@@ -5,6 +5,41 @@
 {% endblock style %}
 
 {% block content %}
-<h1 class="text-center mb-4">Історія покупок для:</h1>
+<h1 class="text-center mb-4">Історія покупок для: {{ car.name }}</h1>
+{% if not parts %}
+  <h4>Ви ще не купували нічого до цієї машини. Але можете <a href="{% url 'main:parts_catalog' car.vin %}">тут</a></h4>
+{% else %}
+<div class="accordion row" id="accordionPanelsStayOpenExample">
+    {% for date_purchased, part_units in parts.items %}
+      
+    <div class="accordion-item  offset-1 col-10 px-0">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ date_purchased }}" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+            {{ date_purchased }}
+        </button>
+      </h2>
+      <div id="{{ date_purchased }}" class="accordion-collapse collapse {% if forloop.counter0 == 0 %} show {% endif %}">
+        <div class="accordion-body">
+            <ol class="list-group list-group-numbered">
+                {% for part_unit in part_units %}
+                  
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                  <div class="ms-2 me-auto">
+                    <div class="fw-bold">{{ part_unit.part.name }}</div>
+                    {{ part_unit.sell_price }} грн.
+                  </div>
+                  <span class="badge bg-primary rounded-pill">Кількість: {{ part_unit.quantity }}</span>
+                </li>
+
+                {% endfor %}
+              </ol>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+    
+  </div>
+  {% endif %}
 
 {% endblock content %}

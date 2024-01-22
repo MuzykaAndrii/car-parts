@@ -1,10 +1,12 @@
+from collections import defaultdict
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.contrib import messages
 
-from main.models import Auto
+from main.models import Auto, PartUnit
 from auth.mixins import MyLoginRequiredMixin
+from store.models import Order
 
 
 class GarageView(MyLoginRequiredMixin, View):
@@ -33,6 +35,20 @@ class DeleteCarFromGarageView(MyLoginRequiredMixin, View):
 
 
 class CarHistoryView(MyLoginRequiredMixin, View):
-    def get(self, request: HttpRequest):
+    def get(self, request: HttpRequest, car_vin: str):
+        car = get_object_or_404(Auto, vin=car_vin)
+        purchased_part_units = PartUnit.objects.filter(
+            order__customer=request.user,
+            part__belongs_to=car,
+            order__status=Order.OrderStatus.RECEIVED,
+        )
 
-        return render(request, "garage/history.html")
+        purchased_part_units_by_date = defaultdict(list)
+        for part_unit in purchased_part_units:
+            date_purchased = str(part_unit.sale_date.date())
+            purchased_part_units_by_date[date_purchased].append(part_unit)
+
+        from pprint import pprint
+        pprint(purchased_part_units_by_date)
+
+        return render(request, "garage/history.html", {"parts": dict(purchased_part_units_by_date), "car": car})
