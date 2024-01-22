@@ -3,9 +3,14 @@ from django.contrib.auth.models import User
 
 
 class Order(models.Model):
-    class OrderStatus(models.TextChoices):
-        CREATED = "0", "Created"
-        ACCEPTED = "1", "Accepted"
+    class OrderStatus(models.IntegerChoices):
+        GATHERING = 1, "В корзині"
+        PROCESSING = 2, "Замовлення здійснено"
+        IN_TRANSIT = 3, "У процесі доставки"
+        IN_DESTINATION = 4, "Замовлення у поштовому відділенні"
+        RECEIVED = 5, "Замовлення отримано"
+        REFUSED = 6, "Замовлення повернено"
+
 
     customer = models.ForeignKey(
         User,
@@ -14,11 +19,10 @@ class Order(models.Model):
         verbose_name='Замовник',
         null=True,
     )
-    status = models.CharField(
-        max_length=40,
+    status = models.PositiveSmallIntegerField(
         verbose_name="Статус замовлення",
         choices=OrderStatus.choices,
-        default=OrderStatus.CREATED,
+        default=OrderStatus.GATHERING,
     )
 
     @property
