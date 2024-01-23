@@ -6,5 +6,45 @@
 
 {% block content %}
 <h1 class="text-center mb-4">Ваші замовлення:</h1>
+{% if not orders %}
+<h3>Ви ще не мали жодного замовлення</h3>
 
+{% else %}
+{% for order in orders %}
+<div class="card mb-3">
+    <div class="card-header">
+        {{ order.sold_at|date:"j E Y" }} ({{ order.sold_at|timesince }} тому)
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Товар</th>
+                    <th scope="col">Артикул</th>
+                    <th scope="col">Ціна за одиницю</th>
+                    <th scope="col">Кількість</th>
+                    <th scope="col">Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in order.products.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <th scope="col">{{ product.part.name }}</th>
+                    <th scope="col">{{ product.part.articul }}</th>
+                    <th scope="col">{{ product.sell_price }}</th>
+                    <th scope="col">{{ product.quantity }}</th>
+                    <th scope="col">{{ product.total_price }}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <h6>Статус: <span class="badge text-bg-primary">{{ order.get_status_display }}</span></h6>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 {% endblock content %}

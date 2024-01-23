@@ -79,4 +79,4 @@ class OrdersHistoryView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         orders = Order.with_accepted_statuses.filter(customer=request.user)
         
-        return render(request, "store/orders_history.html")
+        return render(request, "store/orders_history.html", {"orders": orders})

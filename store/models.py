@@ -22,7 +22,7 @@ class WithAcceptedStatusesManager(models.Manager):
                 OrderStatus.REFUSED,
                 OrderStatus.RECEIVED,
             )
-            ).order_by("sold_at", "status")
+            ).order_by("-sold_at", "status")
 
 
 class Order(models.Model):
@@ -46,6 +46,10 @@ class Order(models.Model):
     @property
     def total(self) -> float:
         return sum((product.total_price for product in self.products.all()))
+    
+    @property
+    def total_quantity(self) -> int:
+        return sum((product.quantity for product in self.products.all()))
     
     @property
     def margin(self) -> float:
