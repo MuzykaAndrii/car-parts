@@ -41,7 +41,7 @@ class CarHistoryView(MyLoginRequiredMixin, View):
         purchased_part_units = PartUnit.objects.filter(
             order__customer=request.user,
             part__belongs_to=car,
-            order__status=Order.OrderStatus.RECEIVED,
+            order__status=Order.STATUSES.RECEIVED,
         )
 
         purchased_part_units_by_date = defaultdict(list)

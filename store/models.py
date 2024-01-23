@@ -1,16 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.query import QuerySet
+
+
+class OrderStatus(models.IntegerChoices):
+    GATHERING = 1, "В корзині"
+    PROCESSING = 2, "Оформлене покупцем"
+    IN_TRANSIT = 3, "У процесі доставки"
+    IN_DESTINATION = 4, "Замовлення у поштовому відділенні"
+    REFUSED = 5, "Замовлення повернено"
+    RECEIVED = 6, "Замовлення отримано"
+
+
+class WithAcceptedStatusesManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(
+            status__in=(
+                OrderStatus.PROCESSING,
+                OrderStatus.IN_TRANSIT,
+                OrderStatus.IN_DESTINATION,
+                OrderStatus.REFUSED,
+                OrderStatus.RECEIVED,
+            )
+            ).order_by("sold_at", "status")
 
 
 class Order(models.Model):
-    class OrderStatus(models.IntegerChoices):
-        GATHERING = 1, "В корзині"
-        PROCESSING = 2, "Оформлене покупцем"
-        IN_TRANSIT = 3, "У процесі доставки"
-        IN_DESTINATION = 4, "Замовлення у поштовому відділенні"
-        REFUSED = 5, "Замовлення повернено"
-        RECEIVED = 6, "Замовлення отримано"
-
+    STATUSES = OrderStatus
 
     customer = models.ForeignKey(
         User,
@@ -25,7 +41,7 @@ class Order(models.Model):
         choices=OrderStatus.choices,
         default=OrderStatus.GATHERING,
     )
-    sold_at = models.DateTimeField('Час продажу', auto_now=True, editable=True)
+    sold_at = models.DateTimeField('Час продажу', auto_now_add=True, editable=True)
 
     @property
     def total(self) -> float:
@@ -44,3 +60,5 @@ class Order(models.Model):
     class Meta:
         verbose_name = "Замовлення"
         verbose_name_plural = "Замовлення"
+    
+    with_accepted_statuses = WithAcceptedStatusesManager()
