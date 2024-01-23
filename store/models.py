@@ -66,3 +66,4 @@ class Order(models.Model):
         verbose_name_plural = "Замовлення"
     
     with_accepted_statuses = WithAcceptedStatusesManager()
+    objects = models.Manager()

@@ -21,7 +21,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Товар</th>
-                    <th scope="col">Артикул</th>
+                    <th scope="col">До авто</th>
                     <th scope="col">Ціна за одиницю</th>
                     <th scope="col">Кількість</th>
                     <th scope="col">Сумма</th>
@@ -32,7 +32,7 @@
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <th scope="col">{{ product.part.name }}</th>
-                    <th scope="col">{{ product.part.articul }}</th>
+                    <th scope="col">{{ product.part.belongs_to.name }}</th>
                     <th scope="col">{{ product.sell_price }}</th>
                     <th scope="col">{{ product.quantity }}</th>
                     <th scope="col">{{ product.total_price }}</th>
