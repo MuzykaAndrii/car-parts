@@ -123,3 +123,7 @@ class PartUnit(models.Model):
     @property
     def total_price(self) -> float:
         return self.sell_price * self.quantity
+    
+    @property
+    def margin(self) -> float:
+        return (self.sell_price - self.buy_price) * self.quantity

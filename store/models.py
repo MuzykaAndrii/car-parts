@@ -28,6 +28,10 @@ class Order(models.Model):
     @property
     def total(self) -> float:
         return sum((product.total_price for product in self.products.all()))
+    
+    @property
+    def margin(self) -> float:
+        return sum((product.margin for product in self.products.all()))
 
     def __str__(self) -> str:
         if self.customer is None:

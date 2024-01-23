@@ -68,6 +68,7 @@ class SubmitOrderView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
        order_to_submit = get_object_or_404(Order, customer=request.user, status=Order.OrderStatus.GATHERING)
        order_to_submit.status = Order.OrderStatus.PROCESSING
+       # TODO: set sale date to now() after moving sale_date from PartUnit to Order model
        order_to_submit.save()
 
        messages.success(request, "Замовлення успішно надійшло на обробку! Ми звяжемося з вами найближчим часом)")
