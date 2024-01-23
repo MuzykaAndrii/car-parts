@@ -1,13 +1,7 @@
 from django.contrib import admin
 
+from core.admin import admin_site
 from .models import CarProducer, Auto, Part, PartUnit
-
-class CustomAdminSite(admin.AdminSite):
-    site_header = "FDA.IF"
-    site_title = 'FDA.if'
-    index_title = 'FDA.if'
-
-admin_site = CustomAdminSite(name='myadmin')
 
 
 class PartInline(admin.TabularInline):
