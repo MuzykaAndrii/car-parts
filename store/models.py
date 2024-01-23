@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 class Order(models.Model):
     class OrderStatus(models.IntegerChoices):
         GATHERING = 1, "В корзині"
-        PROCESSING = 2, "Замовлення здійснено"
+        PROCESSING = 2, "Оформлене покупцем"
         IN_TRANSIT = 3, "У процесі доставки"
         IN_DESTINATION = 4, "Замовлення у поштовому відділенні"
-        RECEIVED = 5, "Замовлення отримано"
-        REFUSED = 6, "Замовлення повернено"
+        REFUSED = 5, "Замовлення повернено"
+        RECEIVED = 6, "Замовлення отримано"
 
 
     customer = models.ForeignKey(
