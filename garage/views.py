@@ -36,6 +36,7 @@ class DeleteCarFromGarageView(MyLoginRequiredMixin, View):
 
 class CarHistoryView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest, car_vin: str):
+        # TODO: optimize db queries
         car = get_object_or_404(Auto, vin=car_vin)
         purchased_part_units = PartUnit.objects.filter(
             order__customer=request.user,
@@ -45,7 +46,7 @@ class CarHistoryView(MyLoginRequiredMixin, View):
 
         purchased_part_units_by_date = defaultdict(list)
         for part_unit in purchased_part_units:
-            date_purchased = str(part_unit.sale_date.date())
+            date_purchased = str(part_unit.order.sold_at.date())
             purchased_part_units_by_date[date_purchased].append(part_unit)
 
         return render(request, "garage/history.html", {"parts": dict(purchased_part_units_by_date), "car": car})

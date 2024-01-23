@@ -24,6 +24,7 @@ class Order(models.Model):
         choices=OrderStatus.choices,
         default=OrderStatus.GATHERING,
     )
+    sold_at = models.DateTimeField('Час продажу', auto_now=True)
 
     @property
     def total(self) -> float:

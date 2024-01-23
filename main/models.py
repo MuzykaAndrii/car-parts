@@ -109,14 +109,11 @@ class PartUnit(models.Model):
         verbose_name="Замовлення",
         related_name="products",
         on_delete=models.CASCADE,
-        null=True,
     )
     quantity = models.PositiveSmallIntegerField(
         verbose_name="Кількість",
         default=1,
     )
-    # TODO: move sale_date to order model
-    sale_date = models.DateTimeField('Дата продажі', auto_now=True)
     buy_price = models.FloatField('Закупочна ціна', blank=True)
     sell_price = models.FloatField('Роздрібна ціна', blank=True)
 

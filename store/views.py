@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -35,7 +36,6 @@ class AddToOrderView(MyLoginRequiredMixin, View):
 
 class DeleteFromOrderView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
-
         form = DeleteFromOrderForm(request.POST)
 
         if not form.is_valid():
@@ -68,7 +68,7 @@ class SubmitOrderView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
        order_to_submit = get_object_or_404(Order, customer=request.user, status=Order.OrderStatus.GATHERING)
        order_to_submit.status = Order.OrderStatus.PROCESSING
-       # TODO: set sale date to now() after moving sale_date from PartUnit to Order model
+       order_to_submit.sold_at = datetime.now()
        order_to_submit.save()
 
        messages.success(request, "Замовлення успішно надійшло на обробку! Ми звяжемося з вами найближчим часом)")
