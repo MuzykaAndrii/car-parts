@@ -73,3 +73,9 @@ class SubmitOrderView(MyLoginRequiredMixin, View):
 
        messages.success(request, "Замовлення успішно надійшло на обробку! Ми звяжемося з вами найближчим часом)")
        return redirect("main:index")
+
+
+class OrdersHistoryView(MyLoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+        
+        return render(request, "store/orders_history.html")
