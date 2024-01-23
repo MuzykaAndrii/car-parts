@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -124,3 +125,12 @@ class PartUnit(models.Model):
     @property
     def margin(self) -> float:
         return (self.sell_price - self.buy_price) * self.quantity
+
+    def save(self, *args, **kwargs) -> None:
+        if not self.sell_price:
+            self.sell_price = self.part.sell_price
+        
+        if not self.buy_price:
+            self.buy_price = self.part.buy_price
+
+        return super().save(*args, **kwargs)

@@ -18,13 +18,14 @@ class Order(models.Model):
         related_name='orders',
         verbose_name='Замовник',
         null=True,
+        blank=True,
     )
     status = models.PositiveSmallIntegerField(
         verbose_name="Статус замовлення",
         choices=OrderStatus.choices,
         default=OrderStatus.GATHERING,
     )
-    sold_at = models.DateTimeField('Час продажу', auto_now=True)
+    sold_at = models.DateTimeField('Час продажу', auto_now=True, editable=True)
 
     @property
     def total(self) -> float:
