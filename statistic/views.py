@@ -1,5 +1,5 @@
 from collections import defaultdict
-from functools import reduce
+from datetime import date
 from typing import Any
 
 from django.views.generic import TemplateView
@@ -14,18 +14,18 @@ class IndexPage(TemplateView, AdminRequiredMixin):
         context = super().get_context_data(**kwargs)
 
         received_orders = Order.objects.filter(status=Order.STATUSES.RECEIVED).order_by("sold_at")
-        total_margin = reduce(lambda acc, order: acc + order.margin, received_orders, 0)
+        total_margin = sum((order.margin for order in received_orders))
 
         sales = defaultdict(float)
-        margins: list[float] = []
+        margins = defaultdict(float)
 
         for order in received_orders:
-            order_date = str(order.sold_at.date())
+            order_date = order.sold_at.date()
             sales[order_date] += order.total
-            margins.append(order.margin)
+            margins[order_date] += order.margin
 
         context['sale_date'] = list(sales.keys())
         context['sale_values'] = list(sales.values())
-        context['margins'] = margins
+        context['margins'] = list(margins.values())
         context['total_margin'] = total_margin
         return context
