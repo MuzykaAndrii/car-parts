@@ -17,11 +17,15 @@ class IndexPage(TemplateView, AdminRequiredMixin):
         total_margin = reduce(lambda acc, order: acc + order.margin, received_orders, 0)
 
         sales = defaultdict(float)
+        margins: list[float] = []
+
         for order in received_orders:
             order_date = str(order.sold_at.date())
             sales[order_date] += order.total
+            margins.append(order.margin)
 
         context['sale_date'] = list(sales.keys())
         context['sale_values'] = list(sales.values())
-        context['margin'] = total_margin
+        context['margins'] = margins
+        context['total_margin'] = total_margin
         return context

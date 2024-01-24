@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<h3>Прибуток: {{ margin }}</h3>
+<h3 class="text-center">Прибуток: {{ total_margin }}</h3>
 <div>
     <canvas id="myChart" width="35vw" width="25vw"></canvas>
 </div>
@@ -21,6 +21,10 @@
     {% for value in sale_values %}
     <p class="chart_sale_value">{{value}}</p>
     {%endfor%}
+
+    {% for value in margins %}
+    <p class="chart_margin_values">{{ value }}</p>
+    {% endfor %}
 </div>
 {% endblock content %}
 
@@ -28,26 +32,41 @@
   <script>
     const ctx = document.getElementById('myChart');
     let dates = []
-    let values = []
+    let sales = []
+    let margins = []
 
     document.querySelectorAll('.chart_date_value').forEach((el) => {
         dates.push(el.innerHTML)
     })
     document.querySelectorAll('.chart_sale_value').forEach((el) => {
-        values.push(parseFloat(el.innerHTML))
+        sales.push(parseFloat(el.innerHTML))
     })
+
+    document.querySelectorAll('.chart_margin_values').forEach((el) => {
+        margins.push(parseFloat(el.innerHTML))
+    })
+
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: dates,
-            datasets: [{
-                label: 'Продажі',
-                data: values,
-                borderWidth: 4,
-                fill: true,
-                borderColor: 'rgb(75, 192, 192)',
-            }]
-        }
+            datasets: [
+                {
+                    label: 'Продажі',
+                    data: sales,
+                    borderWidth: 4,
+                    fill: true,
+                    borderColor: 'rgb(75, 192, 192)',
+                },
+                {
+                    label: "Заробіток",
+                    data: margins,
+                    borderWidth: 2,
+                    fill: true,
+                    borderColor: 'rgb(252, 186, 3)',
+                },
+            ]
+        },
     });
 </script>
 {% endblock scripts %}
