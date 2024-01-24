@@ -30,7 +30,7 @@ class AddToOrderView(MyLoginRequiredMixin, View):
             sell_price=part.sell_price,
         )
 
-        messages.success(request, "Товар доданий до корзини успішно")
+        messages.success(request, f"Товар {part.name} доданий до корзини успішно")
         return redirect("main:parts_catalog", car_vin=part.belongs_to.pk)
 
 
@@ -62,6 +62,18 @@ class ShowOrderView(MyLoginRequiredMixin, View):
         shipping = user_services.get_user_shipping_address(request.user)
 
         return render(request, "store/cart.html", {"cart": actual_order, "shipping": shipping})
+
+
+class ClearOrderView(MyLoginRequiredMixin, View):
+    def post(self, request: HttpRequest):
+        get_object_or_404(
+           Order.objects,
+           customer=request.user,
+           status=Order.STATUSES.IN_CART
+        ).delete()
+
+        messages.success(request, "Кошик успішно очищено")
+        return redirect("store:cart")
 
 
 class SubmitOrderView(MyLoginRequiredMixin, View):

@@ -29,7 +29,8 @@
             </li>
             {% endfor %}
         </ol>
-        <b>Сумма: </b><span class="badge text-bg-info">{{ cart.total }}</span>
+        <b>Сумма: </b><span class="badge text-bg-info">{{ cart.total }} грн.</span>
+        <b>Загалом товарів: </b><span class="badge text-bg-success">{{ cart.total_quantity }} шт.</span>
     </div>
     <div class="shipping col-5">
         <h4>Адреса доставки:</h4>
@@ -52,9 +53,13 @@
         {% endif %}
     </div>
 </div>
-<form action="{% url 'store:submit_order' %}" method="POST">
+<form action="{% url 'store:submit_order' %}" method="POST" class="d-inline">
     {% csrf_token %}
-    <button class="submit btn btn-primary mt-3">Замовити</button>
+    <button class="submit btn btn-sm btn-primary mt-3">Замовити</button>
+</form>
+<form action="{% url 'store:clear_order' %}" method="POST" class="d-inline">
+    {% csrf_token %}
+    <button class="submit btn btn-sm btn-warning mt-3">Очистити кошик</button>
 </form>
 {% endif %}
 {% endblock content %}
