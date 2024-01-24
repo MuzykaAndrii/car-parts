@@ -4,8 +4,8 @@ from django.db.models.query import QuerySet
 
 
 class OrderStatus(models.IntegerChoices):
-    GATHERING = 1, "В корзині"
-    PROCESSING = 2, "Оформлене покупцем"
+    IN_CART = 1, "В корзині"
+    SUBMITTED = 2, "Оформлене покупцем"
     IN_TRANSIT = 3, "У процесі доставки"
     IN_DESTINATION = 4, "Замовлення у поштовому відділенні"
     REFUSED = 5, "Замовлення повернено"
@@ -16,7 +16,7 @@ class WithAcceptedStatusesManager(models.Manager):
     def get_queryset(self) -> QuerySet:
         return super().get_queryset().filter(
             status__in=(
-                OrderStatus.PROCESSING,
+                OrderStatus.SUBMITTED,
                 OrderStatus.IN_TRANSIT,
                 OrderStatus.IN_DESTINATION,
                 OrderStatus.REFUSED,
@@ -39,7 +39,7 @@ class Order(models.Model):
     status = models.PositiveSmallIntegerField(
         verbose_name="Статус замовлення",
         choices=OrderStatus.choices,
-        default=OrderStatus.GATHERING,
+        default=OrderStatus.IN_CART,
     )
     sold_at = models.DateTimeField('Час продажу', auto_now_add=True, editable=True)
 
@@ -65,5 +65,6 @@ class Order(models.Model):
         verbose_name = "Замовлення"
         verbose_name_plural = "Замовлення"
     
-    with_accepted_statuses = WithAcceptedStatusesManager()
+    # order of managers is important
     objects = models.Manager()
+    with_accepted_statuses = WithAcceptedStatusesManager()

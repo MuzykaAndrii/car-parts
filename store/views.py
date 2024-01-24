@@ -20,7 +20,7 @@ class AddToOrderView(MyLoginRequiredMixin, View):
             messages.error(request, "Відбулась помилка, перевірте правильність введених даних")
             return redirect("main:car_producers_catalog")
         
-        actual_order = Order.objects.get_or_create(customer=request.user, status=Order.STATUSES.GATHERING)[0]
+        actual_order = Order.objects.get_or_create(customer=request.user, status=Order.STATUSES.IN_CART)[0]
         part = get_object_or_404(Part, pk=form.cleaned_data.get("part_id"))
         PartUnit.objects.create(
             part=part,
@@ -58,7 +58,7 @@ class DeleteFromOrderView(MyLoginRequiredMixin, View):
 
 class ShowOrderView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        actual_order = Order.objects.filter(customer=request.user, status=Order.STATUSES.GATHERING).first()
+        actual_order = Order.objects.filter(customer=request.user, status=Order.STATUSES.IN_CART).first()
         shipping = user_services.get_user_shipping_address(request.user)
 
         return render(request, "store/cart.html", {"cart": actual_order, "shipping": shipping})
@@ -66,8 +66,13 @@ class ShowOrderView(MyLoginRequiredMixin, View):
 
 class SubmitOrderView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
-       order_to_submit = get_object_or_404(Order, customer=request.user, status=Order.STATUSES.GATHERING)
-       order_to_submit.status = Order.STATUSES.PROCESSING
+       order_to_submit = get_object_or_404(
+           Order.objects,  # necessary to specify certain manager when model has multiple managers
+           customer=request.user,
+           status=Order.STATUSES.IN_CART
+        )
+
+       order_to_submit.status = Order.STATUSES.SUBMITTED
        order_to_submit.sold_at = datetime.now()
        order_to_submit.save()
 
