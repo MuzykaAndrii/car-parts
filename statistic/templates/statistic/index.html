@@ -4,16 +4,42 @@
 {% block title %}Статистика | FDA.if{% endblock title %}
 
 {% block head-scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock head-scripts %}
 
 
 {% block content %}
 
-<h3 class="text-center">Прибуток: {{ total_margin }}</h3>
-<div>
-    <canvas id="myChart" width="35vw" width="25vw"></canvas>
+<h3 class="text-center mb-5">Прибуток: {{ total_margin }}</h3>
+<div class="row">
+    <div class="custom col-2">
+        <a role="button" class="btn w-100 mb-2 btn-primary" href="{% url 'stats:index' %}">За увесь час</a>
+        <a role="button" class="btn w-100 mb-2 btn-primary" href="{% url 'stats:index' %}?from={{ yearly.from }}&to={{ yearly.to }}">За останній рік</a>
+        <a role="button" class="btn w-100 mb-2 btn-primary" href="{% url 'stats:index' %}?from={{ monthly.from }}&to={{ monthly.to }}">За останній місяць</a>
+        <a role="button" class="btn w-100 mb-2 btn-primary" href="{% url 'stats:index' %}?from={{ weekly.from }}&to={{ weekly.to }}">За останній тиждень</a>
+
+        <h6 class="mt-5">Певний проміжок:</h6>
+        <form class="form-inline" method="get" action="{% url 'stats:index' %}">
+            <div class="input-group mb-2">
+                <span class="input-group-text" id="basic-addon1">Із: </span>
+                <input class="form-control" type="date" name="from" id="from" value="{{ request.GET.from }}">
+            </div>
+        
+            <div class="input-group mb-2">
+                <span class="input-group-text" id="basic-addon1">До: </span>
+                <input class="form-control" type="date" name="to" id="to" value="{{ request.GET.to }}">
+            </div>
+        
+            <button type="submit" class="btn btn-primary w-100">Показати</button>
+        </form>
+    </div>
+
+
+    <div class="col-10">
+        <canvas id="myChart"></canvas>
+    </div>
 </div>
+
 <div class="hidden">
     {% for date in sale_date %}
     <p class="chart_date_value">{{date|date:"j.n.Y"}}</p>
@@ -29,7 +55,7 @@
 {% endblock content %}
 
 {% block scripts %}
-  <script>
+<script>
     const ctx = document.getElementById('myChart');
     let dates = []
     let sales = []
