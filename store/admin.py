@@ -21,6 +21,8 @@ class OrderAdmin(admin.ModelAdmin):
     fields = ("id", "sold_at", "customer", "status")
     readonly_fields = ("id", "sold_at")
 
+    ordering = ("-sold_at",)
+
     inlines = (
         PartUnitInline,
     )

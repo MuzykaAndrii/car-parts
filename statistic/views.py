@@ -26,8 +26,7 @@ class IndexPage(TemplateView, AdminRequiredMixin):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
-        date_from = self.request.GET.get('from', date.min)
-        date_to = self.request.GET.get('to', date.today())
+        date_from, date_to = self.get_date_range()
 
         date_from = parse_date(date_from)
         date_to = parse_date(date_to)
@@ -65,3 +64,15 @@ class IndexPage(TemplateView, AdminRequiredMixin):
         context['yearly'] = {"from": first_day_of_year.strftime("%Y-%m-%d"), "to": today.strftime("%Y-%m-%d")}
         
         return context
+    
+    def get_date_range(self) -> tuple[date, date]:
+        date_from = self.request.GET.get('from', None)
+        date_to = self.request.GET.get('to', None)
+
+        if not date_from:
+            date_from = date.min
+        
+        if not date_to:
+            date_to = date.today()
+        
+        return date_from, date_to
