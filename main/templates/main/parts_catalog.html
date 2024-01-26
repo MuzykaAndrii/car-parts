@@ -29,10 +29,11 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ part.name }}</h5>
                     <p class="card-text">
+                        <b>Ціна: </b>{{ part.sell_price }} грн. <br>
+                        <b>Виробник: </b><a href="{% url 'main:part_producer' part.producer.pk %}">{{ part.producer }}</a><br>
                         {% if part.articul %}
                             <b>Артикул: </b>{{ part.articul }} <br>
                         {% endif %}
-                        <b>Ціна: </b>{{ part.sell_price }} грн.
                     </p>
                     <form method="post" action="{% url 'store:add_to_order' %}">
                         {% csrf_token %}

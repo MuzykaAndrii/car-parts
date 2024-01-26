@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from auth.mixins import AdminRequiredMixin
 
-from .models import CarProducer, Part, Auto
+from .models import CarProducer, Part, Auto, PartProducer
 
 
 class IndexPage(TemplateView):
@@ -55,3 +55,9 @@ class PartsCatalog(View):
         car = get_object_or_404(Auto, vin=car_vin)
 
         return render(request, "main/parts_catalog.html", {"car": car})
+
+
+class PartProducerView(View):
+    def get(self, request: HttpRequest, pk: int):
+        producer = get_object_or_404(PartProducer, pk=pk)
+        return render(request, "main/part_producer.html", {"producer": producer})

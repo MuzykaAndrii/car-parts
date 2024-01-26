@@ -1,0 +1,26 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block style %}
+<style>
+    .parts .card {
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+
+    .parts .card:nth-child(4n) {
+        margin-right: 0;
+    }
+</style>
+{% endblock style %}
+
+{% block title %}
+Виробник: {{ producer.name }}
+{% endblock title %}
+
+{% block content %}
+<h1 class="text-center">Про виробника: {{ producer.name }}</h1>
+
+<p>{{ producer.about }}</p>
+
+{% endblock content %}

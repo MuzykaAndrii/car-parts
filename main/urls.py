@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     IndexPage,
+    PartProducerView,
     ScannerPage,
     PartByScanner,
     CarCatalog,
@@ -19,4 +20,6 @@ urlpatterns = [
     path('cars/producers/', CarProducerCatalog.as_view(), name='car_producers_catalog'),
     path('cars/<str:car_producer>/', CarCatalog.as_view(), name="car_catalog"),
     path('cars/<str:car_vin>/parts/', PartsCatalog.as_view(), name="parts_catalog"),
+
+    path('parts/producers/<int:pk>', PartProducerView.as_view(), name='part_producer')
 ]
