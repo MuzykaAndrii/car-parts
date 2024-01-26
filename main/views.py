@@ -53,8 +53,10 @@ class CarCatalog(View):
 class PartsCatalog(View):
     def get(self, request: HttpRequest, car_vin: str):
         car = get_object_or_404(Auto, vin=car_vin)
+        parts = Part.objects.filter(belongs_to=car)
 
-        return render(request, "main/parts_catalog.html", {"car": car})
+        title = f"Запчастини до: {car.name}"
+        return render(request, "main/parts_catalog.html", {"parts": parts, "title": title})
 
 
 class PartProducerView(View):

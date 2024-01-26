@@ -15,15 +15,15 @@
 {% endblock style %}
 
 {% block title %}
-Запчастини до: {{ car.producer }} {{ car.model }}
+{{ title }}
 {% endblock title %}
 
 {% block content %}
-<h1 class="text-center">Запчастини до: {{ car.producer }} {{ car.model }}</h1>
+<h1 class="text-center">{{ title }}</h1>
 
 <div class="parts">
     <div class="row">
-        {% for part in car.parts.all %}
+        {% for part in parts %}
         <div class="col-md-3">
             <div class="card mb-2" style="width: 18rem;">
                 <div class="card-body">
