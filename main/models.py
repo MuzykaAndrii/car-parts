@@ -15,8 +15,8 @@ class CarProducer(models.Model):
         return f'CarProducer(name={self.name})'
 
     class Meta:
-        verbose_name = "Виробник"
-        verbose_name_plural = "Виробники"
+        verbose_name = "Марка авто"
+        verbose_name_plural = "Марки авто"
 
 
 class Auto(models.Model):
@@ -52,7 +52,7 @@ class Auto(models.Model):
     vin = models.CharField('VIN код', max_length=64, primary_key=True)
     model = models.CharField("Модель", max_length=255)
     producer = models.ForeignKey(
-        verbose_name="Виробник", 
+        verbose_name="Марка", 
         to=CarProducer, 
         on_delete=models.CASCADE,
     )
@@ -76,6 +76,28 @@ class Auto(models.Model):
         verbose_name_plural = "Автомобілі"
 
 
+class PartProducer(models.Model):
+    name = models.CharField(
+        max_length=50,
+        verbose_name="Імя",
+        unique=True,
+        blank=False,
+        null=False,
+    )
+    about = models.TextField(
+        verbose_name="Опис",
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+    
+    class Meta:
+        verbose_name = "Виробник запчастини"
+        verbose_name_plural = "Виробники запчастин"
+
+
 class Part(models.Model):
     name = models.CharField('Назва', max_length=255)
     articul = models.CharField('Артикул', blank=True, max_length=255)
@@ -84,6 +106,14 @@ class Part(models.Model):
     buy_price = models.FloatField('Закупочна ціна', blank=True)
     sell_price = models.FloatField('Роздрібна ціна', blank=True)
 
+    producer = models.ForeignKey(
+        PartProducer,
+        verbose_name="Виробник",
+        related_name="parts",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=False,
+    )
     belongs_to = models.ForeignKey(
         verbose_name="Автомобіль",
         related_name="parts",
@@ -92,7 +122,7 @@ class Part(models.Model):
     )
 
     def __str__(self) -> str:
-        return f'{self.name} від {self.belongs_to.producer} {self.belongs_to.model}'
+        return f'{self.name} ({self.producer}) для {self.belongs_to.name}'
         
     class Meta:
         verbose_name = "Запчастина"
