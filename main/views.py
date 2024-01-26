@@ -61,3 +61,9 @@ class PartProducerView(View):
     def get(self, request: HttpRequest, pk: int):
         producer = get_object_or_404(PartProducer, pk=pk)
         return render(request, "main/part_producer.html", {"producer": producer})
+
+
+class PartProducersListView(View):
+    def get(self, request: HttpRequest):
+        producers = PartProducer.objects.all()
+        return render(request, "main/part_producers_catalog.html", {"producers": producers})

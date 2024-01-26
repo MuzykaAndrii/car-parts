@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     IndexPage,
     PartProducerView,
+    PartProducersListView,
     ScannerPage,
     PartByScanner,
     CarCatalog,
@@ -21,5 +22,6 @@ urlpatterns = [
     path('cars/<str:car_producer>/', CarCatalog.as_view(), name="car_catalog"),
     path('cars/<str:car_vin>/parts/', PartsCatalog.as_view(), name="parts_catalog"),
 
-    path('parts/producers/<int:pk>', PartProducerView.as_view(), name='part_producer')
+    path('parts/producers/', PartProducersListView.as_view(), name='part_producers_catalog'),
+    path('parts/producers/<int:pk>', PartProducerView.as_view(), name='part_producer'),
 ]
