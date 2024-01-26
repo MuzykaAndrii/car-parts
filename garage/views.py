@@ -42,7 +42,7 @@ class CarHistoryView(MyLoginRequiredMixin, View):
             order__customer=request.user,
             part__belongs_to=car,
             order__status=Order.STATUSES.RECEIVED,
-        )
+        ).order_by("-order__sold_at")
 
         purchased_part_units_by_date = defaultdict(list)
         for part_unit in purchased_part_units:
