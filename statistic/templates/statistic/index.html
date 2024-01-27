@@ -15,10 +15,10 @@
     <div class="custom col-2">
         <h6>Статистика за:</h6>
         <div class="ranges btn-group-vertical w-100">
-            <a role="button" class="btn w-100 btn-outline-primary" href="{% url 'stats:index' %}">Увесь час</a>
-            <a role="button" class="btn w-100 btn-outline-primary" href="{% url 'stats:index' %}?from={{ yearly.from }}&to={{ yearly.to }}">Останній рік</a>
-            <a role="button" class="btn w-100 btn-outline-primary" href="{% url 'stats:index' %}?from={{ monthly.from }}&to={{ monthly.to }}">Останній місяць</a>
-            <a role="button" class="btn w-100 btn-outline-primary" href="{% url 'stats:index' %}?from={{ weekly.from }}&to={{ weekly.to }}">Останній тиждень</a>
+            {% for range in stat_ranges %}
+                <a role="button" class="btn w-100 btn-outline-primary{% if request.GET.from == range.from and request.GET.to == range.to %} active {% endif %}"
+                href="{% url 'stats:index' %}?from={{ range.from }}&to={{ range.to }}">{{ range.label }}</a>
+            {% endfor %}
         </div>
 
         <h6 class="mt-5">Певний проміжок:</h6>
@@ -44,15 +44,12 @@
 </div>
 
 <div class="hidden">
-    {% for date in sale_date %}
-    <p class="chart_date_value">{{date}}</p>
-    {%endfor%}
-    {% for value in sale_values %}
-    <p class="chart_sale_value">{{value}}</p>
-    {%endfor%}
+    {% for date, stat_item in stats.items %}
+      
+        <p class="chart_date_value">{{ date }}</p>
+        <p class="chart_sale_value">{{ stat_item.sales }}</p>
+        <p class="chart_margin_values">{{ stat_item.margin }}</p>
 
-    {% for value in margins %}
-    <p class="chart_margin_values">{{ value }}</p>
     {% endfor %}
 </div>
 {% endblock content %}
