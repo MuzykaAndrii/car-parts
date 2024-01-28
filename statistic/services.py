@@ -14,7 +14,7 @@ def parse_date(input_date: str, format: str = "%Y-%m-%d") -> date:
     return datetime.strptime(input_date, format).date()
 
 
-@dataclass
+@dataclass(slots=True)
 class StatisticItem:
     margin: float = 0
     sales: float = 0
