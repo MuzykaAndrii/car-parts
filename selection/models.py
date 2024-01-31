@@ -1,16 +1,45 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+from main.models import Auto
+from store.models import Order
 
 
+class SelectionRequest(models.Model):
+    sender = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        verbose_name="Від користувача",
+        related_name="selection_requests",
+        null=False,
+        blank=False,
+    )
+    to_car = models.ForeignKey(
+        to=Auto,
+        verbose_name="До авто",
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+    )
 
-"""
-class SelectionProposal:
-    sender = ForeignKey(User)
-    to_car = ForeignKey(Auto)
-    proposal = ForeignKey(Order)
+    text = models.TextField(verbose_name="Текст запиту")
 
-    request_text = TextField(null=True, blank=True)
-    response_text = TextField(null=True, blank=True)
 
-    is_proposal_processed = BooleanField(default=False)
+class SelectionResponse(models.Model):
+    request = models.OneToOneField(
+        to=SelectionRequest,
+        on_delete=models.CASCADE,
+        verbose_name="Запит",
+        related_name="response",
+        null=False,
+        blank=False,
+    )
 
-"""
+    proposal = models.OneToOneField(
+        to=Order,
+        on_delete=models.CASCADE,
+        verbose_name="Пропозиція",
+        null=True,
+        blank=True,
+    )
+    text = models.TextField(null=True, blank=True)
