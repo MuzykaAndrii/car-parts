@@ -24,3 +24,8 @@ class SelectionRequestView(MyLoginRequiredMixin, View):
         selection_request.save()
         messages.success(request, "Запит на підбір успішно відправлено! Ми з вами звяжемось якнайшвидше!")
         return redirect('main:index')
+
+
+class SelectionRequestListView(MyLoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+        return render(request, "selection/list.html")
