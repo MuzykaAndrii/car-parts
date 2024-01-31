@@ -1,4 +1,6 @@
+from typing import Any
 from django.contrib import admin
+from django.db.models.query import QuerySet
 
 from core.admin import admin_site
 from selection.models import SelectionRequest, SelectionResponse
@@ -11,13 +13,35 @@ class SelectionResponseInline(admin.StackedInline):
     max_num = 1
 
 
-class SelectionRequestAdmin(admin.ModelAdmin):
-    fields = ("id", "sender", "to_car", "text",)
-    readonly_fields = ("id", )
+class HaveResponse(admin.SimpleListFilter):
+    title = "відповіддю"
+    parameter_name = "have_response"
 
-    # inlines = [
-    #     SelectionResponseInline
-    # ]
+    def lookups(self, request, model_admin):
+        return (
+            ("Yes", 'Підбір здійснений'),
+            ("No", 'Чекає підбору'),
+        )
+    
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        value = self.value()
+
+        match value:
+            case "No":
+                return queryset.filter(response=None)
+            case "Yes" | _:
+                return queryset
+
+
+class SelectionRequestAdmin(admin.ModelAdmin):
+    fields = ("id", "sender", "to_car", "text", "requested_at")
+    readonly_fields = ("id", "sender", "to_car", "text", "requested_at")
+    list_filter = (HaveResponse,)
+
+    inlines = [SelectionResponseInline]
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
 admin_site.register(SelectionRequest, SelectionRequestAdmin)
