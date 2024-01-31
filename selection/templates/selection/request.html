@@ -8,10 +8,10 @@
 {% block content %}
 <h1 class="text-center mb-4">Надіслати запит на підбір запчастин</h1>
 
-<form method="post">
+<form method="post" action="{% url 'selection:request' %}">
   {% csrf_token %}
   <div class="form-group">
-    <label class="form-label" for="{{ form.to_car.id_for_label }}">До авто</label>
+    <label class="form-label" for="{{ form.to_car.id_for_label }}">Оберіть авто</label>
     {% render_field form.to_car class="form-control" %}
     {% if form.to_car.errors %}
       <small class="text-danger">{{ form.to_car.errors.0 }}</small>
@@ -19,7 +19,7 @@
   </div>
 
   <div class="form-group">
-    <label class="form-label" for="{{ form.text.id_for_label }}">Текст запиту</label>
+    <label class="form-label" for="{{ form.text.id_for_label }}">Вкажіть детально що вам потрібно та іншу додаткову інформацію</label>
     {% render_field form.text class="form-control" %}
     {% if form.text.errors %}
       <small class="text-danger">{{ form.text.errors.0 }}</small>

@@ -22,7 +22,7 @@ class SelectionRequest(models.Model):
         blank=False,
     )
 
-    text = models.TextField(verbose_name="Додаткова інформація")
+    text = models.TextField(verbose_name="Текст запиту")
 
 
 class SelectionResponse(models.Model):

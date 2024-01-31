@@ -1,8 +1,9 @@
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.views import View
-from auth.mixins import MyLoginRequiredMixin
+from django.contrib import messages
 
+from auth.mixins import MyLoginRequiredMixin
 from selection.forms import SelectionRequestForm
 from selection.models import SelectionRequest
 
@@ -21,4 +22,5 @@ class SelectionRequestView(MyLoginRequiredMixin, View):
         selection_request: SelectionRequest = form.save(commit=False)
         selection_request.sender = request.user
         selection_request.save()
+        messages.success(request, "Запит на підбір успішно відправлено! Ми з вами звяжемось якнайшвидше!")
         return redirect('main:index')
