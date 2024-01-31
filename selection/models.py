@@ -1,8 +1,8 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
-from main.models import Auto
-from store.models import Order
+from main.models import Auto, Part
 
 
 class SelectionRequest(models.Model):
@@ -22,6 +22,10 @@ class SelectionRequest(models.Model):
         blank=False,
     )
 
+    requested_at = models.DateTimeField(
+        verbose_name="Дата подачі заявки",
+        auto_now_add=True,
+    )
     text = models.TextField(verbose_name="Текст запиту")
 
     def __str__(self) -> str:
@@ -42,12 +46,9 @@ class SelectionResponse(models.Model):
         blank=False,
     )
 
-    proposal = models.OneToOneField(
-        to=Order,
-        on_delete=models.CASCADE,
-        verbose_name="Пропозиція",
-        null=True,
-        blank=True,
+    proposal = models.ManyToManyField(
+        to=Part,
+        verbose_name="Пропозиції",
     )
     text = models.TextField(
         null=True,
