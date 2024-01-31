@@ -1,7 +1,4 @@
-import re
-
-from django.urls import include, path, re_path
-from django.views.static import serve
+from django.urls import include, path
 from django.conf import settings
 
 from main.admin import admin_site
@@ -13,11 +10,12 @@ urlpatterns = [
     path('auth/', include('auth.urls', namespace='auth')),
     path('', include('main.urls', namespace='main')),
     path('stats/', include('statistic.urls', namespace='stats')),
-    # re_path( r"^%s(?P<path>.*)$" % re.escape(settings.STATIC_URL.lstrip("/")), view=serve, kwargs = {'document_root':settings.STATIC_ROOT}),
     path('user/', include('user.urls', namespace='user')),
     path("garage/", include("garage.urls", namespace="garage")),
     path("store/", include("store.urls", namespace="store")),
+    path("selection/", include("selection.urls", namespace="selection")),
 ]
+
 if settings.DEBUG:
     urlpatterns.append(path('500/', h500))
 

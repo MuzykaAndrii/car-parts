@@ -10,6 +10,7 @@ class OrderStatus(models.IntegerChoices):
     IN_DESTINATION = 4, "Замовлення у поштовому відділенні"
     REFUSED = 5, "Замовлення повернено"
     RECEIVED = 6, "Замовлення отримано"
+    IN_PROPOSAL = 7, "Запропоновано"
 
 
 class WithAcceptedStatusesManager(models.Manager):
