@@ -24,6 +24,13 @@ class SelectionRequest(models.Model):
 
     text = models.TextField(verbose_name="Текст запиту")
 
+    def __str__(self) -> str:
+        return f"Запит {self.pk} від {self.sender}"
+
+    class Meta:
+        verbose_name = "Запит на підбір"
+        verbose_name_plural = "Запити на підбір"
+
 
 class SelectionResponse(models.Model):
     request = models.OneToOneField(
@@ -42,4 +49,8 @@ class SelectionResponse(models.Model):
         null=True,
         blank=True,
     )
-    text = models.TextField(null=True, blank=True)
+    text = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name="Коментар",
+    )

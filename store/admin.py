@@ -16,7 +16,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ("pk", "__str__", "sold_at", "status")
     list_display_links = ("pk", "__str__")
     list_editable = ("status", )
-    radio_fields = {"status": admin.VERTICAL}
     list_filter = ("status", "sold_at")
 
     search_fields = ("pk", )
