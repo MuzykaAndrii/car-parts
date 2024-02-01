@@ -3,6 +3,13 @@
 {% load widget_tweaks %}
 
 {% block style %}
+<style>
+    .selection-status-1 { background-color: #95a5a6; } /* Gray */
+    .selection-status-2 { background-color: #3498db; } /* Blue */
+    .selection-status-3 { background-color: #2ecc71; } /* Green */
+    .selection-status-4 { background-color: #e74c3c; } /* Red */
+
+</style>
 {% endblock style %}
 
 {% block content %}
@@ -21,11 +28,7 @@
                     {{ selection.to_car.name }}
                 </div>
                 <div class="selection_request_status">
-                    {% if selection.response %}
-                    <span class="badge text-bg-primary">Отримано відповідь</span>
-                    {% else %}
-                    <span class="badge text-bg-secondary">Чекає відповіді</span>
-                    {% endif %}
+                    <span class="badge selection-status-{{selection.status}}">{{ selection.get_status_display }}</span>
                 </div>
             </h6>
         
