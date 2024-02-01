@@ -1,11 +1,19 @@
-from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
 from main.models import Auto, Part
 
 
+class SelectionStatus(models.IntegerChoices):
+    SENDED = 1, "Очікує підбору"
+    RESPONDED = 2, "Підбір отримано"
+    ACCEPTED = 3, "Підбір прийнято"
+    REFUSED = 4, "Підбір відхилено"
+
+
 class SelectionRequest(models.Model):
+    STATUSES = SelectionStatus
+
     sender = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
@@ -20,6 +28,11 @@ class SelectionRequest(models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
+    )
+    status = models.PositiveSmallIntegerField(
+        verbose_name="Статус підбору",
+        choices=STATUSES.choices,
+        default=STATUSES.SENDED,
     )
 
     requested_at = models.DateTimeField(
