@@ -41,6 +41,13 @@ class SelectionRequest(models.Model):
     )
     text = models.TextField(verbose_name="Текст запиту")
 
+    @property
+    def is_response_processed(self) -> bool:
+        if self.status in (self.STATUSES.ACCEPTED, self.STATUSES.REFUSED):
+            return False
+        else:
+            return True
+
     def __str__(self) -> str:
         return f"Запит {self.pk} від {self.sender}"
 

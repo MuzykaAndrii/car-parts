@@ -41,18 +41,20 @@
                         {% if selection.response %}
                         <h5 class="card-title">Відповідь:</h5>
                         <p class="card-text">- {{ selection.response.text }}</p>
-                
+                        
+                        {% if selection.is_response_processed %}
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-sm btn-outline-success">Додати товари до корзини</button>
                             <button type="button" class="btn btn-sm btn-outline-danger">Відхилити підбір</button>
                         </div>
+                        {% endif %}
                         {% endif %}
                 
                     </div>
                 </div>
                 {% if selection.response.proposal %}
                 <div class="selection_goods col-4">
-                    <h5 class="card-title">Підібрані товари:</h5>
+                    <h5 class="card-title mt-3">Підібрані товари:</h5>
                     <ul class="list-group list-group-flush">
                         {% for proposal in selection.response.proposal.all %}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
