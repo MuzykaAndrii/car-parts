@@ -32,3 +32,13 @@ class SelectionRequestListView(MyLoginRequiredMixin, View):
         form = SelectionRequestForm()
 
         return render(request, "selection/index.html", {"selections": responded_selections, "form": form})
+
+
+class RefuseSelectionView(MyLoginRequiredMixin, View):
+    def post(self, request: HttpRequest):
+        ...
+
+
+class AcceptSelectionView(MyLoginRequiredMixin, View):
+    def post(self, request: HttpRequest):
+        ...
