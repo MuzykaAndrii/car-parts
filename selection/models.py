@@ -5,8 +5,8 @@ from main.models import Auto, Part
 
 
 class SelectionStatuses(models.IntegerChoices):
-    SENDED = 1, "Очікує підбору"
-    RESPONDED = 2, "Підбір отримано"
+    SENDED = 1, "Очікує на підбір"
+    RESPONDED = 2, "Підбір здійснено"
     ACCEPTED = 3, "Підбір прийнято"
     REFUSED = 4, "Підбір відхилено"
 

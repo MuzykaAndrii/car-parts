@@ -1,7 +1,6 @@
 from typing import Any
 
 from django.contrib import admin
-from django.db.models.query import QuerySet
 
 from core.admin import admin_site
 from selection.models import SelectionRequest, SelectionResponse
@@ -46,6 +45,15 @@ class SelectionRequestAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request, obj=None):
         return False
+    
+    def save_model(self, request: Any, obj: SelectionRequest, form: Any, change: Any) -> None:
+        instance: SelectionRequest = form.save(commit=False)
+
+        if obj.status == SelectionRequest.STATUSES.SENDED and hasattr(instance, "response"):
+            instance.status = SelectionRequest.STATUSES.RESPONDED
+            instance.save()
+        else:
+            return super().save_model(request, obj, form, change)
 
 
 admin_site.register(SelectionRequest, SelectionRequestAdmin)
