@@ -14,33 +14,33 @@ class SelectionResponseInline(admin.StackedInline):
     max_num = 1
 
 
-class HaveResponse(admin.SimpleListFilter):
-    title = "наявністю відповіді"
-    parameter_name = "have_response"
+# class HaveResponse(admin.SimpleListFilter):
+#     title = "наявністю відповіді"
+#     parameter_name = "have_response"
 
-    def lookups(self, request, model_admin):
-        return (
-            ("Yes", 'Підбір здійснений'),
-            ("No", 'Чекає підбору'),
-        )
+#     def lookups(self, request, model_admin):
+#         return (
+#             ("Yes", 'Підбір здійснений'),
+#             ("No", 'Чекає підбору'),
+#         )
     
-    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
-        value = self.value()
+#     def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+#         value = self.value()
 
-        match value:
-            case "No":
-                return queryset.filter(response=None)
-            case "Yes" | _:
-                return queryset
+#         match value:
+#             case "No":
+#                 return queryset.filter(response=None)
+#             case "Yes" | _:
+#                 return queryset
 
 
 class SelectionRequestAdmin(admin.ModelAdmin):
-    fields = ("id", "sender", "to_car", "text", "requested_at")
-    readonly_fields = ("id", "sender", "to_car", "text", "requested_at")
+    fields = ("id", "sender", "to_car", "text", "requested_at", "status")
+    readonly_fields = ("id", "sender", "to_car", "text", "requested_at", "status")
 
-    list_display = ("id", "__str__", "requested_at")
+    list_display = ("id", "__str__", "requested_at", "status")
     list_display_links = ("id", "__str__",)
-    list_filter = (HaveResponse, "requested_at")
+    list_filter = ("status", "requested_at")
 
     inlines = [SelectionResponseInline]
 

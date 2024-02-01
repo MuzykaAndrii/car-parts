@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from main.models import Auto, Part
 
 
-class SelectionStatus(models.IntegerChoices):
+class SelectionStatuses(models.IntegerChoices):
     SENDED = 1, "Очікує підбору"
     RESPONDED = 2, "Підбір отримано"
     ACCEPTED = 3, "Підбір прийнято"
@@ -12,7 +12,7 @@ class SelectionStatus(models.IntegerChoices):
 
 
 class SelectionRequest(models.Model):
-    STATUSES = SelectionStatus
+    STATUSES = SelectionStatuses
 
     sender = models.ForeignKey(
         to=User,
