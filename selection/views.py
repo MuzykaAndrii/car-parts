@@ -28,7 +28,7 @@ class SelectionRequestView(MyLoginRequiredMixin, View):
 
 class SelectionRequestListView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        responded_selections = SelectionRequest.objects.filter(sender=request.user).order_by("-requested_at")
+        responded_selections = SelectionRequest.objects.filter(sender=request.user).order_by("-requested_at").prefetch_related("response__proposal")
         form = SelectionRequestForm()
 
         return render(request, "selection/index.html", {"selections": responded_selections, "form": form})
