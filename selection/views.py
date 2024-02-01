@@ -35,10 +35,10 @@ class SelectionRequestListView(MyLoginRequiredMixin, View):
 
 
 class RefuseSelectionView(MyLoginRequiredMixin, View):
-    def post(self, request: HttpRequest):
+    def post(self, request: HttpRequest, pk: int):
         ...
 
 
 class AcceptSelectionView(MyLoginRequiredMixin, View):
-    def post(self, request: HttpRequest):
+    def post(self, request: HttpRequest, pk: int):
         ...

@@ -43,9 +43,15 @@
                         <p class="card-text">- {{ selection.response.text }}</p>
                         
                         {% if selection.is_response_processed %}
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-sm btn-outline-success">Додати товари до корзини</button>
-                            <button type="button" class="btn btn-sm btn-outline-danger">Відхилити підбір</button>
+                        <div>
+                            <form class="d-inline" method="POST" action="{% url 'selection:accept' selection.pk %}">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-success">Додати товари до корзини</button>
+                            </form>
+                            <form class="d-inline" method="POST" action="{% url 'selection:refuse' selection.pk %}">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-danger">Відхилити підбір</button>
+                            </form>
                         </div>
                         {% endif %}
                         {% endif %}
