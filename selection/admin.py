@@ -1,4 +1,5 @@
 from typing import Any
+
 from django.contrib import admin
 from django.db.models.query import QuerySet
 
@@ -14,7 +15,7 @@ class SelectionResponseInline(admin.StackedInline):
 
 
 class HaveResponse(admin.SimpleListFilter):
-    title = "відповіддю"
+    title = "наявністю відповіді"
     parameter_name = "have_response"
 
     def lookups(self, request, model_admin):
@@ -36,7 +37,10 @@ class HaveResponse(admin.SimpleListFilter):
 class SelectionRequestAdmin(admin.ModelAdmin):
     fields = ("id", "sender", "to_car", "text", "requested_at")
     readonly_fields = ("id", "sender", "to_car", "text", "requested_at")
-    list_filter = (HaveResponse,)
+
+    list_display = ("id", "__str__", "requested_at")
+    list_display_links = ("id", "__str__",)
+    list_filter = (HaveResponse, "requested_at")
 
     inlines = [SelectionResponseInline]
 
