@@ -1,5 +1,5 @@
 from django.http import HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.contrib import messages
 
@@ -36,8 +36,12 @@ class SelectionRequestListView(MyLoginRequiredMixin, View):
 
 class RefuseSelectionView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest, pk: int):
-        ...
+        selection_to_refuse = get_object_or_404(SelectionRequest, pk=pk, sender=request.user)
+        selection_to_refuse.status = SelectionRequest.STATUSES.REFUSED
+        selection_to_refuse.save()
 
+        messages.success(request, "Ви відмовились від підбору, надіємося що наш наступний підбір вам сподобається!")
+        return redirect("selection:list")
 
 class AcceptSelectionView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest, pk: int):
