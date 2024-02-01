@@ -1,0 +1,96 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock style %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-8">
+        <h3 class="mb-4">Ваші підбори</h3>
+        {% for selection in selections %}
+        <div class="card mb-3">
+            <h6 class="card-header d-flex justify-content-between">
+                <div class="selection_request_time">
+                    {{ selection.requested_at }}
+                </div>
+                <div class="selection_request_car">
+                    {{ selection.to_car.name }}
+                </div>
+                <div class="selection_request_status">
+                    {% if selection.response %}
+                    <span class="badge text-bg-primary">Отримано відповідь</span>
+                    {% else %}
+                    <span class="badge text-bg-secondary">Чекає відповіді</span>
+                    {% endif %}
+                </div>
+            </h6>
+        
+            <div class="row">
+                <div class="selection_data col-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Запит:</h5>
+                        <p class="card-text">- {{ selection.text }}</p>
+                
+                        {% if selection.response %}
+                        <h5 class="card-title">Відповідь:</h5>
+                        <p class="card-text">- {{ selection.response.text }}</p>
+                
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-sm btn-outline-success">Додати товари до корзини</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger">Відхилити підбір</button>
+                        </div>
+                        {% endif %}
+                
+                    </div>
+                </div>
+                {% if selection.response.proposal %}
+                <div class="selection_goods col-4 my-auto">
+                    <ul class="list-group list-group-flush">
+                        {% for proposal in selection.response.proposal.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          {{ proposal.name }}
+                          <span class="badge bg-primary rounded-pill">{{ proposal.sell_price }} грн.</span>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                </div>
+                {% endif %}
+            </div>
+        
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="col-4">
+        <h3 class="mb-4">Заявка на підбір</h3>
+        <form method="post" action="{% url 'selection:request' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label class="form-label" for="{{ form.to_car.id_for_label }}">Оберіть авто</label>
+              {% render_field form.to_car class="form-control" %}
+              {% if form.to_car.errors %}
+                <small class="text-danger">{{ form.to_car.errors.0 }}</small>
+              {% endif %}
+            </div>
+          
+            <div class="form-group">
+              <label class="form-label" for="{{ form.text.id_for_label }}">Вкажіть детально що вам потрібно та іншу додаткову інформацію</label>
+              {% render_field form.text class="form-control" %}
+              {% if form.text.errors %}
+                <small class="text-danger">{{ form.text.errors.0 }}</small>
+              {% endif %}
+            </div>
+          
+            <button type="submit" class="btn btn-primary mt-2">Надіслати</button>
+          </form>
+    </div>
+
+</div>
+
+
+{% endblock content %}
