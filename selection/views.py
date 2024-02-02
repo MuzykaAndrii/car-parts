@@ -46,6 +46,7 @@ class RefuseSelectionView(MyLoginRequiredMixin, View):
         messages.success(request, "Ви відмовились від підбору, надіємося що наш наступний підбір вам сподобається!")
         return redirect("selection:list")
 
+
 class AcceptSelectionView(MyLoginRequiredMixin, View):
     @transaction.atomic
     def post(self, request: HttpRequest, pk: int):
