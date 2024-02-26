@@ -18,7 +18,7 @@
         while (Date.now() - now > time) { }
     }
     const send_barcode = (barcode) => {
-        fetch('http://127.0.0.1:8000/scanner/api/get_part_by_barcode/', {
+        fetch('{% url "scanner:api:part_by_barcode" %}', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -30,12 +30,12 @@
             })
         })
             .then(response => response.json())
-            .then(response => window.location.assign(`http://127.0.0.1:8000/admin/main/part/${response.data}/change/`))
+            .then(response => window.location.assign(`/admin/main/part/${response.data}/change/`))
     }
     const onScanSuccess = (decodedText, decodedResult) => {
         console.log(`Code scanned = ${decodedText}`, decodedResult);
         send_barcode(decodedText)
-        sleep(2000)
+        sleep(5000)
     }
     var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
     html5QrcodeScanner.render(onScanSuccess);
