@@ -8,5 +8,5 @@ app_name = 'scanner'
 
 urlpatterns = [
     path('', ScannerPage.as_view(), name='scan'),
-    path('api/', include('scanner.api.urls', namespace='scanner-api')),
+    path('api/', include('scanner.api.urls', namespace='api')),
 ]

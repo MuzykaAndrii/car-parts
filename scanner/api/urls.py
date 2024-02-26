@@ -3,7 +3,7 @@ from django.urls import path
 from scanner.api.views import PartByScanner
 
 
-app_name = 'scanner-api'
+app_name = 'api'
 
 
 urlpatterns = [
