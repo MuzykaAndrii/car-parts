@@ -18,7 +18,7 @@
         while (Date.now() - now > time) { }
     }
     const send_barcode = (barcode) => {
-        fetch('http://localhost/get_part_by_barcode/', {
+        fetch('http://localhost/scanner/api/get_part_by_barcode/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

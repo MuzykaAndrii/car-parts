@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
     'auth',
     'main',
+    'scanner',
     'statistic',
     'user',
     'garage',

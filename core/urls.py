@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin_site.urls),
     path('auth/', include('auth.urls', namespace='auth')),
     path('', include('main.urls', namespace='main')),
+    path('scanner/', include('scanner.urls', namespace='scanner')),
     path('stats/', include('statistic.urls', namespace='stats')),
     path('user/', include('user.urls', namespace='user')),
     path("garage/", include("garage.urls", namespace="garage")),
