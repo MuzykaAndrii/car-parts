@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from .views import (
     IndexPage,
@@ -20,4 +20,6 @@ urlpatterns = [
 
     path('parts/producers/', PartProducersListView.as_view(), name='part_producers_catalog'),
     path('parts/producers/<int:pk>', PartProducerView.as_view(), name='part_producer'),
+
+    path('api/', include('main.api.urls', namespace='api')),
 ]
