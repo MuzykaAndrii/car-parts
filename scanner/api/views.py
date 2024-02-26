@@ -7,16 +7,16 @@ from main.models import Part
 
 
 class PartByScanner(APIView):
-    def post(self, request):
+    def post(self, request, format=None):
         # TODO: add permission checking
-        barcode = request.data.get('barcode')
-        if not barcode: 
-            return Response({'error' : True, 'msg' : 'Missing barcode value'})
+        barcode = request.data.get("barcode")
+        if not barcode:
+            return Response(status=400, data={'msg' : 'Missing barcode value'})
         try:
             part = Part.objects.get(barcode=barcode)
         except ObjectDoesNotExist:
-            return Response({'error' : True, 'msg' : 'No parts with this barcode.\nTry again'})
+            return Response(status=404, data={'msg' : 'No parts with this barcode.\nTry again'})
         except Exception as e:
-            return Response({'error' : True, 'msg' : f'{e}'})
+            return Response(status=500, data={'msg' : f'{e}'})
         else:
-            return Response({'error' : False, 'msg' : 'Success', 'data' : part.id })
+            return Response(status=200, data={'msg' : 'Success', 'data' : part.id })
