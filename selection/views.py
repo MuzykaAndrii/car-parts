@@ -57,7 +57,7 @@ class AcceptSelectionView(MyLoginRequiredMixin, View):
         user_cart = Order.objects.get_or_create(customer=request.user, status=Order.STATUSES.IN_CART)[0]
 
         part_units: list = []
-        for part in selection_to_accept.response.proposal.all():  # type: Part
+        for part in selection_to_accept.response.proposal.all():
             part_units.append(PartUnit(
                 part=part,
                 order=user_cart,
