@@ -52,8 +52,9 @@ class Auto(models.Model):
     vin = models.CharField('VIN код', max_length=64, primary_key=True)
     model = models.CharField("Модель", max_length=255)
     producer = models.ForeignKey(
-        verbose_name="Марка", 
-        to=CarProducer, 
+        verbose_name="Марка",
+        related_name="cars",
+        to=CarProducer,
         on_delete=models.CASCADE,
     )
     year_of_production = models.IntegerField("Рік випуску")
