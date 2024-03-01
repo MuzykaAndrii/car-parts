@@ -1,47 +1,48 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.http import HttpRequest
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
+from django.views import View
 
-from .forms import UserRegisterForm
-from .forms import UserLoginForm
+from .forms import UserRegisterForm, UserLoginForm
 
 
-def register_user(request):
-    # handler if user simply open register page
-    if not request.method == "POST":
+class UserRegisterView(View):
+    def post(self, request: HttpRequest):
+        form = UserRegisterForm(request.POST)
+
+        if not form.is_valid():
+            messages.error(request, "Registration error")
+            return render(request, "auth/register.html", {"form": form})
+
+        form.save()
+        messages.success(request, "User registration successful")
+        return redirect("auth:login")
+
+    def get(self, request: HttpRequest):
         form = UserRegisterForm()
         return render(request, "auth/register.html", {"form": form})
 
-    # handler if user sent data for register
-    form = UserRegisterForm(request.POST)
-    if not form.is_valid():
-        messages.error(request, "Registration error")
-        return render(request, "auth/register.html", {"form": form})
 
-    # handler if sended from user data is valid
-    form.save()
-    messages.success(request, "User registration successful")
-    return redirect("auth:login")
-
-
-def login_user(request):
-    if not request.method == "POST":
+class UserLoginView(View):
+    def get(self, request: HttpRequest):
         form = UserLoginForm()
         return render(request, "auth/login.html", {"form": form})
 
-    form = UserLoginForm(data=request.POST)
-    if form.is_valid():
+    def post(self, request: HttpRequest):
+        form = UserLoginForm(data=request.POST)
+
+        if not form.is_valid():
+            return render(request, "auth/login.html", {"form": form})
+        
         user = form.get_user()
         login(request, user)
         messages.success(request, f"{user.username} successfully logged in.")
         return redirect("main:index")
 
-    return render(request, "auth/login.html", {"form": form})
 
-
-def logout_user(request):
-    logout(request)
-    messages.success(request, "Successfully logged out.")
-    return redirect("auth:login")
+class UserLogoutView(View):
+    def get(self, request: HttpRequest):
+        logout(request)
+        messages.success(request, "Successfully logged out.")
+        return redirect("auth:login")
