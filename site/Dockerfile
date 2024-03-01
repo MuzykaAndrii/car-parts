@@ -2,7 +2,13 @@ FROM python:3.11-alpine
 
 EXPOSE 8000
 WORKDIR /site
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+COPY requirements.txt .
 COPY . /site
+
 RUN pip3 install -r requirements.txt --no-cache-dir
 RUN python3 manage.py makemigrations
 RUN python3 manage.py migrate
