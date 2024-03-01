@@ -1,0 +1,22 @@
+.wrapper {
+    text-align: center;
+    margin-top: 300px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 45vw !important;
+    margin: 0 !important;
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.qr-reader {
+    margin: 0 auto;
+    margin-top: 100px;
+}
