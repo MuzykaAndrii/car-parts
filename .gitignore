@@ -1,5 +1,5 @@
 **/.DS_Store
-core/collected/*
+site/core/collected/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
