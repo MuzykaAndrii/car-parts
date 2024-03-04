@@ -12,6 +12,6 @@ COPY . /site
 RUN pip3 install -r requirements.txt --no-cache-dir
 RUN python3 manage.py makemigrations
 RUN python3 manage.py migrate
-RUN python3 manage.py collectstatic
+RUN python3 manage.py collectstatic --noinput
 ENTRYPOINT ["python3"] 
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
