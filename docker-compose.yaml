@@ -13,6 +13,16 @@ services:
     volumes:
       - ./site:/site
       - site-database:/site/.dblocal
+  
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+
+    container_name: bot
+    restart: always
+
+    env_file: ./bot/.env
 
 volumes:
   site-database:
