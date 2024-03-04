@@ -2,29 +2,15 @@ import asyncio
 import logging
 import sys
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
-from aiogram.types import Message
-from aiogram.utils.markdown import hbold
 
 from config import settings
+from base.handlers import router as base_router
 
 
 dp = Dispatcher()
-
-
-@dp.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
-    await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
-
-
-@dp.message()
-async def echo_handler(message: types.Message) -> None:
-    try:
-        await message.send_copy(chat_id=message.chat.id)
-    except TypeError:
-        await message.answer("Nice try!")
+dp.include_routers(base_router)
 
 
 async def main() -> None:
