@@ -1,6 +1,6 @@
 from aiohttp import ClientSession
 
-from backend.schemas import CarProducerSchema
+from backend.schemas import CarProducerSchema, CarSchema
 
 
 class BackendService:
@@ -12,7 +12,13 @@ class BackendService:
         self.session = session
     
     async def get_car_producers(self) -> list[CarProducerSchema]:
-        async with self.session.get(self.car_producers_path) as response:
-            car_producers = await response.json()
+        async with self.session.get(self.car_producers_path) as resp:
+            car_producers = await resp.json()
         
         return [CarProducerSchema(**cp) for cp in car_producers]
+    
+    async def get_cars(self, producer_id: int) -> list[CarSchema]:
+        async with self.session.get(self.cars_list_path.format(producer_id)) as resp:
+            cars = await resp.json()
+        
+        return [CarSchema(**car) for car in cars]
