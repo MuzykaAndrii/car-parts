@@ -18,13 +18,13 @@ class BackendService:
         return [CarProducerSchema(**cp) for cp in car_producers]
     
     async def get_cars(self, producer_id: int) -> list[CarSchema]:
-        async with self.session.get(self.cars_list_path.format(producer_id)) as resp:
+        async with self.session.get(self.cars_list_path.format(producer_id=producer_id)) as resp:
             cars = await resp.json()
         
         return [CarSchema(**car) for car in cars]
     
     async def get_parts(self, producer_id: int, car_vin: str) -> list[CarPartSchema]:
-        async with self.session.get(self.car_parts_path.format(producer_id, car_vin)) as resp:
+        async with self.session.get(self.car_parts_path.format(producer_id=producer_id, car_vin=car_vin)) as resp:
             parts = await resp.json()
         
         return [CarPartSchema(**part) for part in parts]
