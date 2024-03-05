@@ -6,10 +6,6 @@ class CarProducerSchema(BaseModel):
     name: str
 
 
-class CarProducersListSchema(BaseModel):
-    producers: list[CarProducerSchema]
-
-
 class CarSchema(BaseModel):
     vin: str
     model: str
@@ -21,10 +17,6 @@ class CarSchema(BaseModel):
     body: str
 
 
-class CarListSchema(BaseModel):
-    cars: list[CarSchema]
-
-
 class CarPartSchema(BaseModel):
     id: int
     name: str
@@ -33,7 +25,3 @@ class CarPartSchema(BaseModel):
     sell_price: float
     producer: str
     belongs_to: str
-
-
-class CarPartsListSchema(BaseModel):
-    parts: list[CarPartSchema]
