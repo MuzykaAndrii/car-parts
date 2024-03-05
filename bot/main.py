@@ -3,9 +3,12 @@ import logging
 import sys
 
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram_dialog import setup_dialogs
 
 from config import settings
 from base.handlers import router as base_router
+from catalog.handlers import router as catalog_router
 from components import backend_session
 from sessions import close_session
 
@@ -15,11 +18,16 @@ async def on_shutdown():
 
 
 async def main() -> None:
-    dp = Dispatcher()
+    storage = MemoryStorage()
+    dp = Dispatcher(storage=storage)
 
+    setup_dialogs(dp)
     dp.shutdown.register(on_shutdown)
+    dp.include_routers(
+        base_router,
+        catalog_router
+    )
 
-    dp.include_routers(base_router)
     bot = Bot(settings.BOT_TOKEN)
     await dp.start_polling(bot)
 
