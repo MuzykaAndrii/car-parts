@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
-from components import backend_session as session
+from components import backend_service
 
 
 router = Router()
@@ -12,10 +12,8 @@ async def command_start_handler(message: Message) -> None:
     await message.answer(f"Hello, {message.from_user.full_name}!")
 
 
-@router.message(Command("vendors"))
-async def command_vendors_handler(message: Message) -> None:
-    async with session().get("/api/car_producers/") as resp:
-        car_vendors = await resp.json()
-    
-    msg = "\n".join(car["name"] for car in car_vendors)
+@router.message(Command("catalog"))
+async def command_catalog_handler(message: Message) -> None:
+    car_producers = await backend_service().get_car_producers()
+    msg = "\n".join(producer.name for producer in car_producers)
     await message.answer(msg)
