@@ -10,6 +10,7 @@ class PartInline(admin.TabularInline):
 
 class AutoPage(admin.ModelAdmin):
     search_fields = ['vin', 'model']
+    exclude = ("owners",)
     inlines = [
         PartInline,
     ]
