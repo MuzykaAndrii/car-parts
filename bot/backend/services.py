@@ -6,7 +6,8 @@ from backend.schemas import CarPartSchema, CarProducerSchema, CarSchema
 class BackendService:
     car_producers_path: str = "/api/car_producers/"
     cars_list_path: str = "/api/car_producers/{producer_id}/cars"
-    car_parts_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts"
+    parts_list_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts"
+    part_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts/{part_id}"
 
     def __init__(self, session: ClientSession) -> None:
         self.session = session
@@ -24,7 +25,13 @@ class BackendService:
         return [CarSchema(**car) for car in cars]
     
     async def get_parts(self, producer_id: int, car_vin: str) -> list[CarPartSchema]:
-        async with self.session.get(self.car_parts_path.format(producer_id=producer_id, car_vin=car_vin)) as resp:
+        async with self.session.get(self.parts_list_path.format(producer_id=producer_id, car_vin=car_vin)) as resp:
             parts = await resp.json()
         
         return [CarPartSchema(**part) for part in parts]
+    
+    async def get_part(self, producer_id: int, car_vin: str, part_id: int) -> CarPartSchema:
+        async with self.session.get(self.part_path.format(producer_id=producer_id, car_vin=car_vin, part_id=part_id)) as resp:
+            part = await resp.json()
+        
+        return CarPartSchema(**part)
