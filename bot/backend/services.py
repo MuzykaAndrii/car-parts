@@ -4,9 +4,9 @@ from backend.schemas import CarPartSchema, CarProducerSchema, CarSchema
 
 
 class BackendService:
-    car_producers_path: str = "/api/car_producers/"
-    cars_list_path: str = "/api/car_producers/{producer_id}/cars"
-    car_parts_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts"
+    car_producers_path: str = "api/car_producers/"
+    cars_list_path: str = "api/car_producers/{producer_id}/cars"
+    car_parts_path: str = "api/car_producers/{producer_id}/cars/{car_vin}/parts"
 
     def __init__(self, session: ClientSession) -> None:
         self.session = session
