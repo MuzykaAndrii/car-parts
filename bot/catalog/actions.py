@@ -1,8 +1,6 @@
 from typing import Literal
 
-from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
-from aiogram_dialog.widgets.kbd import Select
 
 from backend.schemas import CarPartSchema, CarProducerSchema, CarSchema
 from components import backend_service
