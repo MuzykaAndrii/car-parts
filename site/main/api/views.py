@@ -43,7 +43,10 @@ class CarListView(APIView):
 
 class PartListView(APIView):
     def get(self, request: HttpRequest, car_producer_id: int, car_vin: str):
-        parts = get_list_or_404(Part.objects.distinct(), belongs_to__producer_id=car_producer_id, belongs_to__vin=car_vin)
+        parts = get_list_or_404(
+            Part.objects.select_related("belongs_to").distinct(),
+            belongs_to__producer_id=car_producer_id, belongs_to__vin=car_vin
+        )
 
         serializer = PartSerializer(parts, many=True)
         return Response(serializer.data)
@@ -51,7 +54,10 @@ class PartListView(APIView):
 
 class PartView(APIView):
     def get(self, request: HttpRequest, car_producer_id: int, car_vin: str, part_id: int):
-        part = get_object_or_404(Part.objects, belongs_to__producer_id=car_producer_id, belongs_to__vin=car_vin, id=part_id)
+        part = get_object_or_404(
+            Part.objects.select_related("producer", "belongs_to"),
+            belongs_to__producer_id=car_producer_id, belongs_to__vin=car_vin, id=part_id
+        )
 
         serializer = PartSerializer(part)
         return Response(serializer.data)
