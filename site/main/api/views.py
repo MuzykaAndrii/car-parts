@@ -1,16 +1,33 @@
 from django.http import HttpRequest
 from django.shortcuts import get_list_or_404, get_object_or_404
+from django.db.models import Count, Subquery, OuterRef
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from main.api.serializers import CarProducerSerializer, CarSerializer, PartSerializer
 from main.models import Auto, CarProducer, Part
+from store.models import Order
 
 
 class CarProducersListView(APIView):
     def get(self, request: HttpRequest):
-        car_producers = CarProducer.objects.filter(cars__isnull=False, cars__parts__isnull=False).distinct()
+        car_producers = (
+            CarProducer.objects
+            .filter(cars__isnull=False, cars__parts__isnull=False)
+            .annotate(
+                sales_count=Count(
+                    Subquery(
+                        Order.objects.filter(
+                            products__part__belongs_to__producer=OuterRef('pk'),
+                            status=Order.STATUSES.RECEIVED
+                        ).values('pk')
+                    )
+                )
+            )
+            .order_by("-sales_count", "name")
+            .distinct()
+        )
 
         serializer = CarProducerSerializer(car_producers, many=True)
         return Response(serializer.data)

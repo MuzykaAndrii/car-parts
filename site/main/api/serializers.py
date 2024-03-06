@@ -1,12 +1,17 @@
-from rest_framework.serializers import ModelSerializer, CharField
+from rest_framework.serializers import ModelSerializer, CharField, SerializerMethodField
 
 from main.models import Auto, CarProducer, Part
 
 
 class CarProducerSerializer(ModelSerializer):
+    sales_count = SerializerMethodField()
+
     class Meta:
         model = CarProducer
-        fields = ("id", "name")
+        fields = ("id", "name", "sales_count")
+
+    def get_sales_count(self, instance):
+        return instance.sales_count
 
 
 class CarSerializer(ModelSerializer):
