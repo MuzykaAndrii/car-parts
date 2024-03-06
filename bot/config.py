@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from pydantic import HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,6 +13,8 @@ class Settings(BaseSettings):
     
     DEBUG: bool
     BOT_TOKEN: str
+
+    BACKEND_URL: HttpUrl
 
 
 settings = Settings()

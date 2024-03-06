@@ -4,12 +4,13 @@ from aiohttp import ClientSession
 
 from sessions import session_factory
 from backend.services import BackendService
+from config import settings
 
 
 @lru_cache
 def backend_session() -> ClientSession:
     return session_factory(
-        base_url="http://127.0.0.1:8000",
+        base_url=settings.BACKEND_URL,
     )
 
 
