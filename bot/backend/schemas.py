@@ -9,7 +9,8 @@ class CarProducerSchema(BaseModel):
 class CarSchema(BaseModel):
     vin: str
     model: str
-    producer: int
+    producer_id: int
+    producer_name: str
     year_of_production: int
     engine_volume: float
     wheel_drive: str
