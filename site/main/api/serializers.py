@@ -18,13 +18,15 @@ class CarSerializer(ModelSerializer):
     wheel_drive = CharField(source="get_wheel_drive_display")
     fuel = CharField(source="get_fuel_display")
     body = CharField(source="get_body_display")
+    producer_name = CharField(source="producer.name")
 
     class Meta:
         model = Auto
         fields = (
             "vin",
             "model",
-            "producer",
+            "producer_id",
+            "producer_name",
             "year_of_production",
             "engine_volume",
             "wheel_drive",
