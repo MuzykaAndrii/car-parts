@@ -1,11 +1,11 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Group, Select, Back
-from aiogram_dialog.widgets.text import Const, Format
+from aiogram_dialog.widgets.kbd import Cancel, Group, Select, Back, Button
+from aiogram_dialog.widgets.text import Const, Format, Jinja
 from aiogram_dialog import Dialog
 
-from .actions import car_model_clicked, car_provider_clicked, get_car_producers, get_cars, get_parts, part_clicked
+from .actions import car_model_clicked, car_provider_clicked, get_car_producers, get_cars, get_part, get_parts, part_clicked
 from .states import CatalogStates
 
 
@@ -66,8 +66,29 @@ parts_list_window = Window(
 )
 
 
+part_item_window = Window(
+    Jinja("""
+    🔹 <b>Товар:</b> {{part.name}}
+    🚗 <b>До авто:</b> {{part.belongs_to}}
+    🏷️ <b>Артикул:</b> {{part.articul}}
+    🏭 <b>Виробник:</b> {{part.producer}}
+    💰 <b>Ціна:</b> {{part.sell_price}}
+    """),
+    Button(
+        Const("🛒 Додати в корзину"),
+        id="add_to_cart",
+        on_click=...
+    ),
+    Back(Const("↩️ Обрати іншу деталь")),
+    state=CatalogStates.part_item,
+    parse_mode="HTML",
+    getter=get_part,
+)
+
+
 catalog_dialog = Dialog(
     car_providers_window,
     cars_list_window,
     parts_list_window,
+    part_item_window,
 )

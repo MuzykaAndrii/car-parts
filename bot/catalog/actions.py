@@ -42,6 +42,16 @@ async def get_parts(dialog_manager: DialogManager, **kwargs) -> dict[Literal["pa
     return {"parts": parts}
 
 
+async def get_part(dialog_manager: DialogManager, **kwargs) -> dict[Literal["part"], CarPartSchema]:
+    context = dialog_manager.current_context()
+    producer_id = context.dialog_data.get("producer_id")
+    car_vin = context.dialog_data.get("car_vin")
+    part_id = context.dialog_data.get("part_id")
+
+    part = await backend_service().get_part(producer_id, car_vin, part_id)
+    return {"part": part}
+
+
 async def car_provider_clicked(callback: CallbackQuery, button: Select, manager: DialogManager, item_id: int) -> None:
     context = manager.current_context()
     context.dialog_data.update(producer_id=item_id)
@@ -55,5 +65,6 @@ async def car_model_clicked(callback: CallbackQuery, button: Select, manager: Di
 
 
 async def part_clicked(callback: CallbackQuery, button: Select, manager: DialogManager, item_id: str) -> None:
-    # TODO: implement
-    manager.event.answer("Coming soon...")
+    context = manager.current_context()
+    context.dialog_data.update(part_id=item_id)
+    await manager.switch_to(CatalogStates.part_item)

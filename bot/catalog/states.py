@@ -5,3 +5,4 @@ class CatalogStates(StatesGroup):
     car_providers = State()
     cars_list = State()
     car_parts = State()
+    part_item = State()
