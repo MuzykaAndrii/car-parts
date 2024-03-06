@@ -5,11 +5,10 @@ WORKDIR /bot
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt .
-COPY . /bot
-
+COPY requirements.txt /bot
 RUN pip3 install -r requirements.txt --no-cache-dir
 
+COPY . /bot
 
 ENTRYPOINT ["python3"]
 CMD ["main.py"]
