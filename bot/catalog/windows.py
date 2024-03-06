@@ -5,84 +5,78 @@ from aiogram_dialog.widgets.kbd import Cancel, Group, Select, Back, Button
 from aiogram_dialog.widgets.text import Const, Format, Jinja
 from aiogram_dialog import Dialog
 
-from .actions import car_model_clicked, car_provider_clicked, get_car_producers, get_cars, get_part, get_parts, part_clicked
 from .states import CatalogStates
+from . import actions, callbacks, messages
 
 
 car_providers_window = Window(
-    Const("Оберіть марку авто ⚙️ 🔧"),
+    Const(messages.car_provider_title),
     Group(
         Select(
-            Format("{item.name}"),
+            Format(messages.car_provider_item),
             id="car_provider_select",
             item_id_getter=operator.attrgetter("id"),
             items="car_providers",
-            on_click=car_provider_clicked,
+            on_click=callbacks.car_provider_clicked,
         ),
         id="car_providers_group",
         width=4,
     ),
-    Cancel(Const("Вийти")),
+    Cancel(Const(messages.car_providers_cancel)),
     state=CatalogStates.car_providers,
-    getter=get_car_producers,
+    getter=actions.get_car_producers,
 )
 
 
 cars_list_window = Window(
-    Const("Оберіть модель авто 🚗 🚕"),
+    Const(messages.cars_list_title),
     Group(
         Select(
-            Format("📃: {item.model} 🗓️: {item.year_of_production} ⚙️: {item.engine_volume} 🛢️: {item.fuel}"),
+            Format(messages.cars_list_item),
             id="car_select",
             item_id_getter=operator.attrgetter("vin"),
             items="cars",
-            on_click=car_model_clicked,
+            on_click=callbacks.car_model_clicked,
         ),
         id="cars_list_group",
         width=1,
     ),
-    Back(Const("↩️ Обрати іншу марку")),
+    Back(Const(messages.cars_list_back)),
     state=CatalogStates.cars_list,
-    getter=get_cars,
+    getter=actions.get_cars,
 )
 
 
 parts_list_window = Window(
-    Const("Оберіть товар 🛞 🔧"),
+    Const(messages.parts_list_title),
     Group(
         Select(
-            Format("{item.name} ®️: {item.producer}"),
+            Format(messages.parts_list_item),
             id="part_select",
             item_id_getter=operator.attrgetter("id"),
             items="parts",
-            on_click=part_clicked,
+            on_click=callbacks.part_clicked,
         ),
         id="parts_list_group",
         width=2,
     ),
-    Back(Const("↩️ Обрати іншу модель")),
+    Back(Const(messages.parts_list_back)),
     state=CatalogStates.car_parts,
-    getter=get_parts,
+    getter=actions.get_parts,
 )
 
 
 part_item_window = Window(
-    Jinja("""
-    🔹 <b>Товар:</b> {{part.name}}
-    🚗 <b>До авто:</b> {{part.belongs_to}}
-    🏷️ <b>Артикул:</b> {{part.articul}}
-    🏭 <b>Виробник:</b> {{part.producer}}
-    💰 <b>Ціна:</b> {{part.sell_price}}
-    """),
+    Jinja(messages.part_item_template),
     Button(
-        Const("🛒 Додати в корзину"),
+        Const(messages.add_to_cart),
         id="add_to_cart",
         on_click=...
     ),
-    Back(Const("↩️ Обрати іншу деталь")),
+    Back(Const(messages.part_item_back)),
     state=CatalogStates.part_item,
     parse_mode="HTML",
-    getter=get_part,
+    getter=actions.get_part,
 )
 
 
