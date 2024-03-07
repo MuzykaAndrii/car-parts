@@ -13,7 +13,6 @@ def get_user_shipping_address(user: User) -> ShippingAddress | None:
 
 
 def create_random_user() -> User:
-    return User.objects.create(
+    return User.objects.create_user(
         username=uuid.uuid4(),
-        password=uuid.uuid4(),
     )
