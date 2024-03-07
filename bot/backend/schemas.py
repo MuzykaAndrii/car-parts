@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class CarProducerSchema(BaseModel):
@@ -26,3 +26,24 @@ class CarPartSchema(BaseModel):
     sell_price: float
     producer: str
     belongs_to: str
+
+
+class CreateAccountSchema(BaseModel):
+    id: int
+    first_name: str | None
+    last_name: str | None
+    username: str | None
+
+
+class UserSchema(BaseModel):
+    id: int
+    email: EmailStr | None
+    username: str
+    first_name: str | None
+    last_name: str | None
+    is_active: bool
+    is_superuser: bool
+
+
+class AccountSchema(CreateAccountSchema):
+    user : UserSchema

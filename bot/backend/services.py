@@ -1,6 +1,6 @@
 from aiohttp import ClientSession
 
-from backend.schemas import CarPartSchema, CarProducerSchema, CarSchema
+from backend.schemas import AccountSchema, CarPartSchema, CarProducerSchema, CarSchema, CreateAccountSchema
 
 
 class BackendService:
@@ -8,6 +8,9 @@ class BackendService:
     cars_list_path: str = "/api/car_producers/{producer_id}/cars"
     parts_list_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts"
     part_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts/{part_id}"
+
+    create_account_path: str = "/telegram/api/create_account"
+    get_account_path: str = "/telegram/api/account/{account_id}"
 
     def __init__(self, session: ClientSession) -> None:
         self.session = session
@@ -35,3 +38,27 @@ class BackendService:
             part = await resp.json()
         
         return CarPartSchema(**part)
+    
+    async def get_account(self, account_id: int) -> AccountSchema:
+        async with self.session.get(self.get_account_path.format(account_id=account_id)) as resp:
+            account = await resp.json()
+        
+        return AccountSchema(**account)
+    
+    async def create_account(
+        self,
+        id: int,
+        first_name: str,
+        username: str | None,
+        last_name: str | None,
+    ) -> None:
+        account = CreateAccountSchema(
+            id=id,
+            first_name=first_name,
+            username=username,
+            last_name=last_name,
+        ).model_dump_json()
+
+        async with self.session.post(self.create_account_path, data=account) as resp:
+            if resp.status_code not in [200, 400]:
+                raise
