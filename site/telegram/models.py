@@ -34,3 +34,10 @@ class Account(models.Model):
         related_name="tg_account",
         verbose_name="Користувач",
     )
+
+    def __str__(self) -> str:
+        return f"Телеграм: {self.pk} {self.username or ''} {self.first_name} {self.last_name or ''}"
+
+    class Meta:
+        verbose_name = "Телеграм аккаунт"
+        verbose_name_plural = "Телеграм аккаунти"
