@@ -15,6 +15,7 @@ urlpatterns = [
     path("garage/", include("garage.urls", namespace="garage")),
     path("store/", include("store.urls", namespace="store")),
     path("selection/", include("selection.urls", namespace="selection")),
+    path("telegram/", include("telegram.urls", namespace="telegram")),
 ]
 
 if settings.DEBUG:
