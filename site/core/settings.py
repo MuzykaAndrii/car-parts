@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'garage',
     'store',
     'selection',
+    'telegram',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
