@@ -9,7 +9,7 @@ class BackendService:
     parts_list_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts"
     part_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts/{part_id}"
 
-    create_account_path: str = "/telegram/api/create_account"
+    create_account_path: str = "/telegram/api/create_account/"
     get_account_path: str = "/telegram/api/account/{account_id}"
 
     def __init__(self, session: ClientSession) -> None:
@@ -59,6 +59,6 @@ class BackendService:
             last_name=last_name,
         ).model_dump_json()
 
-        async with self.session.post(self.create_account_path, data=account) as resp:
-            if resp.status_code not in [200, 400]:
+        async with self.session.post(self.create_account_path, data=account, headers={"Content-Type": "application/json"}) as resp:
+            if resp.status not in [201, 400]:
                 raise
