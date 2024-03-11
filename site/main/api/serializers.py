@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer, CharField, SerializerMethodField
 
-from main.models import Auto, CarProducer, Part
+from main.models import Auto, CarProducer, Part, PartUnit
 
 
 class CarProducerSerializer(ModelSerializer):
@@ -48,4 +48,17 @@ class PartSerializer(ModelSerializer):
             "sell_price",
             "producer",
             "belongs_to",
+        )
+
+
+class PartUnitSerializer(ModelSerializer):
+    part = PartSerializer(many=False)
+
+    class Meta:
+        model = PartUnit
+        fields = (
+            "part",
+            "quantity",
+            "sell_price",
+            "total_price",
         )
