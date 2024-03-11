@@ -9,6 +9,7 @@ from aiogram_dialog import setup_dialogs
 from config import settings
 from base.handlers import router as base_router
 from catalog.handlers import router as catalog_router
+from cart.handlers import router as cart_router
 from components import backend_session
 from sessions import close_session
 
@@ -25,7 +26,8 @@ async def main() -> None:
     dp.shutdown.register(on_shutdown)
     dp.include_routers(
         base_router,
-        catalog_router
+        catalog_router,
+        cart_router,
     )
 
     bot = Bot(settings.BOT_TOKEN)
