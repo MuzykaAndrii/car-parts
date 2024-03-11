@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from store.views import AddToOrderView, ClearOrderView, DeleteFromOrderView, OrdersHistoryView, ShowOrderView, SubmitOrderView
 
@@ -12,4 +12,6 @@ urlpatterns = [
     path("clear_order/", ClearOrderView.as_view(), name="clear_order"),
     path("submit_order/", SubmitOrderView.as_view(), name="submit_order"),
     path("history/", OrdersHistoryView.as_view(), name="orders_history"),
+
+    path("api/", include("store.api.urls", namespace="api")),
 ]
