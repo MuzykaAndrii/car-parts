@@ -1,6 +1,6 @@
 from aiohttp import ClientSession
 
-from backend.schemas import AccountSchema, CarPartSchema, CarProducerSchema, CarSchema, CreateAccountSchema
+from backend.schemas import AccountSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema
 
 
 class BackendService:
@@ -11,6 +11,8 @@ class BackendService:
 
     create_account_path: str = "/telegram/api/create_account/"
     get_account_path: str = "/telegram/api/account/{account_id}"
+
+    cart_by_user_path: str = "/user/api/{user_id}/cart"
 
     def __init__(self, session: ClientSession) -> None:
         self.session = session
@@ -62,3 +64,13 @@ class BackendService:
         async with self.session.post(self.create_account_path, data=account, headers={"Content-Type": "application/json"}) as resp:
             if resp.status not in [201, 400]:
                 raise
+    
+    async def get_cart_by_user(self, user_id: int) -> CartSchema | None:
+        async with self.session.get(self.cart_by_user_path.format(user_id=user_id)) as resp:
+            if resp.status != 200:
+                return None    
+            cart = await resp.json()
+        
+        return CartSchema(**cart)
+        
+        

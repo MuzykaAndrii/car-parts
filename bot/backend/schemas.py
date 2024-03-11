@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, EmailStr
 
 
@@ -28,6 +29,13 @@ class CarPartSchema(BaseModel):
     belongs_to: str
 
 
+class PartUnitSchema(BaseModel):
+    part: CarPartSchema
+    quantity: int
+    sell_price: float
+    total_price: float
+
+
 class CreateAccountSchema(BaseModel):
     id: int
     first_name: str | None
@@ -46,4 +54,14 @@ class UserSchema(BaseModel):
 
 
 class AccountSchema(CreateAccountSchema):
-    user : UserSchema
+    user: UserSchema
+
+
+class CartSchema(BaseModel):
+    id: int
+    status: str
+    sold_at: datetime
+    total: float
+    total_quantity: int
+    products: list[PartUnitSchema]
+    customer: UserSchema
