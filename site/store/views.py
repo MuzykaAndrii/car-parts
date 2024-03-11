@@ -6,6 +6,7 @@ from django.contrib import messages
 from main.models import Part, PartUnit
 
 from store.forms import AddToOrderForm, DeleteFromOrderForm
+from store import services as store_services
 from store.models import Order
 from auth.mixins import MyLoginRequiredMixin
 from user import services as user_services
@@ -58,7 +59,7 @@ class DeleteFromOrderView(MyLoginRequiredMixin, View):
 
 class ShowOrderView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        actual_order = Order.objects.filter(customer=request.user, status=Order.STATUSES.IN_CART).first()
+        actual_order = store_services.get_actual_user_order(request.user.id)
         shipping = user_services.get_user_shipping_address(request.user)
 
         return render(request, "store/cart.html", {"cart": actual_order, "shipping": shipping})
