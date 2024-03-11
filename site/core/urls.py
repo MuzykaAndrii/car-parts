@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.conf import settings
 
-from main.admin import admin_site
+from core.admin import admin_site
 from main.views import handler500 as h500
 
 
