@@ -2,19 +2,22 @@ from rest_framework.serializers import ModelSerializer, CharField
 
 from user.api.serializers import UserSerializer
 from store.models import Order
+from main.api.serializers import PartUnitSerializer
 
 
 class OrderSerializer(ModelSerializer):
     customer = UserSerializer(many=False)
     status = CharField(source="get_status_display")
+    products = PartUnitSerializer(many=True)
 
     class Meta:
         model = Order
         fields = (
             "id",
-            "customer",
             "status",
             "sold_at",
             "total",
             "total_quantity",
+            "products",
+            "customer",
         )
