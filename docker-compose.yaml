@@ -9,7 +9,6 @@ services:
       - '8000:8000'
     volumes:
       - ./site:/site
-      - site-database:/site/.dblocal
   
   bot:
     build:
@@ -20,6 +19,3 @@ services:
     env_file: ./bot/.env
     volumes:
       - ./bot:/bot
-
-volumes:
-  site-database:
