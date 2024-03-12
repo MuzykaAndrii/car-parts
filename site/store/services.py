@@ -4,15 +4,15 @@ from store.exceptions import CartNotFoundError, PartNotFoundError, UserNotOwnerO
 from store.models import Order
 
 
-def get_user_cart(user_id: int) -> Order | None:
+def get_user_cart(user_id: int) -> Order:
     try:
-        cart = Order.objects.get(customer_id=user_id, status=Order.STATUSES.IN_CART)
+        return Order.objects.get(customer_id=user_id, status=Order.STATUSES.IN_CART)
     except Order.DoesNotExist:
         raise CartNotFoundError
 
 
 def get_or_create_user_cart(user_id: int) -> Order:
-    cart, is_created = Order.objects.get_or_create(customer=user_id, status=Order.STATUSES.IN_CART)
+    cart, is_created = Order.objects.get_or_create(customer_id=user_id, status=Order.STATUSES.IN_CART)
     return cart
 
 
@@ -22,7 +22,7 @@ def add_to_cart(cart_id: int, part_id: int, quantity: int) -> Part:
     except Part.DoesNotExist:
         raise PartNotFoundError
 
-    PartUnit.objects.create(
+    pu = PartUnit.objects.create(
         part=part,
         order_id=cart_id,
         quantity=quantity,

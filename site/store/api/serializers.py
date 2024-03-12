@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, CharField
+from rest_framework.serializers import ModelSerializer, CharField, IntegerField, Serializer
 
 from user.api.serializers import UserSerializer
 from store.models import Order
@@ -21,3 +21,9 @@ class OrderSerializer(ModelSerializer):
             "products",
             "customer",
         )
+
+
+class AddToCartSerializer(Serializer):
+    user_id = IntegerField()
+    part_id = IntegerField()
+    quantity = IntegerField()
