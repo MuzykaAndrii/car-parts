@@ -65,7 +65,7 @@ class BackendService:
             if resp.status not in [201, 400]:
                 raise
     
-    async def get_cart_by_user(self, user_id: int) -> CartSchema | None:
+    async def get_user_cart(self, user_id: int) -> CartSchema | None:
         async with self.session.get(self.cart_by_user_path.format(user_id=user_id)) as resp:
             if resp.status != 200:
                 return None    
