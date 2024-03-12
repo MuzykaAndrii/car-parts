@@ -11,7 +11,7 @@ from store.api.serializers import OrderSerializer
 
 class CartByUserView(APIView):
     def get(self, request: HttpRequest, user_id: int):
-        cart = store_services.get_actual_user_order(user_id)
+        cart = store_services.get_user_cart(user_id)
 
         if not cart:
             return Response(status=status.HTTP_404_NOT_FOUND)

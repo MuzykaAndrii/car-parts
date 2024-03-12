@@ -1,5 +1,6 @@
 from datetime import datetime
-from django.http import HttpRequest
+
+from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.contrib import messages
@@ -10,10 +11,11 @@ from store import services as store_services
 from store.models import Order
 from auth.mixins import MyLoginRequiredMixin
 from user import services as user_services
+from store import services as store_services
 
 
 
-class AddToOrderView(MyLoginRequiredMixin, View):
+class AddToCartView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
         form = AddToOrderForm(request.POST)
 
@@ -21,11 +23,11 @@ class AddToOrderView(MyLoginRequiredMixin, View):
             messages.error(request, "Відбулась помилка, перевірте правильність введених даних")
             return redirect("main:car_producers_catalog")
         
-        actual_order = Order.objects.get_or_create(customer=request.user, status=Order.STATUSES.IN_CART)[0]
+        cart = store_services.get_or_create_user_cart(request.user.id)
         part = get_object_or_404(Part, pk=form.cleaned_data.get("part_id"))
         PartUnit.objects.create(
             part=part,
-            order=actual_order,
+            order=cart,
             quantity=form.cleaned_data.get("quantity"),
             buy_price=part.buy_price,
             sell_price=part.sell_price,
@@ -35,14 +37,17 @@ class AddToOrderView(MyLoginRequiredMixin, View):
         return redirect("main:parts_catalog", car_vin=part.belongs_to.pk)
 
 
-class DeleteFromOrderView(MyLoginRequiredMixin, View):
+class DeleteFromCartView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
         form = DeleteFromOrderForm(request.POST)
 
         if not form.is_valid():
             return self.send_error(request)
         
-        part_unit = get_object_or_404(PartUnit, pk=form.cleaned_data.get("part_unit_pk"))
+        part_unit = get_object_or_404(
+            PartUnit.objects.select_related("order__customer"),
+            pk=form.cleaned_data.get("part_unit_pk")
+        )
 
         if part_unit.order.customer != request.user:
             return self.send_error(request)
@@ -57,15 +62,15 @@ class DeleteFromOrderView(MyLoginRequiredMixin, View):
         return redirect("store:cart")
 
 
-class ShowOrderView(MyLoginRequiredMixin, View):
+class CartView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        actual_order = store_services.get_actual_user_order(request.user.id)
+        cart = store_services.get_user_cart(request.user.id)
         shipping = user_services.get_user_shipping_address(request.user)
 
-        return render(request, "store/cart.html", {"cart": actual_order, "shipping": shipping})
+        return render(request, "store/cart.html", {"cart": cart, "shipping": shipping})
 
 
-class ClearOrderView(MyLoginRequiredMixin, View):
+class ClearCartView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
         get_object_or_404(
            Order.objects,
@@ -79,11 +84,9 @@ class ClearOrderView(MyLoginRequiredMixin, View):
 
 class SubmitOrderView(MyLoginRequiredMixin, View):
     def post(self, request: HttpRequest):
-       order_to_submit = get_object_or_404(
-           Order.objects,  # necessary to specify certain manager when model has multiple managers
-           customer=request.user,
-           status=Order.STATUSES.IN_CART
-        )
+       order_to_submit = store_services.get_user_cart(request.user.id)
+       if not order_to_submit:
+           raise Http404
 
        order_to_submit.status = Order.STATUSES.SUBMITTED
        order_to_submit.sold_at = datetime.now()
