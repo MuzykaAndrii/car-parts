@@ -11,9 +11,9 @@ from store.api.serializers import AddToCartSerializer, UserIdSerializer, DeleteF
 
 class UserCartEndpoint(APIView):
     def get(self, request: HttpRequest, user_id: int):
-        cart = store_services.get_user_cart(user_id)
-
-        if not cart:
+        try:
+            cart = store_services.get_user_cart(user_id)
+        except CartNotFoundError:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = OrderSerializer(cart, many=False)
