@@ -10,7 +10,7 @@ from main.models import Auto, CarProducer, Part
 from store.models import Order
 
 
-class CarProducersListView(APIView):
+class CarProducersListEndpoint(APIView):
     def get(self, request: HttpRequest):
         car_producers = (
             CarProducer.objects
@@ -33,7 +33,7 @@ class CarProducersListView(APIView):
         return Response(serializer.data)
 
 
-class CarListView(APIView):
+class CarListEndpoint(APIView):
     def get(self, request: HttpRequest, producer_id: int):
         cars = get_list_or_404(Auto.objects.select_related("producer").distinct(), producer_id=producer_id, parts__isnull=False)
 
@@ -41,7 +41,7 @@ class CarListView(APIView):
         return Response(serializer.data)
 
 
-class PartListView(APIView):
+class PartListEndpoint(APIView):
     def get(self, request: HttpRequest, car_producer_id: int, car_vin: str):
         parts = get_list_or_404(
             Part.objects.select_related("belongs_to").distinct(),
@@ -52,7 +52,7 @@ class PartListView(APIView):
         return Response(serializer.data)
 
 
-class PartView(APIView):
+class PartEndpoint(APIView):
     def get(self, request: HttpRequest, car_producer_id: int, car_vin: str, part_id: int):
         part = get_object_or_404(
             Part.objects.select_related("producer", "belongs_to"),

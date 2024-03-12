@@ -10,7 +10,7 @@ from user.services import create_random_user
 from telegram.api.serializers import AccountSerializer, CreateAccountSerializer
 
 
-class CreateAccountView(APIView):
+class CreateAccountEndpoint(APIView):
     def post(self, request: HttpRequest):
         new_account = CreateAccountSerializer(data=request.data)
 
@@ -22,7 +22,7 @@ class CreateAccountView(APIView):
         return Response(new_account.data, status=status.HTTP_201_CREATED)
 
 
-class GetAccountView(APIView):
+class GetAccountEndpoint(APIView):
     def get(self, request: HttpRequest, account_id: int):
         account = get_object_or_404(Account.objects, id=account_id)
         serializer = AccountSerializer(account, many=False)

@@ -1,5 +1,4 @@
 from django.http import HttpRequest
-from django.shortcuts import get_list_or_404, get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +8,7 @@ from store import services as store_services
 from store.api.serializers import OrderSerializer
 
 
-class CartByUserView(APIView):
+class UserCartEndpoint(APIView):
     def get(self, request: HttpRequest, user_id: int):
         cart = store_services.get_user_cart(user_id)
 

@@ -6,7 +6,7 @@ from main.models import Part
 
 
 
-class PartByScanner(APIView):
+class PartByScannerEndpoint(APIView):
     def post(self, request, format=None):
         # TODO: add permission checking
         barcode = request.data.get("barcode")
