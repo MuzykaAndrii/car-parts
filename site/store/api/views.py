@@ -85,3 +85,15 @@ class SubmitOrderEndpoint(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetUserOrdersEndpoint(APIView):
+    def get(self, request, *args, **kwargs):
+        serializer = UserIdSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        user_id = serializer.validated_data.get("user_id")
+
+        orders = store_services.get_user_orders(user_id)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
