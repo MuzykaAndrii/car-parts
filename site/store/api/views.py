@@ -88,8 +88,8 @@ class SubmitOrderEndpoint(APIView):
 
 
 class GetUserOrdersEndpoint(APIView):
-    def get(self, request, *args, **kwargs):
-        serializer = UserIdSerializer(data=request.query_params)
+    def get(self, request: HttpRequest):
+        serializer = UserIdSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         user_id = serializer.validated_data.get("user_id")
