@@ -6,7 +6,7 @@ from rest_framework import status
 
 from store.exceptions import CartNotFoundError, PartNotFoundError, UserNotOwnerOfOrderError
 from store import services as store_services
-from store.api.serializers import AddToCartSerializer, ClearCartSerializer, DeleteFromCartSerializer, OrderSerializer
+from store.api.serializers import AddToCartSerializer, UserIdSerializer, DeleteFromCartSerializer, OrderSerializer
 
 
 class UserCartEndpoint(APIView):
@@ -57,8 +57,8 @@ class DeleteFromCartEndpoint(APIView):
 
 
 class ClearCartEndpoint(APIView):
-    def delete(self, request, *args, **kwargs):
-        serializer = ClearCartSerializer(data=request.data)
+    def delete(self, request: HttpRequest):
+        serializer = UserIdSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         user_id = serializer.validated_data.get("user_id")
@@ -69,3 +69,19 @@ class ClearCartEndpoint(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SubmitOrderEndpoint(APIView):
+    def patch(self, request: HttpRequest):
+        serializer = UserIdSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user_id = serializer.validated_data.get("user_id")
+
+        try:
+            order = store_services.submit_user_order(user_id)
+            serializer = OrderSerializer(order)
+        except CartNotFoundError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

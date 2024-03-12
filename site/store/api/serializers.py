@@ -34,5 +34,5 @@ class DeleteFromCartSerializer(Serializer):
     part_unit_id = IntegerField()
 
 
-class ClearCartSerializer(Serializer):
+class UserIdSerializer(Serializer):
     user_id = IntegerField()
