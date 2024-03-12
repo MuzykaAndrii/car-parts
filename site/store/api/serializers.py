@@ -27,3 +27,8 @@ class AddToCartSerializer(Serializer):
     user_id = IntegerField()
     part_id = IntegerField()
     quantity = IntegerField()
+
+
+class DeleteFromCartSerializer(Serializer):
+    user_id = IntegerField()
+    part_unit_id = IntegerField()
