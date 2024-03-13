@@ -12,7 +12,7 @@ class BackendService:
     create_account_path: str = "/telegram/api/create_account/"
     get_account_path: str = "/telegram/api/account/{account_id}"
 
-    cart_by_user_path: str = "/user/api/{user_id}/cart"
+    cart_by_user_path: str = "/store/api/users/{user_id}/cart"
 
     def __init__(self, session: ClientSession) -> None:
         self.session = session
