@@ -1,7 +1,7 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Group, Select, Back, Button, ScrollingGroup
+from aiogram_dialog.widgets.kbd import Cancel, Select, Back, Button, ScrollingGroup
 from aiogram_dialog.widgets.text import Const, Format, Jinja
 from aiogram_dialog import Dialog
 

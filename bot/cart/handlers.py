@@ -1,14 +1,15 @@
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
+from aiogram_dialog import DialogManager
 
-from components import backend_service
+from cart.states import CartStates
+from cart.windows import cart_dialog
 
 
 router = Router()
+router.include_router(cart_dialog)
 
 @router.message(Command("cart"))
-async def command_cart_handler(message: Message) -> None:
-    account = await backend_service().get_account(message.from_user.id)
-    cart = await backend_service().get_user_cart(account.user.id)
-    print(cart)
+async def command_cart_handler(message: Message, dialog_manager: DialogManager) -> None:
+    await dialog_manager.start(CartStates.cart_detail, data={"user_id": message.from_user.id})
