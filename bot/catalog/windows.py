@@ -1,7 +1,7 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Group, Select, Back, Button
+from aiogram_dialog.widgets.kbd import Cancel, Group, Select, Back, Button, ScrollingGroup
 from aiogram_dialog.widgets.text import Const, Format, Jinja
 from aiogram_dialog import Dialog
 
@@ -11,7 +11,7 @@ from . import actions, callbacks, messages
 
 car_providers_window = Window(
     Const(messages.car_provider_title),
-    Group(
+    ScrollingGroup(
         Select(
             Format(messages.car_provider_item),
             id="car_provider_select",
@@ -20,7 +20,9 @@ car_providers_window = Window(
             on_click=callbacks.car_provider_clicked,
         ),
         id="car_providers_group",
+        hide_on_single_page=True,
         width=4,
+        height=4,
     ),
     Cancel(Const(messages.car_providers_cancel)),
     state=CatalogStates.car_providers,
@@ -30,7 +32,7 @@ car_providers_window = Window(
 
 cars_list_window = Window(
     Const(messages.cars_list_title),
-    Group(
+    ScrollingGroup(
         Select(
             Format(messages.cars_list_item),
             id="car_select",
@@ -39,7 +41,9 @@ cars_list_window = Window(
             on_click=callbacks.car_model_clicked,
         ),
         id="cars_list_group",
+        hide_on_single_page=True,
         width=1,
+        height=6,
     ),
     Back(Const(messages.cars_list_back)),
     state=CatalogStates.cars_list,
@@ -49,7 +53,7 @@ cars_list_window = Window(
 
 parts_list_window = Window(
     Const(messages.parts_list_title),
-    Group(
+    ScrollingGroup(
         Select(
             Format(messages.parts_list_item),
             id="part_select",
@@ -58,7 +62,9 @@ parts_list_window = Window(
             on_click=callbacks.part_clicked,
         ),
         id="parts_list_group",
+        hide_on_single_page=True,
         width=2,
+        height=6,
     ),
     Back(Const(messages.parts_list_back)),
     state=CatalogStates.car_parts,
