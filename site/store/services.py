@@ -36,7 +36,7 @@ def add_to_cart(cart_id: int, part_id: int, quantity: int) -> Part:
 def delete_from_cart(user_id: int, part_unit_id: int) -> None:
     try:
         part_unit = PartUnit.objects.select_related("order__customer").get(pk=part_unit_id)
-    except Part.DoesNotExist:
+    except PartUnit.DoesNotExist:
         raise PartNotFoundError
     
     if part_unit.order.customer.pk != user_id:
@@ -63,4 +63,4 @@ def submit_user_order(user_id: int) -> Order:
 
 
 def get_user_orders(user_id: int) -> list[Order]:
-    return Order.with_accepted_statuses.filter(customer_id=user_id)
+    return Order.with_accepted_statuses.filter(customer_id=user_id).order_by("-sold_at")

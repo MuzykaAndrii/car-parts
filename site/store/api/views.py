@@ -6,7 +6,7 @@ from rest_framework import status
 
 from store.exceptions import CartNotFoundError, PartNotFoundError, UserNotOwnerOfOrderError
 from store import services as store_services
-from store.api.serializers import AddToCartSerializer, UserIdSerializer, DeleteFromCartSerializer, OrderSerializer
+from store.api.serializers import AddToCartSerializer, OrderSerializer
 
 
 class UserCartEndpoint(APIView):
@@ -19,13 +19,20 @@ class UserCartEndpoint(APIView):
         serializer = OrderSerializer(cart, many=False)
         return Response(serializer.data)
 
+    def delete(self, request: HttpRequest, user_id: int):
+        try:
+            store_services.clear_cart(user_id)
+        except CartNotFoundError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-class AddToCartEndpoint(APIView):
-    def post(self, request: HttpRequest):
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CartProductsEndpoint(APIView):
+    def post(self, request: HttpRequest, user_id: int):
         serializer = AddToCartSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user_id = serializer.validated_data.get("user_id")
         part_id = serializer.validated_data.get("part_id")
         quantity = serializer.validated_data.get("quantity")
 
@@ -34,66 +41,31 @@ class AddToCartEndpoint(APIView):
             part = store_services.add_to_cart(cart.pk, part_id, quantity)
         except (CartNotFoundError, PartNotFoundError):
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
         return Response(status=status.HTTP_201_CREATED)
 
-
-class DeleteFromCartEndpoint(APIView):
-    def delete(self, request: HttpRequest):
-        serializer = DeleteFromCartSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        user_id = serializer.validated_data.get("user_id")
-        part_unit_id = serializer.validated_data.get("part_unit_id")
-
+    def delete(self, request: HttpRequest, user_id: int, part_unit_id: int):
         try:
             store_services.delete_from_cart(user_id, part_unit_id)
-        except UserNotOwnerOfOrderError:
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        except PartNotFoundError:
+        except (UserNotOwnerOfOrderError, PartNotFoundError):
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class ClearCartEndpoint(APIView):
-    def delete(self, request: HttpRequest):
-        serializer = UserIdSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        user_id = serializer.validated_data.get("user_id")
-
-        try:
-            store_services.clear_cart(user_id)
-        except CartNotFoundError:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SubmitOrderEndpoint(APIView):
-    def patch(self, request: HttpRequest):
-        serializer = UserIdSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        user_id = serializer.validated_data.get("user_id")
-
+    def patch(self, request: HttpRequest, user_id: int):
         try:
             order = store_services.submit_user_order(user_id)
             serializer = OrderSerializer(order)
         except CartNotFoundError:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class GetUserOrdersEndpoint(APIView):
-    def get(self, request: HttpRequest):
-        serializer = UserIdSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        user_id = serializer.validated_data.get("user_id")
-
+class UserOrdersEndpoint(APIView):
+    def get(self, request: HttpRequest, user_id: int):
         orders = store_services.get_user_orders(user_id)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
