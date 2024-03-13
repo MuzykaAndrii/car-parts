@@ -1,8 +1,6 @@
 from django.urls import include, path
-from django.conf import settings
 
 from core.admin import admin_site
-from main.views import handler500 as h500
 
 
 urlpatterns = [
@@ -17,8 +15,3 @@ urlpatterns = [
     path("selection/", include("selection.urls", namespace="selection")),
     path("telegram/", include("telegram.urls", namespace="telegram")),
 ]
-
-if settings.DEBUG:
-    urlpatterns.append(path('500/', h500))
-
-handler500 = 'main.views.handler500'

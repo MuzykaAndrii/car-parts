@@ -11,12 +11,6 @@ class IndexPage(TemplateView):
     template_name='index.html'
 
 
-def handler500(request, template_name="status_pages/500.html"):
-    response = render(request=request, template_name=template_name)
-    response.status_code = 500
-    return response
-
-
 class CarProducerCatalog(View):
     def get(self, request: HttpRequest):
         car_producers = CarProducer.objects.all().order_by("name")
