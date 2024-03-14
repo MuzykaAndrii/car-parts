@@ -5,6 +5,8 @@ from aiogram_dialog.widgets.kbd import Cancel, Select, Back, Button, ScrollingGr
 from aiogram_dialog.widgets.text import Const, Format, Jinja
 from aiogram_dialog import Dialog
 
+
+from cart.callbacks import add_to_cart_clicked
 from .states import CatalogStates
 from . import actions, callbacks, messages
 
@@ -77,7 +79,7 @@ part_item_window = Window(
     Button(
         Const(messages.add_to_cart),
         id="add_to_cart",
-        on_click=...
+        on_click=add_to_cart_clicked,
     ),
     Back(Const(messages.part_item_back)),
     state=CatalogStates.part_item,

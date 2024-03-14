@@ -12,8 +12,4 @@ router.include_router(cart_dialog)
 
 @router.message(Command("cart"))
 async def command_cart_handler(message: Message, dialog_manager: DialogManager) -> None:
-    await dialog_manager.start(
-        CartStates.cart_detail,
-        mode=StartMode.NEW_STACK,
-        data={"user_id": message.from_user.id}
-    )
+    await dialog_manager.start(CartStates.cart_detail, mode=StartMode.NEW_STACK)
