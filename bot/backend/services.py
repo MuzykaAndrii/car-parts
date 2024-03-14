@@ -1,6 +1,6 @@
 from aiohttp import ClientSession
 
-from backend.schemas import AccountSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema
+from backend.schemas import AccountSchema, AddPartSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema
 
 
 class BackendService:
@@ -13,6 +13,7 @@ class BackendService:
     get_account_path: str = "/telegram/api/account/{account_id}"
 
     cart_by_user_path: str = "/store/api/users/{user_id}/cart"
+    add_to_cart_path: str = "/store/api/users/{user_id}/cart/products"
 
     def __init__(self, session: ClientSession) -> None:
         self.session = session
@@ -72,5 +73,17 @@ class BackendService:
             cart = await resp.json()
         
         return CartSchema(**cart)
+    
+    async def add_to_cart(self, user_id: int, part_id: int, quantity: int) -> None:
+        product = AddPartSchema(part_id=part_id, quantity=quantity).model_dump_json()
+
+        async with self.session.post(
+            self.add_to_cart_path.format(user_id=user_id),
+            data=product,
+            headers={"Content-Type": "application/json"}
+        ) as resp:
+            if resp.status != 201:
+                raise
+
         
         

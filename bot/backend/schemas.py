@@ -65,3 +65,8 @@ class CartSchema(BaseModel):
     total_quantity: int
     products: list[PartUnitSchema]
     customer: UserSchema
+
+
+class AddPartSchema(BaseModel):
+    part_id: int
+    quantity: int = 1
