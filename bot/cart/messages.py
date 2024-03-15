@@ -11,3 +11,11 @@ cart_checkout = """
 <b>🛍️ Всього товарів:</b> {{cart.total_quantity}}
 <b>💸 Сумма:</b> <u>{{cart.total}}</u>
 """
+
+cart_header = """
+<b>🛒 Ваша корзина:</b>
+
+<b>🛍️ Всього товарів:</b> {{cart.total_quantity}}
+<b>💸 Сумма:</b> <u>{{cart.total}}</u>"""
+
+cart_product = "⏺️ {item.part.name} до {item.part.belongs_to} {item.quantity}шт."
