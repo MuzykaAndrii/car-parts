@@ -32,8 +32,7 @@ cart_window = Window(
         Select(
             Format(messages.cart_product),
             id="cart_product_select",
-            item_id_getter=lambda item: item.part.id,
-            # item_id_getter=F.part.id,
+            item_id_getter=operator.attrgetter("id"),
             items=F["cart"].products,
             on_click=...,
         ),
