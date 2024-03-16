@@ -51,7 +51,7 @@ cart_window = Window(
         ),
         Row(
             Cancel(Const("❌ Вийти")),
-            Button(Const("🗑️ Очистити корзину"), id="clear_cart_btn", on_click=...,),
+            Button(Const("🗑️ Очистити корзину"), id="clear_cart_btn", on_click=callbacks.clear_cart_clicked),
         ),
         id="cart_products_group",
         when=cart_is_present,
@@ -79,8 +79,19 @@ enter_amount_window = Window(
     state=CartStates.enter_amount,
 )
 
+
+cart_cleared_window = Window(
+    Const("Ваша корзина успішно очищена"),
+    Cancel(Const("До каталогу"), id="to_catalog_btn", on_click=start_catalog_dialog),
+    Cancel(Const("❌ Вийти")),
+
+    state=CartStates.cart_cleared,
+)
+
+
 cart_dialog = Dialog(
     cart_window,
     checkout_window,
     enter_amount_window,
+    cart_cleared_window,
 )

@@ -87,9 +87,6 @@ class BackendService:
     
 
     async def clear_cart(self, user_id: int) -> None:
-        async with self.session.delete(self.cart_by_user_path) as resp:
+        async with self.session.delete(self.cart_by_user_path.format(user_id=user_id)) as resp:
             if resp.status not in [204, 404]:
                 raise
-
-        
-        
