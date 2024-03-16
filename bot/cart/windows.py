@@ -6,6 +6,7 @@ from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, 
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
+from catalog.callbacks import start_catalog_dialog
 from .states import CartStates
 from . import actions, messages, callbacks
 
@@ -46,7 +47,7 @@ cart_window = Window(
         ),
         Row(
             Button(Const("🛒 Оформити замовлення"), id="checkout_btn", on_click=...,),
-            Button(Const("➕ Додати ще товари"), id="add_products_btn", on_click=...,),
+            Cancel(Const("➕ Додати ще товари"), id="add_products_btn", on_click=start_catalog_dialog),
         ),
         Row(
             Cancel(Const("❌ Вийти")),

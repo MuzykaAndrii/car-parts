@@ -4,7 +4,6 @@ from aiogram_dialog.widgets.kbd import Button
 from aiogram_dialog.widgets.kbd import ManagedCounter
 
 from components import backend_service
-
 from .states import CartStates
 
 
