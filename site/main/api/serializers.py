@@ -57,8 +57,9 @@ class PartUnitSerializer(ModelSerializer):
     class Meta:
         model = PartUnit
         fields = (
-            "part",
+            "id",
             "quantity",
             "sell_price",
             "total_price",
+            "part",
         )
