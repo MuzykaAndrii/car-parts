@@ -16,7 +16,7 @@ part_item_template = """
 🔹 <b>Товар:</b> {{part.name}}
 🚗 <b>До авто:</b> {{part.belongs_to}}
 🏷️ <b>Артикул:</b> {{part.articul}}
-🏭 <b>Виробник:</b> {{part.producer}}
+🏭 <b>Виробник:</b> <a href="{{part.producer_detail_url}}">{{part.producer}}</a>
 💰 <b>Ціна:</b> {{part.sell_price}}
 """
 add_to_cart = "🛒 Додати в корзину"

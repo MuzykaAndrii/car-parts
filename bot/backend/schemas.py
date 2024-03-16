@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, AnyHttpUrl
 
 
 class CarProducerSchema(BaseModel):
@@ -27,6 +27,7 @@ class CarPartSchema(BaseModel):
     barcode: str
     sell_price: float
     producer: str
+    producer_detail_url: AnyHttpUrl
     belongs_to: str
 
 
