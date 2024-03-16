@@ -1,7 +1,8 @@
 import operator
+
 from aiogram import F
 from aiogram_dialog import DialogManager, Window
-from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, Button, Row
+from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, Button, Row, Group
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
@@ -14,10 +15,7 @@ def cart_is_present(data: dict, case: Case, manager: DialogManager) -> bool:
 
 checkout_window = Window(
     Case(
-        {
-            True: Jinja(messages.cart_checkout),
-            False: Const("Ваша корзина поки порожня("),
-        },
+        {True: Jinja(messages.cart_checkout), False: Const(messages.cart_empty)},
         selector=cart_is_present,
     ),
     state=CartStates.checkout,
@@ -27,39 +25,35 @@ checkout_window = Window(
 
 
 cart_window = Window(
-    Jinja(messages.cart_header),
-    ScrollingGroup(
-        Select(
-            Format(messages.cart_product),
-            id="cart_product_select",
-            item_id_getter=operator.attrgetter("id"),
-            items=F["cart"].products,
-            on_click=...,
-        ),
-        id="products_group",
-        hide_on_single_page=True,
-        width=1,
-        height=5,
+    Case(
+        {True: Jinja(messages.cart_header), False: Const(messages.cart_empty)},
+        selector=cart_is_present,
     ),
-    Row(
-        Button(
-            Const("🛒 Оформити замовлення"),
-            id="checkout_btn",
-            on_click=...,
+
+    Group(
+        ScrollingGroup(
+            Select(
+                Format(messages.cart_product),
+                id="cart_product_select",
+                item_id_getter=operator.attrgetter("id"),
+                items=F["cart"].products,
+                on_click=...,
+            ),
+            id="products_group",
+            hide_on_single_page=True,
+            width=1,
+            height=5,
         ),
-        Button(
-            Const("➕ Додати ще товари"),
-            id="add_products_btn",
-            on_click=...,
+        Row(
+            Button(Const("🛒 Оформити замовлення"), id="checkout_btn", on_click=...,),
+            Button(Const("➕ Додати ще товари"), id="add_products_btn", on_click=...,),
         ),
-    ),
-    Row(
-        Cancel(Const("❌ Вийти")),
-        Button(
-            Const("🗑️ Очистити корзину"),
-            id="clear_cart_btn",
-            on_click=...,
+        Row(
+            Cancel(Const("❌ Вийти")),
+            Button(Const("🗑️ Очистити корзину"), id="clear_cart_btn", on_click=...,),
         ),
+        id="cart_products_group",
+        when=cart_is_present,
     ),
 
     state=CartStates.cart_detail,
