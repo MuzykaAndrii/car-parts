@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer, CharField, SerializerMethodField
 
 from main.models import Auto, CarProducer, Part, PartUnit
+from core import settings
 
 
 class CarProducerSerializer(ModelSerializer):
@@ -38,6 +39,11 @@ class CarSerializer(ModelSerializer):
 class PartSerializer(ModelSerializer):
     producer = CharField(source="producer.name")
     belongs_to = CharField(source="belongs_to.name")
+    producer_detail_url = SerializerMethodField()
+
+    def get_producer_detail_url(self, obj: Part) -> str:
+        return settings.HOST_URL + obj.producer.get_absolute_url()
+
     class Meta:
         model = Part
         fields = (
@@ -48,6 +54,7 @@ class PartSerializer(ModelSerializer):
             "sell_price",
             "producer",
             "belongs_to",
+            "producer_detail_url",
         )
 
 

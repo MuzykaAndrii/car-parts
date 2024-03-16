@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from store.models import Order
 
@@ -90,6 +91,9 @@ class PartProducer(models.Model):
         blank=True,
         null=True,
     )
+
+    def get_absolute_url(self) -> str:
+        return reverse("main:part_producer", kwargs={"pk": self.pk})
 
     def __str__(self) -> str:
         return f"{self.name}"
