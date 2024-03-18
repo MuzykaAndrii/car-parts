@@ -69,10 +69,10 @@ class BackendService:
     async def get_user_cart(self, user_id: int) -> CartSchema | None:
         async with self.session.get(self.cart_by_user_path.format(user_id=user_id)) as resp:
             if resp.status != 200:
-                return None    
-            cart = await resp.json()
+                return None
+            data = await resp.read()
         
-        return CartSchema(**cart)
+        return CartSchema.model_validate_json(data)
     
     async def add_to_cart(self, user_id: int, part_id: int, quantity: int) -> None:
         product = AddPartSchema(part_id=part_id, quantity=quantity).model_dump_json()
