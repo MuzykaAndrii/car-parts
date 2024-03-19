@@ -10,7 +10,7 @@ class BackendService:
     parts_list_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts"
     part_path: str = "/api/car_producers/{producer_id}/cars/{car_vin}/parts/{part_id}"
 
-    create_account_path: str = "/telegram/api/create_account/"
+    create_account_path: str = "/telegram/api/account/"
     get_account_path: str = "/telegram/api/account/{account_id}"
 
     cart_by_user_path: str = "/store/api/users/{user_id}/cart"
@@ -46,7 +46,7 @@ class BackendService:
         return AccountSchema.model_validate_json(response.body)
 
     async def create_account(self, id: int, first_name: str, username: str | None, last_name: str | None) -> None:
-        account = CreateAccountSchema( id=id, first_name=first_name, username=username, last_name=last_name).model_dump_json()
+        account = CreateAccountSchema(id=id, first_name=first_name, username=username, last_name=last_name).model_dump_json()
         await self.repo.post(self.create_account_path, data=account)
 
     async def get_user_cart(self, user_id: int) -> CartSchema | None:
