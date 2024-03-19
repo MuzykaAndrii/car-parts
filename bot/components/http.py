@@ -1,20 +1,12 @@
-from enum import Enum
-from dataclasses import dataclass
+from http_requests.repository import IAsyncRequestRepository
+from http_requests.response import HttpResponse
+from http_requests.headers import HttpHeaders
 
 from aiohttp import ClientSession, ClientResponse
 
 
-class HttpHeaders(dict, Enum):
-    application_json: dict = {"Content-Type": "application/json"}
 
-
-@dataclass(slots=True, frozen=True)
-class HttpResponse:
-    status_code: int
-    body: bytes
-
-
-class AiohttpRepository:
+class AioHttpRepository(IAsyncRequestRepository):
     def __init__(self, session: ClientSession) -> None:
         self.session = session
 

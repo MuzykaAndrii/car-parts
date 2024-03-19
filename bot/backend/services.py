@@ -1,7 +1,7 @@
 from pydantic import TypeAdapter
 
 from backend.schemas import AccountSchema, AddPartSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema
-from backend.repository import AiohttpRepository
+from http_requests.repository import IAsyncRequestRepository
 
 
 class BackendService:
@@ -16,7 +16,7 @@ class BackendService:
     cart_by_user_path: str = "/store/api/users/{user_id}/cart"
     add_to_cart_path: str = "/store/api/users/{user_id}/cart/products"
 
-    def __init__(self, repo: AiohttpRepository) -> None:
+    def __init__(self, repo: IAsyncRequestRepository) -> None:
         self.repo = repo
 
     async def get_car_producers(self) -> list[CarProducerSchema]:
