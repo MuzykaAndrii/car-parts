@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
+from main.api.serializers import PartUnitSerializer
 from store.exceptions import CartNotFoundError, PartNotFoundError, UserNotOwnerOfOrderError
 from store import services as store_services
 from store.api.serializers import AddToCartSerializer, OrderSerializer
@@ -29,6 +30,11 @@ class UserCartEndpoint(APIView):
 
 
 class CartProductsEndpoint(APIView):
+    def get(self, request: HttpRequest, user_id: int, part_unit_id: int):
+        part_unit = store_services.get_part_unit(user_id, part_unit_id)
+        serializer = PartUnitSerializer(part_unit)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request: HttpRequest, user_id: int):
         serializer = AddToCartSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

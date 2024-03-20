@@ -11,6 +11,10 @@ def get_user_cart(user_id: int) -> Order:
         raise CartNotFoundError
 
 
+def get_part_unit(user_id: int, part_unit_id: int) -> PartUnit:
+    return PartUnit.objects.get(id=part_unit_id, order__customer_id=user_id)
+
+
 def get_or_create_user_cart(user_id: int) -> Order:
     cart, is_created = Order.objects.get_or_create(customer_id=user_id, status=Order.STATUSES.IN_CART)
     return cart
