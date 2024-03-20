@@ -18,3 +18,15 @@ async def cart_product_clicked(callback: CallbackQuery, button: Select, manager:
     context.dialog_data.update(product_id=item_id)
 
     await manager.switch_to(CartStates.manage_product)
+
+
+async def delete_cart_product_clicked(callback: CallbackQuery, button: Button, manager: DialogManager):
+    context = manager.current_context()
+    product_id = context.dialog_data.get("product_id")
+
+    account = await backend_service().get_account(callback.from_user.id)
+    is_deleted = await backend_service().delete_cart_product(account.user.id, product_id)
+
+    context.dialog_data.update(is_deleted=is_deleted)
+    await manager.switch_to(CartStates.product_deleted)
+    

@@ -2,7 +2,7 @@ import operator
 
 from aiogram import F
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Select, ScrollingGroup, Button, Row, Group, Start, Back
+from aiogram_dialog.widgets.kbd import Cancel, Select, ScrollingGroup, Button, Row, Group, Start, Back, SwitchTo
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
@@ -62,8 +62,11 @@ cart_cleared_window = Window(
 manage_cart_item_window = Window(
     Jinja(messages.cart_item_detail),
 
-    Back(Const("↩️ До корзини")),
-    Cancel(Const("❌ Вийти")),
+    Button(Const("Видалити"), id="delete_cart_product_btn", on_click=callbacks.delete_cart_product_clicked),
+    Row(
+        Cancel(Const("❌ Вийти")),
+        Back(Const("↩️ До корзини")),
+    ),
 
     state=CartStates.manage_product,
     getter=actions.get_cart_item_details,
@@ -71,8 +74,20 @@ manage_cart_item_window = Window(
 )
 
 
+cart_item_deleted = Window(
+    Case(
+        {True: Const(messages.product_deleted), False: Const(messages.product_not_deleted)},
+        selector=F["dialog_data"]["is_deleted"],
+    ),
+    SwitchTo(Const("↩️ До корзини"), id="to_cart_from_deleted", state=CartStates.cart_detail),
+    Cancel(Const("❌ Вийти")),
+    state=CartStates.product_deleted,
+)
+
+
 cart_dialog = Dialog(
     cart_window,
     manage_cart_item_window,
     cart_cleared_window,
+    cart_item_deleted,
 )

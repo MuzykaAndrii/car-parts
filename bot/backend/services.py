@@ -69,7 +69,15 @@ class BackendService:
             return None
         
         return PartUnitSchema.model_validate_json(response.body)
+    
 
+    async def delete_cart_product(self, user_id: int, product_id: int) -> bool:
+        url = self.cart_product_path.format(user_id=user_id, product_id=product_id)
+        response = await self.repo.delete(url)
+
+        if response.status_code == 204:
+            return True
+        return False
 
     async def clear_cart(self, user_id: int) -> None:
         await self.repo.delete(self.cart_by_user_path.format(user_id=user_id))

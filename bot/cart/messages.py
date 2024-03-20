@@ -20,3 +20,6 @@ cart_item_detail = """
 <b>Ціна за одиницю:</b> {{ product.sell_price }} 💰
 <b>Ціна загалом:</b> {{ product.total_price }} 💵
 """
+
+product_deleted = "Товар успішно видалено із корзини"
+product_not_deleted = "Помилка. Товар не видалено."
