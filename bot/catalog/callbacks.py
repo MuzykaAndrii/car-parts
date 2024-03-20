@@ -11,7 +11,6 @@ async def start_catalog_dialog(event: CallbackQuery, widget: Any, manager: Dialo
     await manager.start(
         CatalogStates.car_providers,
         mode=StartMode.NEW_STACK,
-        show_mode=ShowMode.DELETE_AND_SEND,
     )
 
 

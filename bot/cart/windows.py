@@ -2,11 +2,12 @@ import operator
 
 from aiogram import F
 from aiogram_dialog import DialogManager, Window
-from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, Button, Row, Group
+from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, Button, Row, Group, Start
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
-from catalog.callbacks import start_catalog_dialog
+
+from catalog.states import CatalogStates
 from .states import CartStates
 from . import actions, messages, callbacks
 
@@ -47,7 +48,7 @@ cart_window = Window(
         ),
         Row(
             Button(Const("🛒 Оформити замовлення"), id="checkout_btn", on_click=...,),
-            Cancel(Const("➕ Додати ще товари"), id="add_products_btn", on_click=start_catalog_dialog),
+            Start(Const("➕ Додати ще товари"), id="move_to_catalog", state=CatalogStates.car_providers),
         ),
         Row(
             Cancel(Const("❌ Вийти")),
@@ -82,7 +83,7 @@ enter_amount_window = Window(
 
 cart_cleared_window = Window(
     Const("Ваша корзина успішно очищена"),
-    Cancel(Const("До каталогу"), id="to_catalog_btn", on_click=start_catalog_dialog),
+    Start(Const("До каталогу"), id="to_catalog_btn", state=CatalogStates.car_providers),
     Cancel(Const("❌ Вийти")),
 
     state=CartStates.cart_cleared,
