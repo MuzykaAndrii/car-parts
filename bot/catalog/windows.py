@@ -120,8 +120,8 @@ product_added_window = Window(
     Row(
         SwitchTo(Const("До каталогу"), id="to_catalog_btn", state=CatalogStates.car_providers),
         SwitchTo(Const("Обрати ще до цього авто"), id="to_products_btn", state=CatalogStates.car_parts),
-        Start(Const("До корзини"), id="to_cart_btn", state=CartStates.cart_detail),
     ),
+    Start(Const("Корзина"), id="to_cart_btn", state=CartStates.cart_detail),
     Cancel(Const("❌ Вийти")),
 
     state=CatalogStates.added,
