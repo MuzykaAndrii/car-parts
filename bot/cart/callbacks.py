@@ -23,7 +23,7 @@ async def amount_entered(event: CallbackQuery, widget: ManagedCounter, manager: 
     account = await backend_service().get_account(event.from_user.id)
     await backend_service().add_to_cart(account.user.id, part_id, quantity)
 
-    await manager.switch_to(CartStates.cart_detail)
+    await manager.switch_to(CartStates.added)
 
 
 async def clear_cart_clicked(event: CallbackQuery, widget: Button, manager: DialogManager):
