@@ -1,12 +1,22 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Select, Back, Button, ScrollingGroup
+from aiogram_dialog.widgets.kbd import (
+    Cancel,
+    Select,
+    Back,
+    Button,
+    ScrollingGroup,
+    Counter,
+    Row,
+    Start,
+    SwitchTo
+)
 from aiogram_dialog.widgets.text import Const, Format, Jinja
 from aiogram_dialog import Dialog
 
 
-from cart.callbacks import add_to_cart_clicked
+from cart.states import CartStates
 from .states import CatalogStates
 from . import actions, callbacks, messages
 
@@ -79,7 +89,7 @@ part_item_window = Window(
     Button(
         Const(messages.add_to_cart),
         id="add_to_cart",
-        on_click=add_to_cart_clicked,
+        on_click=callbacks.add_to_cart_clicked,
     ),
     Back(Const(messages.part_item_back)),
     state=CatalogStates.part_item,
@@ -88,9 +98,41 @@ part_item_window = Window(
 )
 
 
+enter_product_amount_window = Window(
+    Format("Введіть бажану кількість товару:"),
+    Counter(
+        id="amount_counter",
+        default=1,
+        min_value=1,
+        max_value=50,
+        plus=Const("➕"),
+        minus=Const("➖"),
+        text=Format("Додати {value:g}шт."),
+        on_text_click=callbacks.amount_entered,
+    ),
+    Cancel(Const("Вийти")),
+    state=CatalogStates.enter_amount,
+)
+
+
+product_added_window = Window(
+    Const("Товар успішно доданий до корзини!"),
+    Row(
+        SwitchTo(Const("До каталогу"), id="to_catalog_btn", state=CatalogStates.car_providers),
+        SwitchTo(Const("Обрати ще до цього авто"), id="to_products_btn", state=CatalogStates.car_parts),
+        Start(Const("До корзини"), id="to_cart_btn", state=CartStates.cart_detail),
+    ),
+    Cancel(Const("❌ Вийти")),
+
+    state=CatalogStates.added,
+)
+
+
 catalog_dialog = Dialog(
     car_providers_window,
     cars_list_window,
     parts_list_window,
     part_item_window,
+    enter_product_amount_window,
+    product_added_window,
 )

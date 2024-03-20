@@ -2,7 +2,7 @@ import operator
 
 from aiogram import F
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, Button, Row, Group, Start, SwitchTo
+from aiogram_dialog.widgets.kbd import Cancel, Select, ScrollingGroup, Button, Row, Group, Start
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
@@ -51,34 +51,6 @@ cart_window = Window(
 )
 
 
-enter_amount_window = Window(
-    Format("Введіть бажану кількість товару:"),
-    Counter(
-        id="amount_counter",
-        default=1,
-        min_value=1,
-        max_value=50,
-        plus=Const("➕"),
-        minus=Const("➖"),
-        text=Format("Додати {value:g}шт."),
-        on_text_click=callbacks.amount_entered,
-    ),
-    Cancel(Const("Вийти")),
-    state=CartStates.enter_amount,
-)
-
-product_added_window = Window(
-    Const("Товар успішно доданий до корзини!"),
-    Row(
-        Start(Const("До каталогу"), id="to_catalog_btn", state=CatalogStates.car_providers),
-        SwitchTo(Const("До корзини"), id="to_cart_btn", state=CartStates.cart_detail),
-    ),
-    Cancel(Const("❌ Вийти")),
-
-    state=CartStates.added,
-)
-
-
 cart_cleared_window = Window(
     Const("Ваша корзина успішно очищена"),
     Start(Const("До каталогу"), id="to_catalog_btn", state=CatalogStates.car_providers),
@@ -87,15 +59,13 @@ cart_cleared_window = Window(
     state=CartStates.cart_cleared,
 )
 
-manage_cart_product_window = Window(
+# manage_cart_product_window = Window(
 
-)
+# )
 
 
 cart_dialog = Dialog(
     cart_window,
-    enter_amount_window,
-    product_added_window,
-    manage_cart_product_window,
+    # manage_cart_product_window,
     cart_cleared_window,
 )
