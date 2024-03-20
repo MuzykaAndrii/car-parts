@@ -1,6 +1,6 @@
 from pydantic import TypeAdapter
 
-from backend.schemas import AccountSchema, AddPartSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema
+from .schemas import AccountSchema, AddPartSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema, PartUnitSchema
 from http_requests.repository import IAsyncRequestRepository
 
 
@@ -15,6 +15,7 @@ class BackendService:
 
     cart_by_user_path: str = "/store/api/users/{user_id}/cart"
     add_to_cart_path: str = "/store/api/users/{user_id}/cart/products"
+    cart_product_path: str = "/store/api/users{user_id}/cart/products/{product_id}"
 
     def __init__(self, repo: IAsyncRequestRepository) -> None:
         self.repo = repo
@@ -59,6 +60,16 @@ class BackendService:
     async def add_to_cart(self, user_id: int, part_id: int, quantity: int) -> None:
         product = AddPartSchema(part_id=part_id, quantity=quantity).model_dump_json()
         await self.repo.post(self.add_to_cart_path.format(user_id=user_id), data=product)
+    
+    async def get_cart_product(self, user_id: int, product_id: int) -> PartUnitSchema | None:
+        url = self.cart_product_path.format(user_id=user_id, product_id=product_id)
+        response = await self.repo.get(url)
+
+        if response.status_code == 404:
+            return None
+        
+        return PartUnitSchema.model_validate_json(response.data)
+
 
     async def clear_cart(self, user_id: int) -> None:
         await self.repo.delete(self.cart_by_user_path.format(user_id=user_id))
