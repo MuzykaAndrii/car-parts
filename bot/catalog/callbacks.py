@@ -34,10 +34,6 @@ async def part_clicked(callback: CallbackQuery, button: Select, manager: DialogM
     await manager.switch_to(CatalogStates.part_item)
 
 
-async def add_to_cart_clicked(callback: CallbackQuery, button: Button, manager: DialogManager):
-    await manager.switch_to(CatalogStates.enter_amount)
-
-
 async def amount_entered(event: CallbackQuery, widget: ManagedCounter, manager: DialogManager):
     context = manager.current_context()
 

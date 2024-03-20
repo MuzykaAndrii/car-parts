@@ -2,7 +2,7 @@ import operator
 
 from aiogram import F
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Cancel, Select, ScrollingGroup, Button, Row, Group, Start
+from aiogram_dialog.widgets.kbd import Cancel, Select, ScrollingGroup, Button, Row, Group, Start, Back
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
@@ -26,7 +26,7 @@ cart_window = Window(
                 id="cart_product_select",
                 item_id_getter=operator.attrgetter("id"),
                 items=F["cart"].products,
-                on_click=...,
+                on_click=callbacks.cart_product_clicked,
             ),
             id="products_group",
             hide_on_single_page=True,
@@ -59,13 +59,20 @@ cart_cleared_window = Window(
     state=CartStates.cart_cleared,
 )
 
-# manage_cart_product_window = Window(
+manage_cart_item_window = Window(
+    Jinja(messages.cart_item_detail),
 
-# )
+    Back(Const("↩️ До корзини")),
+    Cancel(Const("❌ Вийти")),
+
+    state=CartStates.manage_product,
+    getter=actions.get_cart_item_details,
+    parse_mode="HTML",
+)
 
 
 cart_dialog = Dialog(
     cart_window,
-    # manage_cart_product_window,
+    manage_cart_item_window,
     cart_cleared_window,
 )

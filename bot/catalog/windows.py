@@ -86,11 +86,7 @@ parts_list_window = Window(
 
 part_item_window = Window(
     Jinja(messages.part_item_template),
-    Button(
-        Const(messages.add_to_cart),
-        id="add_to_cart",
-        on_click=callbacks.add_to_cart_clicked,
-    ),
+    SwitchTo(Const(messages.add_to_cart), id="add_to_cart", state=CatalogStates.enter_amount),
     Back(Const(messages.part_item_back)),
     state=CatalogStates.part_item,
     parse_mode="HTML",
