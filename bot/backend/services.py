@@ -15,7 +15,7 @@ class BackendService:
 
     cart_by_user_path: str = "/store/api/users/{user_id}/cart"
     add_to_cart_path: str = "/store/api/users/{user_id}/cart/products"
-    cart_product_path: str = "/store/api/users{user_id}/cart/products/{product_id}"
+    cart_product_path: str = "/store/api/users/{user_id}/cart/products/{product_id}"
 
     def __init__(self, repo: IAsyncRequestRepository) -> None:
         self.repo = repo
@@ -68,7 +68,7 @@ class BackendService:
         if response.status_code == 404:
             return None
         
-        return PartUnitSchema.model_validate_json(response.data)
+        return PartUnitSchema.model_validate_json(response.body)
 
 
     async def clear_cart(self, user_id: int) -> None:
