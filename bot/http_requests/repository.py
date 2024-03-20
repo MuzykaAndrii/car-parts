@@ -19,3 +19,7 @@ class IAsyncRequestRepository(ABC):
     @abstractmethod
     async def put(self) -> HttpResponse:
         pass
+
+    @abstractmethod
+    async def delete(self) -> HttpResponse:
+        pass
