@@ -1,29 +1,16 @@
 import operator
 
 from aiogram import F
-from aiogram_dialog import DialogManager, Window
+from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import Cancel, Counter, Select, ScrollingGroup, Button, Row, Group, Start, SwitchTo
 from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
 
+from common.selectors import cart_is_present
 from catalog.states import CatalogStates
 from .states import CartStates
 from . import actions, messages, callbacks
-
-
-def cart_is_present(data: dict, case: Case, manager: DialogManager) -> bool:
-    return bool(data.get("cart", None))
-
-checkout_window = Window(
-    Case(
-        {True: Jinja(messages.cart_checkout), False: Const(messages.cart_empty)},
-        selector=cart_is_present,
-    ),
-    state=CartStates.checkout,
-    getter=actions.get_user_cart,
-    parse_mode="HTML",
-)
 
 
 cart_window = Window(
@@ -100,11 +87,15 @@ cart_cleared_window = Window(
     state=CartStates.cart_cleared,
 )
 
+manage_cart_product_window = Window(
+
+)
+
 
 cart_dialog = Dialog(
     cart_window,
-    checkout_window,
     enter_amount_window,
     product_added_window,
+    manage_cart_product_window,
     cart_cleared_window,
 )
