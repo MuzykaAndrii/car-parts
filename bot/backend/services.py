@@ -30,6 +30,8 @@ class BackendService:
 
     shipping_path: str = "/user/api/{user_id}/shipping/"
 
+    submit_order_path: str = "/store/api/users/{user_id}/order/submit"
+
     def __init__(self, repo: IAsyncRequestRepository) -> None:
         self.repo = repo
 
@@ -133,3 +135,11 @@ class BackendService:
             raise
 
         return ShippingSchema.model_validate_json(resp.body)
+    
+    
+    async def submit_user_order(self, user_id: int) -> None:
+        url = self.submit_order_path.format(user_id=user_id)
+        resp = await self.repo.patch(url)
+
+        if resp.status_code in [404, 500]:
+            raise
