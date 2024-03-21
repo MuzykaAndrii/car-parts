@@ -73,3 +73,16 @@ class CartSchema(BaseModel):
 class AddPartSchema(BaseModel):
     part_id: int
     quantity: int = 1
+
+
+class CreateShippingSchema(BaseModel):
+    first_name: str
+    last_name: str
+    phone_number: int
+    region: str
+    city: str
+    office_number: int
+
+
+class ShippingSchema(CreateShippingSchema):
+    user_id: int

@@ -1,6 +1,17 @@
 from pydantic import TypeAdapter
 
-from .schemas import AccountSchema, AddPartSchema, CarPartSchema, CarProducerSchema, CarSchema, CartSchema, CreateAccountSchema, PartUnitSchema
+from .schemas import (
+    AccountSchema,
+    AddPartSchema,
+    CarPartSchema,
+    CarProducerSchema,
+    CarSchema,
+    CartSchema,
+    CreateAccountSchema,
+    CreateShippingSchema,
+    PartUnitSchema,
+    ShippingSchema
+)
 from http_requests.repository import IAsyncRequestRepository
 
 
@@ -16,6 +27,8 @@ class BackendService:
     cart_by_user_path: str = "/store/api/users/{user_id}/cart"
     add_to_cart_path: str = "/store/api/users/{user_id}/cart/products"
     cart_product_path: str = "/store/api/users/{user_id}/cart/products/{product_id}"
+
+    shipping_path: str = "/user/api/{user_id}/shipping/"
 
     def __init__(self, repo: IAsyncRequestRepository) -> None:
         self.repo = repo
@@ -81,3 +94,42 @@ class BackendService:
 
     async def clear_cart(self, user_id: int) -> None:
         await self.repo.delete(self.cart_by_user_path.format(user_id=user_id))
+    
+
+    async def get_user_shipping(self, user_id: int) -> ShippingSchema | None:
+        url = self.shipping_path.format(user_id=user_id)
+        resp = await self.repo.get(url)
+
+        if resp.status_code == 404:
+            return None
+        
+        if resp.status_code == 200:
+            return ShippingSchema.model_validate_json(resp.body)
+    
+
+    async def create_user_shipping(
+        self,
+        user_id: int,
+        first_name: str,
+        last_name: str,
+        phone_number: int,
+        region: str,
+        city: str,
+        office_number: int,
+    ) -> ShippingSchema:
+        url = self.shipping_path.format(user_id=user_id)
+        data = CreateShippingSchema(
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
+            region=region,
+            city=city,
+            office_number=office_number
+        ).model_dump_json()
+
+        resp = await self.repo.post(url, data)
+
+        if resp.status_code in [409, 400]:
+            raise
+
+        return ShippingSchema.model_validate_json(resp.body)
