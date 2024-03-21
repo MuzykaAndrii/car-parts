@@ -111,6 +111,13 @@ class Part(models.Model):
     buy_price = models.FloatField('Закупочна ціна', blank=True)
     sell_price = models.FloatField('Роздрібна ціна', blank=True)
 
+    photo = models.ImageField(
+        'Фото товару',
+        upload_to="images/products/%Y/%m/%d/",
+        blank=True,
+        null=True,
+    )
+
     producer = models.ForeignKey(
         PartProducer,
         verbose_name="Виробник",
