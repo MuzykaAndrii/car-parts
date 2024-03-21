@@ -60,7 +60,7 @@ class CartView(MyLoginRequiredMixin, View):
         except CartNotFoundError:
             cart = None 
 
-        shipping = user_services.get_user_shipping_address(request.user)
+        shipping = user_services.get_user_shipping_address(request.user.id)
 
         return render(request, "store/cart.html", {"cart": cart, "shipping": shipping})
 

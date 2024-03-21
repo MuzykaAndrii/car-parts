@@ -11,13 +11,13 @@ from user import services as user_services
 
 class ShippingView(MyLoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        shipping_address = user_services.get_user_shipping_address(request.user)
+        shipping_address = user_services.get_user_shipping_address(request.user.id)
         form = ShippingAddressForm(instance=shipping_address)
 
         return render(request, 'user/shipping.html', {"form": form})
 
     def post(self, request: HttpRequest):
-        shipping_address = user_services.get_user_shipping_address(request.user)
+        shipping_address = user_services.get_user_shipping_address(request.user.id)
         form = ShippingAddressForm(instance=shipping_address, data=request.POST)
 
         if not form.is_valid():
