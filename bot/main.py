@@ -11,6 +11,7 @@ from base.handlers import router as base_router
 from catalog.handlers import router as catalog_router
 from cart.handlers import router as cart_router
 from shipping.handlers import router as shipping_router
+from orders.handlers import router as orders_router
 from components import backend_session
 from components.sessions import close_session
 
@@ -30,6 +31,7 @@ async def main() -> None:
         catalog_router,
         cart_router,
         shipping_router,
+        orders_router,
     )
 
     bot = Bot(settings.BOT_TOKEN)

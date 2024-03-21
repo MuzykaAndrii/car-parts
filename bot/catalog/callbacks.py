@@ -9,13 +9,6 @@ from components import backend_service
 from .states import CatalogStates
 
 
-async def start_catalog_dialog(event: CallbackQuery, widget: Any, manager: DialogManager):
-    await manager.start(
-        CatalogStates.car_providers,
-        mode=StartMode.NEW_STACK,
-    )
-
-
 async def car_provider_clicked(callback: CallbackQuery, button: Select, manager: DialogManager, item_id: int) -> None:
     context = manager.current_context()
     context.dialog_data.update(producer_id=item_id)

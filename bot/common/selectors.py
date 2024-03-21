@@ -3,4 +3,12 @@ from aiogram_dialog.widgets.text import Case
 
 
 def cart_is_present(data: dict, case: Case, manager: DialogManager) -> bool:
-    return bool(data.get("cart", None))
+    cart = data.get("cart", None)
+
+    if cart is None:
+        return False
+    
+    if not cart.products:
+        return False
+    
+    return True

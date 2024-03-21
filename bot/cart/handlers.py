@@ -12,4 +12,4 @@ router.include_router(cart_dialog)
 
 @router.message(Command("cart"))
 async def command_cart_handler(message: Message, dialog_manager: DialogManager) -> None:
-    await dialog_manager.start(CartStates.cart_detail, mode=StartMode.NEW_STACK)
+    await dialog_manager.start(CartStates.cart_detail, mode=StartMode.RESET_STACK)

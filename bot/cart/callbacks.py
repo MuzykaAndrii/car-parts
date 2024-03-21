@@ -1,7 +1,10 @@
 from aiogram.types import CallbackQuery
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, StartMode
 from aiogram_dialog.widgets.kbd import Button, Select
 
+from orders.states import OrderStates
+from shipping.states import ShippingStates
+from catalog.states import CatalogStates
 from components import backend_service
 from .states import CartStates
 
@@ -29,4 +32,18 @@ async def delete_cart_product_clicked(callback: CallbackQuery, button: Button, m
 
     context.dialog_data.update(is_deleted=is_deleted)
     await manager.switch_to(CartStates.product_deleted)
+
+
+async def checkout_clicked(callback: CallbackQuery, button: Button, manager: DialogManager):
+    account = await backend_service().get_account(callback.from_user.id)
+    cart = await backend_service().get_user_cart(account.user.id)
+    shipping = await backend_service().get_user_shipping(account.user.id)
+
+    if not cart:
+        await manager.event.answer("Спочатку додайте товари в корзину")
+        return await manager.start(CatalogStates.car_providers)
     
+    if not shipping:
+        return await manager.start(ShippingStates.show, data={"move_to": OrderStates.checkout})
+    
+    return await manager.start(OrderStates.checkout, data={"cart": cart, "shipping": shipping})

@@ -52,6 +52,11 @@ async def office_number_handler(message: Message, widget: ManagedTextInput, dial
     )
 
     await message.answer("Дані доставки успішно збережені!")
+    
+    move_to = dialog_manager.start_data.get("move_to")
+    if move_to is not None:
+        return await dialog_manager.start(move_to)
+
     await dialog_manager.switch_to(ShippingStates.show)
 
 

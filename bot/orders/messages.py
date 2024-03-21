@@ -10,4 +10,11 @@ cart_checkout = """
 {% endfor %}
 <b>🛍️ Всього товарів:</b> {{cart.total_quantity}}
 <b>💸 Сумма:</b> <u>{{cart.total}}</u>
+
+<b>Адреса доставки: </b>
+<b>Імя:</b> {{shipping.first_name}} {{shipping.last_name}}
+<b>Телефон:</b> {{shipping.phone_number}}
+<b>Область:</b> {{shipping.region}}
+<b>Наслелений пункт:</b> {{shipping.city}}
+<b>омер відділення:</b> {{shipping.office_number}}
 """

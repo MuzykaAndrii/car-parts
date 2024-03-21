@@ -7,7 +7,9 @@ from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
 
+from orders.states import OrderStates
 from common.selectors import cart_is_present
+from common import messages as cm
 from catalog.states import CatalogStates
 from .states import CartStates
 from . import actions, messages, callbacks
@@ -15,7 +17,7 @@ from . import actions, messages, callbacks
 
 cart_window = Window(
     Case(
-        {True: Jinja(messages.cart_header), False: Const(messages.cart_empty)},
+        {True: Jinja(messages.cart_header), False: Const(cm.cart_empty)},
         selector=cart_is_present,
     ),
 
@@ -34,7 +36,7 @@ cart_window = Window(
             height=5,
         ),
         Row(
-            Button(Const("🛒 Оформити замовлення"), id="checkout_btn", on_click=...,),
+            Button(Const("🛒 Оформити замовлення"), id="checkout_btn", on_click=callbacks.checkout_clicked),
             Start(Const("➕ Додати ще товари"), id="move_to_catalog", state=CatalogStates.car_providers),
         ),
         Row(
