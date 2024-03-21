@@ -1,7 +1,8 @@
 from django.urls import include, path
+from django.conf.urls.static import static
+from django.conf import settings
 
 from core.admin import admin_site
-
 
 urlpatterns = [
     path('admin/', admin_site.urls),
@@ -14,4 +15,4 @@ urlpatterns = [
     path("store/", include("store.urls", namespace="store")),
     path("selection/", include("selection.urls", namespace="selection")),
     path("telegram/", include("telegram.urls", namespace="telegram")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
