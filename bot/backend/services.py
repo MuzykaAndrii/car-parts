@@ -139,7 +139,7 @@ class BackendService:
     
     async def submit_user_order(self, user_id: int) -> None:
         url = self.submit_order_path.format(user_id=user_id)
-        resp = await self.repo.patch(url)
+        resp = await self.repo.patch(url, None)
 
         if resp.status_code in [404, 500]:
             raise

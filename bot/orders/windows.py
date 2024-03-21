@@ -6,7 +6,7 @@ from catalog.states import CatalogStates
 from common.selectors import cart_is_present
 from common import messages as cm
 from .states import OrderStates
-from . import messages, actions
+from . import messages, actions, callbacks
 
 
 
@@ -17,7 +17,7 @@ checkout_window = Window(
     ),
 
     kbd.Row(
-        kbd.Button(Const("Замовити"), id="make_order_btn", on_click=...,),
+        kbd.Button(Const("Замовити"), id="make_order_btn", on_click=callbacks.submit_order_clicked, when=cart_is_present),
         kbd.Start(Const("Додати товари"), id="to_catalog_btn", state=CatalogStates.car_providers),
     ),
     kbd.Cancel(Const("Вийти")),
@@ -27,6 +27,13 @@ checkout_window = Window(
     parse_mode="HTML",
 )
 
+order_submitted_window = Window(
+    Const("Ваше замовлення надійшло на обробку!"),
+    kbd.Cancel(Const("Вийти")),
+    state=OrderStates.submitted,
+)
+
 order_dialog = Dialog(
     checkout_window,
+    order_submitted_window,
 )
