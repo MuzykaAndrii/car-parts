@@ -28,6 +28,7 @@ class CarPartSchema(BaseModel):
     sell_price: float
     producer: str
     producer_detail_url: AnyHttpUrl
+    part_url: AnyHttpUrl
     belongs_to: str
 
 

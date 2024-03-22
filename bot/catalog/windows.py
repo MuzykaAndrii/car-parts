@@ -5,7 +5,7 @@ from aiogram_dialog.widgets.kbd import (
     Cancel,
     Select,
     Back,
-    Button,
+    Url,
     ScrollingGroup,
     Counter,
     Row,
@@ -87,6 +87,7 @@ parts_list_window = Window(
 part_item_window = Window(
     Jinja(messages.part_item_template),
     SwitchTo(Const(messages.add_to_cart), id="add_to_cart", state=CatalogStates.enter_amount),
+    Url(Const("Дивитись на сайті"), Format("{part.part_url}"), id="part_url"),
     Back(Const(messages.part_item_back)),
     state=CatalogStates.part_item,
     parse_mode="HTML",

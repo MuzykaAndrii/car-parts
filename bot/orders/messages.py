@@ -4,7 +4,7 @@ cart_checkout = """
 <b>🛒 Ваша корзина:</b>
 
 {% for product in cart.products %}
-{{loop.index}}. <i>{{product.part.name}}</i> ({{product.part.producer}}) до {{product.part.belongs_to}}
+{{loop.index}}. <a href='{{product.part.part_url}}'><i>{{product.part.name}}</i></a> ({{product.part.producer}}) до {{product.part.belongs_to}}
 💰 {{product.sell_price}} x {{product.quantity}}шт = {{product.total_price}}
 
 {% endfor %}

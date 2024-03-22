@@ -9,7 +9,7 @@ cart_header = """
 cart_product = "⏺️ {item.part.name} до {item.part.belongs_to} {item.quantity}шт."
 
 cart_item_detail = """
-<b>Товар:</b> {{ product.part.name }} 📦
+<b>Товар:</b> <a href="{{ product.part.part_url }}">{{ product.part.name }}</a>📦
 <b>До авто:</b> {{ product.part.belongs_to }} 🚗
 <b>Артикул:</b> {{ product.part.articul }} 🔖
 <b>Виробник:</b> <a href="{{ product.part.producer_detail_url }}">{{ product.part.producer }}</a> 🏭
