@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, AnyHttpUrl
+from pydantic import BaseModel, AnyHttpUrl, Field
 
 
 class CarProducerSchema(BaseModel):
@@ -77,12 +77,12 @@ class AddPartSchema(BaseModel):
 
 
 class CreateShippingSchema(BaseModel):
-    first_name: str
-    last_name: str
-    phone_number: int
-    region: str
-    city: str
-    office_number: int
+    first_name: str = Field(title="Введіть ваше імя")
+    last_name: str = Field(title="Введіть ваше прізвище")
+    phone_number: int = Field(title="Введіть ваш номер телефону")
+    region: str = Field(title="Введіть область")
+    city: str = Field(title="Введіть населений пункт")
+    office_number: int = Field(title="Введіть номер відділення НП")
 
 
 class ShippingSchema(CreateShippingSchema):
