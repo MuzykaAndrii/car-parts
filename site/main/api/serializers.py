@@ -40,9 +40,13 @@ class PartSerializer(ModelSerializer):
     producer = CharField(source="producer.name")
     belongs_to = CharField(source="belongs_to.name")
     producer_detail_url = SerializerMethodField()
+    part_url = SerializerMethodField()
 
     def get_producer_detail_url(self, obj: Part) -> str:
         return settings.HOST_URL + obj.producer.get_absolute_url()
+    
+    def get_part_url(self, obj: Part):
+        return settings.HOST_URL + obj.get_absolute_url()
 
     class Meta:
         model = Part
@@ -55,6 +59,7 @@ class PartSerializer(ModelSerializer):
             "producer",
             "belongs_to",
             "producer_detail_url",
+            "part_url",
         )
 
 
