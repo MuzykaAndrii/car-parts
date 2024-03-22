@@ -17,7 +17,7 @@
             {% for product in cart.products.all %}
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
-                    <div class="fw-bold">{{ product.part.name }} ({{ product.part.belongs_to.name }})</div>
+                    <a href="{{ product.part.get_absolute_url }}" class="fw-bold">{{ product.part.name }} ({{ product.part.belongs_to.name }})</a><br>
                     {{ product.total_price }} грн.
                 </div>
                 <form method="post" action="{% url 'store:delete_from_order' %}">

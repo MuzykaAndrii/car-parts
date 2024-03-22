@@ -133,6 +133,9 @@ class Part(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def get_absolute_url(self):
+        return reverse("main:part_detail", kwargs={"part_id": self.pk, "car_vin": self.belongs_to_id})
+
     def __str__(self) -> str:
         return f'{self.name} ({self.producer}) для {self.belongs_to.name}'
         

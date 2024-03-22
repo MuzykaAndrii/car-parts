@@ -32,6 +32,13 @@ class PartsCatalog(View):
         return render(request, "main/parts_catalog.html", {"parts": parts, "title": title})
 
 
+class PartDetail(View):
+    def get(self, request: HttpRequest, car_vin: str, part_id: int):
+        part = get_object_or_404(Part.objects.select_related("producer", "belongs_to__producer"), pk=part_id, belongs_to_id=car_vin)
+
+        return render(request, "main/part_detail.html", {"part": part})
+
+
 class PartProducerView(View):
     def get(self, request: HttpRequest, pk: int):
         producer = get_object_or_404(PartProducer, pk=pk)
