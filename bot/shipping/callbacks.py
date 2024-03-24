@@ -3,6 +3,7 @@ from typing import Any
 from aiogram.types import Message
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import ManagedTextInput
+from pydantic import TypeAdapter
 
 
 from components import backend_service
@@ -14,8 +15,15 @@ async def handle_shipping_input(message: Message, widget: ManagedTextInput, dial
 
     current = dialog_manager.dialog_data.get("current")
     to_fill_remain = dialog_manager.dialog_data.get("to_fill")
-    #TODO: add type checking
-    current.value = shipping_component
+
+    try:
+        adapter = TypeAdapter(current.annotation)
+        value = adapter.validate_python(shipping_component)
+    except Exception as e:
+        print(e)
+        return await invalid_data_handler(message, widget, dialog_manager, e)
+    
+    current.value = value
 
     dialog_manager.dialog_data.get("filled").append(current)
 
@@ -45,3 +53,4 @@ async def save_shipping_data(user_id: int, manager: DialogManager, **fields):
 
 async def invalid_data_handler(message: Message, widget: ManagedTextInput, dialog_manager: DialogManager, error):
     await message.reply("Введено неправильні дані, повторіть ще раз")
+    dialog_manager.dialog_data.update(error=True)

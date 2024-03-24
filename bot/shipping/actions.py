@@ -17,26 +17,35 @@ async def get_user_shipping(dialog_manager: DialogManager, event_from_user: User
 @dataclass(slots=True)
 class SchemaComponent:
     field_name: str
-    accepted_type: type
+    annotation: type
     message: str
     value: str | None = None
 
 
 async def get_shipping_component(dialog_manager: DialogManager, event_from_user: User, **kwargs):
-    if not dialog_manager.dialog_data.get("to_fill"):
+    to_fill = dialog_manager.dialog_data.get("to_fill")
+    current = dialog_manager.dialog_data.get("current")
+
+    if not to_fill and not current:
         to_fill: list[SchemaComponent] = []
 
         for field_name, info in CreateShippingSchema.model_fields.items():
             to_fill.append(SchemaComponent(
                 field_name=field_name,
-                accepted_type=info.default_factory,
+                annotation=info.annotation,
                 message=info.title,
             ))
 
         dialog_manager.dialog_data.update(to_fill=to_fill)
         dialog_manager.dialog_data.update(filled=list())
     
-    current_component = dialog_manager.dialog_data.get("to_fill").pop(0)
-    dialog_manager.dialog_data.update(current=current_component)
+    validation_error = dialog_manager.dialog_data.get("error")
+
+    if validation_error:
+        current_component = current
+        dialog_manager.dialog_data.update(error=False)
+    else:
+        current_component = dialog_manager.dialog_data.get("to_fill").pop(0)
+        dialog_manager.dialog_data.update(current=current_component)
 
     return {"component": current_component}
