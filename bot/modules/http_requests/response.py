@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from typing import NamedTuple
 
 
-@dataclass(slots=True, frozen=True)
-class HttpResponse:
+class HttpResponse(NamedTuple):
     status_code: int
     body: bytes

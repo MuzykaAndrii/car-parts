@@ -36,41 +36,41 @@ class BackendService:
         self.repo = repo
 
     async def get_car_producers(self) -> list[CarProducerSchema]:
-        response = await self.repo.get(self.car_producers_path)
+        _, data = await self.repo.get(self.car_producers_path)
         adapter = TypeAdapter(list[CarProducerSchema])
-        return adapter.validate_json(response.body)
+        return adapter.validate_json(data)
 
 
     async def get_cars(self, producer_id: int) -> list[CarSchema]:
-        response = await self.repo.get(self.cars_list_path.format(producer_id=producer_id))
+        _, data = await self.repo.get(self.cars_list_path.format(producer_id=producer_id))
         adapter = TypeAdapter(list[CarSchema])
-        return adapter.validate_json(response.body)
+        return adapter.validate_json(data)
 
 
     async def get_parts(self, producer_id: int, car_vin: str) -> list[CarPartSchema]:
-        response = await self.repo.get(self.parts_list_path.format(producer_id=producer_id, car_vin=car_vin))
+        _, data = await self.repo.get(self.parts_list_path.format(producer_id=producer_id, car_vin=car_vin))
         adapter = TypeAdapter(list[CarPartSchema])
-        return adapter.validate_json(response.body)
+        return adapter.validate_json(data)
 
     async def get_part(self, producer_id: int, car_vin: str, part_id: int) -> CarPartSchema:
-        response = await self.repo.get(self.part_path.format(producer_id=producer_id, car_vin=car_vin, part_id=part_id))
-        return CarPartSchema.model_validate_json(response.body)
+        status, data = await self.repo.get(self.part_path.format(producer_id=producer_id, car_vin=car_vin, part_id=part_id))
+        return CarPartSchema.model_validate_json(data)
 
     async def get_account(self, account_id: int) -> AccountSchema:
-        response = await self.repo.get(self.get_account_path.format(account_id=account_id))
+        _, data = await self.repo.get(self.get_account_path.format(account_id=account_id))
 
-        return AccountSchema.model_validate_json(response.body)
+        return AccountSchema.model_validate_json(data)
 
     async def create_account(self, id: int, first_name: str, username: str | None, last_name: str | None) -> None:
         account = CreateAccountSchema(id=id, first_name=first_name, username=username, last_name=last_name).model_dump_json()
         await self.repo.post(self.create_account_path, data=account)
 
     async def get_user_cart(self, user_id: int) -> CartSchema | None:
-        response = await self.repo.get(self.cart_by_user_path.format(user_id=user_id))
-        if response.status_code == 404:
+        status, data = await self.repo.get(self.cart_by_user_path.format(user_id=user_id))
+        if status == 404:
             return None
         
-        return CartSchema.model_validate_json(response.body)
+        return CartSchema.model_validate_json(data)
 
     async def add_to_cart(self, user_id: int, part_id: int, quantity: int) -> None:
         product = AddPartSchema(part_id=part_id, quantity=quantity).model_dump_json()
@@ -78,19 +78,19 @@ class BackendService:
     
     async def get_cart_product(self, user_id: int, product_id: int) -> PartUnitSchema | None:
         url = self.cart_product_path.format(user_id=user_id, product_id=product_id)
-        response = await self.repo.get(url)
+        status, data = await self.repo.get(url)
 
-        if response.status_code == 404:
+        if status == 404:
             return None
         
-        return PartUnitSchema.model_validate_json(response.body)
+        return PartUnitSchema.model_validate_json(data)
     
 
     async def delete_cart_product(self, user_id: int, product_id: int) -> bool:
         url = self.cart_product_path.format(user_id=user_id, product_id=product_id)
-        response = await self.repo.delete(url)
+        status, _ = await self.repo.delete(url)
 
-        if response.status_code == 204:
+        if status == 204:
             return True
         return False
 
@@ -100,13 +100,13 @@ class BackendService:
 
     async def get_user_shipping(self, user_id: int) -> ShippingSchema | None:
         url = self.shipping_path.format(user_id=user_id)
-        resp = await self.repo.get(url)
+        status, data = await self.repo.get(url)
 
-        if resp.status_code == 404:
+        if status == 404:
             return None
         
-        if resp.status_code == 200:
-            return ShippingSchema.model_validate_json(resp.body)
+        if status == 200:
+            return ShippingSchema.model_validate_json(data)
     
 
     async def create_user_shipping(
@@ -129,17 +129,17 @@ class BackendService:
             office_number=office_number
         ).model_dump_json()
 
-        resp = await self.repo.post(url, data)
+        status, data = await self.repo.post(url, data)
 
-        if resp.status_code in [409, 400]:
+        if status in [409, 400]:
             raise
 
-        return ShippingSchema.model_validate_json(resp.body)
+        return ShippingSchema.model_validate_json(data)
     
     
     async def submit_user_order(self, user_id: int) -> None:
         url = self.submit_order_path.format(user_id=user_id)
-        resp = await self.repo.patch(url, None)
+        status, _ = await self.repo.patch(url, None)
 
-        if resp.status_code in [404, 500]:
+        if status in [404, 500]:
             raise
