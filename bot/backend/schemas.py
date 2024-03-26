@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, AnyHttpUrl, Field
 
+from common.phonenumber import PhoneNumber
+
 
 class CarProducerSchema(BaseModel):
     id: int
@@ -79,10 +81,10 @@ class AddPartSchema(BaseModel):
 class CreateShippingSchema(BaseModel):
     first_name: str = Field(title="Введіть ваше імя")
     last_name: str = Field(title="Введіть ваше прізвище")
-    phone_number: int = Field(title="Введіть ваш номер телефону")
+    phone_number: PhoneNumber = Field(title="Введіть ваш номер телефону")
     region: str = Field(title="Введіть область")
     city: str = Field(title="Введіть населений пункт")
-    office_number: int = Field(title="Введіть номер відділення НП")
+    office_number: int = Field(gt=0, title="Введіть номер відділення НП")
 
 
 class ShippingSchema(CreateShippingSchema):
