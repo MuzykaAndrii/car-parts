@@ -1,40 +1,7 @@
-from typing import Any
+from aiogram_dialog import DialogManager
 
-from aiogram.types import Message
-from aiogram_dialog import DialogManager, ShowMode
-from aiogram_dialog.widgets.input import ManagedTextInput
-
-from backend.schemas import CreateShippingSchema
 from components import backend_service
 from .states import ShippingStates
-
-
-async def handle_shipping_input(message: Message, widget: ManagedTextInput, dialog_manager: DialogManager, shipping_component: Any):
-    dialog_manager.show_mode=ShowMode.DELETE_AND_SEND
-
-    current = dialog_manager.dialog_data.get("current")
-    to_fill_remain = dialog_manager.dialog_data.get("to_fill")
-
-    try:
-        validator = CreateShippingSchema.__pydantic_validator__.validate_assignment(
-            CreateShippingSchema.model_construct(),
-            current.field_name, shipping_component,
-        )
-    except Exception as e:
-        return await invalid_data_handler(message, widget, dialog_manager, e)
-    
-    current.value = getattr(validator, current.field_name)
-
-    dialog_manager.dialog_data.get("filled").append(current)
-
-    if not to_fill_remain:
-        fields = dict()
-        for filled in dialog_manager.dialog_data.get("filled"):
-            fields.update({filled.field_name: filled.value})
-
-        return await save_shipping_data(message.from_user.id, dialog_manager, **fields)
-
-    await dialog_manager.switch_to(ShippingStates.shipping_component_entering)
 
 
 async def save_shipping_data(user_id: int, manager: DialogManager, **fields):
@@ -49,8 +16,3 @@ async def save_shipping_data(user_id: int, manager: DialogManager, **fields):
         return await manager.start(start_data.get("move_to"))
 
     await manager.switch_to(ShippingStates.show)
-
-
-async def invalid_data_handler(message: Message, widget: ManagedTextInput, dialog_manager: DialogManager, error):
-    await message.reply("Введено неправильні дані, повторіть ще раз")
-    dialog_manager.dialog_data.update(error=True)
