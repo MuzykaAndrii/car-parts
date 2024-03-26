@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import gettext_lazy as _
 
 from core.admin import admin_site
 from store.models import Order
+from user.models import ShippingAddress
 
 
 class OrdersInline(admin.TabularInline):
@@ -15,5 +17,17 @@ class OrdersInline(admin.TabularInline):
     readonly_fields = ("pk", "sold_at")
     show_change_link = True
 
-UserAdmin.inlines += (OrdersInline, )
+
+class ShippingInline(admin.StackedInline):
+    model = ShippingAddress
+    verbose_name = "Адреса доставки"
+    verbose_name_plural = "Адреси доставки"
+
+
+UserAdmin.inlines += (ShippingInline, OrdersInline)
+UserAdmin.fieldsets = (
+    (None, {"fields": ("username", "password")}),
+    (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
+    (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+)
 admin_site.register(User, UserAdmin)

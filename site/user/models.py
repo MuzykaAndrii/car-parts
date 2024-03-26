@@ -44,3 +44,10 @@ class ShippingAddress(models.Model):
         blank=False,
         verbose_name="Номер відділення",
     )
+
+    def __str__(self) -> str:
+        return f"{self.last_name} {self.first_name} {self.phone_number} {self.region} {self.city} {self.office_number}"
+
+    class Meta:
+        verbose_name = "Адреса доставки"
+        verbose_name_plural = "Адреси доставки"
