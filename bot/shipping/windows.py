@@ -4,7 +4,7 @@ from aiogram_dialog.widgets import text, kbd, input
 
 
 from backend.schemas import CreateShippingSchema
-from components.schemainput import SchemaInput
+from modules.shemainput.schemainput import SchemaInput
 from .states import ShippingStates
 from . import actions, messages, callbacks
 
@@ -36,7 +36,7 @@ shipping_address_schema_input = SchemaInput(
 
 
 enter_shipping_component_window = Window(
-    text.Format("{component.message}"),
+    text.Format("{item.message}"),
     input.TextInput(
         id="shipping_component",
         on_success=shipping_address_schema_input.handle_input,
