@@ -45,6 +45,10 @@ class Order(models.Model):
     sold_at = models.DateTimeField('Час продажу', auto_now_add=True, editable=True)
 
     @property
+    def ship_to(self):
+        return str(self.customer.shipping_address)
+
+    @property
     def total(self) -> float:
         return sum((product.total_price for product in self.products.all()))
     

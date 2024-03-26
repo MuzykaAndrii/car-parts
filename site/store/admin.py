@@ -19,8 +19,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ("status", "sold_at")
 
     search_fields = ("pk", )
-    fields = ("id", "sold_at", "customer", "status")
-    readonly_fields = ("id", "sold_at")
+    fields = ("id", "sold_at", "customer", "status", "ship_to")
+    readonly_fields = ("id", "sold_at", "ship_to")
 
     date_hierarchy = "sold_at"
     ordering = ("-sold_at",)
