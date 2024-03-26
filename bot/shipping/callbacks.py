@@ -3,9 +3,8 @@ from typing import Any
 from aiogram.types import Message
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import ManagedTextInput
-from pydantic import TypeAdapter
 
-
+from backend.schemas import CreateShippingSchema
 from components import backend_service
 from .states import ShippingStates
 
@@ -17,13 +16,14 @@ async def handle_shipping_input(message: Message, widget: ManagedTextInput, dial
     to_fill_remain = dialog_manager.dialog_data.get("to_fill")
 
     try:
-        adapter = TypeAdapter(current.annotation)
-        value = adapter.validate_python(shipping_component)
+        validator = CreateShippingSchema.__pydantic_validator__.validate_assignment(
+            CreateShippingSchema.model_construct(),
+            current.field_name, shipping_component,
+        )
     except Exception as e:
-        print(e)
         return await invalid_data_handler(message, widget, dialog_manager, e)
     
-    current.value = value
+    current.value = getattr(validator, current.field_name)
 
     dialog_manager.dialog_data.get("filled").append(current)
 
