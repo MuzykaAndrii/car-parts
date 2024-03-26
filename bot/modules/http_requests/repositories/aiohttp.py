@@ -1,6 +1,6 @@
-from http_requests.repository import IAsyncRequestRepository
-from http_requests.response import HttpResponse
-from http_requests.headers import HttpHeaders
+from .interface import IAsyncRequestRepository
+from ..response import HttpResponse
+from ..headers import HttpHeaders
 
 from aiohttp import ClientSession, ClientResponse
 

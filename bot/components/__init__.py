@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from aiohttp import ClientSession
 
-from .http import AioHttpRepository
+from modules.http_requests.repositories.aiohttp import AioHttpRepository
 from .sessions import session_factory
 from backend.services import BackendService
 from config import settings

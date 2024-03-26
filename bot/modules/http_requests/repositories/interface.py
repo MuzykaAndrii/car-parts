@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from .response import HttpResponse
+from ..response import HttpResponse
 
 
 class IAsyncRequestRepository(ABC):

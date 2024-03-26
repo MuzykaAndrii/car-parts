@@ -12,7 +12,7 @@ from .schemas import (
     PartUnitSchema,
     ShippingSchema
 )
-from http_requests.repository import IAsyncRequestRepository
+from modules.http_requests.repositories.interface import IAsyncRequestRepository
 
 
 class BackendService:
