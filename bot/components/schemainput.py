@@ -11,7 +11,6 @@ from pydantic import BaseModel
 @dataclass(slots=True)
 class SchemaComponent:
     field_name: str
-    annotation: type
     message: str
     value: str | None = None
 
@@ -61,7 +60,6 @@ class SchemaInput:
             for field_name, info in self.schema.model_fields.items():
                 to_fill.append(SchemaComponent(
                     field_name=field_name,
-                    annotation=info.annotation,
                     message=info.title,
                 ))
 
