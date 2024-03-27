@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from core.admin import admin_site
 from .models import CarProducer, Auto, Part, PartProducer, PartUnit
 
 
@@ -34,7 +33,7 @@ class PartProducerAdmin(admin.ModelAdmin):
 
 
 
-admin_site.register(CarProducer)
-admin_site.register(Part, PartPage)
-admin_site.register(Auto, AutoPage)
-admin_site.register(PartProducer, PartProducerAdmin)
+admin.site.register(CarProducer)
+admin.site.register(Part, PartPage)
+admin.site.register(Auto, AutoPage)
+admin.site.register(PartProducer, PartProducerAdmin)

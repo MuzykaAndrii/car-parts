@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from core.admin import admin_site
 from store.models import Order
 from user.models import ShippingAddress
 
@@ -30,4 +29,4 @@ UserAdmin.fieldsets = (
     (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
     (_("Important dates"), {"fields": ("last_login", "date_joined")}),
 )
-admin_site.register(User, UserAdmin)
+# admin.site.register(User, UserAdmin)

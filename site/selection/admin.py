@@ -2,7 +2,6 @@ from typing import Any
 
 from django.contrib import admin
 
-from core.admin import admin_site
 from selection.models import SelectionRequest, SelectionResponse
 
 
@@ -56,4 +55,4 @@ class SelectionRequestAdmin(admin.ModelAdmin):
             return super().save_model(request, obj, form, change)
 
 
-admin_site.register(SelectionRequest, SelectionRequestAdmin)
+admin.site.register(SelectionRequest, SelectionRequestAdmin)

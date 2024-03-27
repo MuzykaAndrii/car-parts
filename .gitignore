@@ -123,7 +123,7 @@ celerybeat.pid
 
 # Environments
 .bot-env
-.site-env
+.site-venv
 .env
 .venv
 env/

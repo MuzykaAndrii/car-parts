@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from core.admin import admin_site
 from main.models import PartUnit
 from store.models import Order
 
@@ -30,4 +29,4 @@ class OrderAdmin(admin.ModelAdmin):
     )
 
 
-admin_site.register(Order, OrderAdmin)
+admin.site.register(Order, OrderAdmin)

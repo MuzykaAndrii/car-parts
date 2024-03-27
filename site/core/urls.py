@@ -2,10 +2,16 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from core.admin import admin_site
+from django.contrib import admin
+
+
+admin.site.site_header = "FDA.IF"
+admin.site.site_title = "FDA.IF"
+admin.site.index_title = "FDA.IF"
+
 
 urlpatterns = [
-    path('admin/', admin_site.urls),
+    path("admin/", admin.site.urls),
     path('auth/', include('auth.urls', namespace='auth')),
     path('', include('main.urls', namespace='main')),
     path('scanner/', include('scanner.urls', namespace='scanner')),
