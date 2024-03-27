@@ -3,12 +3,16 @@ from django.http import HttpRequest
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework_api_key.permissions import HasAPIKey
+from rest_framework.permissions import IsAdminUser
 
 from user import services as user_services
 from user.api.serializers import ShippingAddressSerializer
 
 
 class ShippingAddressEndpoint(APIView):
+    permission_classes = [IsAdminUser | HasAPIKey]
+
     def get(self, request: HttpRequest, user_id: int):
         shipping = user_services.get_user_shipping_address(user_id)
 

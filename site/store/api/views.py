@@ -3,6 +3,8 @@ from django.http import HttpRequest
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework_api_key.permissions import HasAPIKey
+from rest_framework.permissions import IsAdminUser
 
 from main.api.serializers import PartUnitSerializer
 from store.exceptions import CartNotFoundError, PartNotFoundError, UserNotOwnerOfOrderError
@@ -11,6 +13,8 @@ from store.api.serializers import AddToCartSerializer, OrderSerializer
 
 
 class UserCartEndpoint(APIView):
+    permission_classes = [IsAdminUser | HasAPIKey]
+
     def get(self, request: HttpRequest, user_id: int):
         try:
             cart = store_services.get_user_cart(user_id)
@@ -30,6 +34,8 @@ class UserCartEndpoint(APIView):
 
 
 class CartProductsEndpoint(APIView):
+    permission_classes = [IsAdminUser | HasAPIKey]
+
     def get(self, request: HttpRequest, user_id: int, part_unit_id: int):
         part_unit = store_services.get_part_unit(user_id, part_unit_id)
         serializer = PartUnitSerializer(part_unit)
@@ -60,6 +66,8 @@ class CartProductsEndpoint(APIView):
 
 
 class SubmitOrderEndpoint(APIView):
+    permission_classes = [IsAdminUser | HasAPIKey]
+
     def patch(self, request: HttpRequest, user_id: int):
         try:
             order = store_services.submit_user_order(user_id)
@@ -71,6 +79,8 @@ class SubmitOrderEndpoint(APIView):
 
 
 class UserOrdersEndpoint(APIView):
+    permission_classes = [IsAdminUser | HasAPIKey]
+
     def get(self, request: HttpRequest, user_id: int):
         orders = store_services.get_user_orders(user_id)
         serializer = OrderSerializer(orders, many=True)

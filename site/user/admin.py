@@ -29,4 +29,6 @@ UserAdmin.fieldsets = (
     (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
     (_("Important dates"), {"fields": ("last_login", "date_joined")}),
 )
-# admin.site.register(User, UserAdmin)
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
