@@ -10,7 +10,10 @@ from config import settings
 
 @lru_cache
 def backend_session() -> ClientSession:
-    return session_factory(base_url=settings.BACKEND_URL)
+    return session_factory(
+        base_url=settings.BACKEND_URL,
+        headers=settings.backend_auth_header,
+    )
 
 def backend_repo():
     return AioHttpRepository(backend_session())

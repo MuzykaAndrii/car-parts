@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +15,12 @@ class Settings(BaseSettings):
     BOT_TOKEN: str
 
     BACKEND_URL: str
+    BACKEND_API_KEY: str
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def backend_auth_header(self) -> dict:
+        return {"Authorization": f"Api-Key {self.BACKEND_API_KEY}"}
 
 
 settings = Settings()
