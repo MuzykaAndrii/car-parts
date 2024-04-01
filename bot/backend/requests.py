@@ -69,3 +69,44 @@ class GetRequest(AbstractRequestManager, Generic[T]):
             status = resp.status
             body = await resp.read()
         return status, body
+
+
+class PostRequest(AbstractRequestManager, Generic[T]):
+    request_schema: type[BaseModel]
+    
+    async def _make_request(self, **kwargs):
+        async with self._session.post(self.url, **kwargs) as resp:
+            status = resp.status
+            body = await resp.read()
+        return status, body
+
+
+# ----------------------------------------
+    
+from . schemas import CarProducerSchema
+import asyncio
+from aiohttp import ClientSession
+
+class GetCarVendorsEndpoint(GetRequest[list[CarProducerSchema]]):
+    url_builder = UrlBuilder("/api/car_producers/")
+    response_schema = CarProducerSchema
+    response_many = True
+
+
+def cart_vendors_endpoint():
+    session = ClientSession("http://127.0.0.1:8000")
+    get_car_vendors = GetCarVendorsEndpoint(session)
+    get_car_vendors.build_url()
+
+    return get_car_vendors
+
+async def main():
+    get_car_vendors = cart_vendors_endpoint()
+
+    res = await get_car_vendors()
+
+    print(res)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
