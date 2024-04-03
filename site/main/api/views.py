@@ -1,7 +1,8 @@
 from django.http import HttpRequest
 from django.shortcuts import get_list_or_404, get_object_or_404
-from django.db.models import Count, Subquery, OuterRef
+from django.db.models import Count, Subquery, OuterRef, Q
 
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_api_key.permissions import HasAPIKey
@@ -70,4 +71,31 @@ class PartEndpoint(APIView):
         )
 
         serializer = PartSerializer(part)
+        return Response(serializer.data)
+
+
+class SearchPartEndpoint(APIView):
+    permission_classes = [IsAdminUser | HasAPIKey]
+
+    def get(self, request: HttpRequest):
+        search_query = request.query_params.get("keywords", None)
+
+        print(search_query)
+
+        if not search_query:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        parts = (
+            Part.objects
+            .select_related("producer", "belongs_to", "belongs_to__producer")
+            .filter(
+                Q(name__icontains=search_query) |
+                Q(producer__name__icontains=search_query) |
+                Q(belongs_to__model__icontains=search_query) |
+                Q(belongs_to__vin__icontains=search_query) |
+                Q(belongs_to__producer__name__icontains=search_query)
+            )
+        )
+
+        serializer = PartSerializer(parts, many=True)
         return Response(serializer.data)
