@@ -8,6 +8,7 @@ from aiogram_dialog import setup_dialogs
 
 from config import settings
 from base.handlers import router as base_router
+from search.handlers import router as search_router
 from catalog.handlers import router as catalog_router
 from cart.handlers import router as cart_router
 from shipping.handlers import router as shipping_router
@@ -32,6 +33,7 @@ async def main() -> None:
         cart_router,
         shipping_router,
         orders_router,
+        search_router,
     )
 
     bot = Bot(settings.BOT_TOKEN)
