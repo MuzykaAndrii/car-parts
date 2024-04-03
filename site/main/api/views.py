@@ -85,16 +85,13 @@ class SearchPartEndpoint(APIView):
         if not search_query:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
-        parts = (
-            Part.objects
-            .select_related("producer", "belongs_to", "belongs_to__producer")
-            .filter(
-                Q(name__icontains=search_query) |
-                Q(producer__name__icontains=search_query) |
-                Q(belongs_to__model__icontains=search_query) |
-                Q(belongs_to__vin__icontains=search_query) |
-                Q(belongs_to__producer__name__icontains=search_query)
-            )
+        parts = get_list_or_404(
+            Part.objects.select_related("producer", "belongs_to", "belongs_to__producer"),
+            Q(name__icontains=search_query) |
+            Q(producer__name__icontains=search_query) |
+            Q(belongs_to__model__icontains=search_query) |
+            Q(belongs_to__vin__icontains=search_query) |
+            Q(belongs_to__producer__name__icontains=search_query)
         )
 
         serializer = PartSerializer(parts, many=True)
