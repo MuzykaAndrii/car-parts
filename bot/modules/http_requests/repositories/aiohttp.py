@@ -15,8 +15,8 @@ class AioHttpRepository(IAsyncRequestRepository):
         body = await response.read()
         return HttpResponse(status_code=status_code, body=body)
 
-    async def get(self, url: str) -> HttpResponse:
-        async with self.session.get(url) as resp:
+    async def get(self, url: str, **kwargs) -> HttpResponse:
+        async with self.session.get(url, **kwargs) as resp:
             return await self._process_response(resp)
 
     async def post(self, url: str, data: str) -> HttpResponse:

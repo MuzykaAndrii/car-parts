@@ -32,6 +32,8 @@ class BackendService:
 
     submit_order_path: str = "/store/api/users/{user_id}/order/submit"
 
+    search_path: str = "/api/search"
+
     def __init__(self, repo: IAsyncRequestRepository) -> None:
         self.repo = repo
 
@@ -143,3 +145,16 @@ class BackendService:
 
         if status in [404, 500]:
             raise
+    
+
+    async def search_products(self, query: str) -> list[CarPartSchema] | None:
+        url = self.search_path
+        status, data = await self.repo.get(url, params={"keywords": query})
+
+        match status:
+            case 404:
+                return None
+            case 200:
+                return TypeAdapter(list[CarPartSchema]).validate_json(data)
+            case _:
+                raise
