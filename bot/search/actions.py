@@ -11,4 +11,5 @@ async def search(dialog_manager: DialogManager, **kwargs) -> dict[Literal["produ
 
     products = await backend_service().search_products(search_query)
 
+    dialog_manager.dialog_data.update(products=products)
     return {"products": products}

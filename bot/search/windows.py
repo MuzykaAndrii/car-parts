@@ -3,7 +3,8 @@ import operator
 from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import (
-    Select,
+    Url,
+    ListGroup,
     Cancel,
     ScrollingGroup,
 )
@@ -21,16 +22,19 @@ search_failed = ~searching_success
 results_window = Window(
     Const("Результати пошуку:", when=searching_success),
     ScrollingGroup(
-        Select(
-            Format("{item.name} ({item.producer})"),
+        ListGroup(
+            Url(
+                Format("{item.name} ({item.producer}) {item.belongs_to}"),
+                Format("{item.part_url}"),
+                id="search_url",
+            ),
             id="part_select_search",
             item_id_getter=operator.attrgetter("id"),
             items="products",
-            on_click=...,
         ),
         id="parts_search_group",
         hide_on_single_page=True,
-        width=2,
+        width=1,
         height=6,
         when=searching_success,
     ),
