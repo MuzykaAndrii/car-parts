@@ -80,8 +80,6 @@ class SearchPartEndpoint(APIView):
     def get(self, request: HttpRequest):
         search_query = request.query_params.get("keywords", None)
 
-        print(search_query)
-
         if not search_query:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
