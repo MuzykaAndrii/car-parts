@@ -15,9 +15,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'garage:garage' %}">Гараж 🛠️</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a target=”_blank” class="nav-link" href="https://t.me/FDA_bot">Телеграм бот 🤖</a>
-        </li>
+        </li> -->
       </ul>
       <div style="margin-right: 10px" class="nav-item">
         <a href="{% url 'selection:list' %}" class="nav-link">Підбір запчастин 🔍</a>
@@ -25,7 +25,7 @@
       <div style="margin-right: 10px" class="nav-item">
         <a href="{% url 'store:cart' %}" class="nav-link">Корзина 🛒</a>
       </div>
-      <div class="nav-item dropdown btn btn-outline-secondary ml-3">
+      <div class="nav-item dropdown btn btn-primary ml-3">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           {% if request.user.is_authenticated %}
           {{ request.user.username }}
@@ -45,8 +45,8 @@
         </ul>
       </div>
 
-      {% if request.user.is_authenticated %}
-      <div style="margin-left: 10px;" class="nav-item dropdown btn btn-outline-secondary">
+      {% if request.user.is_superuser %}
+      <div style="margin-left: 10px;" class="nav-item dropdown btn btn-info">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Керування 🛠️
         </a>
