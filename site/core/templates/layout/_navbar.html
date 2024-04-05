@@ -1,63 +1,63 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid container">
-      <a class="navbar-brand" href="{% url 'main:index' %}">FDA.IF</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'main:car_producers_catalog' %}">Каталог</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'main:part_producers_catalog' %}">Виробники</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'garage:garage' %}">Гараж</a>
-          </li>
-          <li class="nav-item">
-            <a target=”_blank” class="nav-link" href="https://t.me/FDA_bot">Телеграм бот</a>
-          </li>
-        </ul>
-        <div style="margin-right: 10px" class="nav-item">
-          <a href="{% url 'selection:list' %}" class="nav-link">Підбір запчастин</a>
-        </div>
-        <div style="margin-right: 10px" class="nav-item">
-          <a href="{% url 'store:cart' %}" class="nav-link">Корзина</a>
-        </div>
-        <div class="nav-item dropdown btn btn-outline-secondary ml-3">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {% if request.user.is_authenticated %}
-            {{ request.user.username }}
-            {% else %}
-            Not authenticated
-            {% endif %}
-          </a>
-          <ul class="dropdown-menu">
-            {% if request.user.is_authenticated %}
-            <li><a class="dropdown-item" href="{% url 'user:shipping' %}">Дані доставки</a></li>
-            <li><a class="dropdown-item" href="{% url 'store:orders_history' %}">Мої замовлення</a></li>
-            <li><a class="dropdown-item text-danger-emphasis" href="{% url 'auth:logout' %}">Вийти <i class="bi bi-box-arrow-left"></i></a></li>
-            {% else %}
-            <li><a class="dropdown-item" href="{% url 'auth:login' %}">Увійти</a></li>
-            <li><a class="dropdown-item" href="{% url 'auth:register' %}">Реєстрація</a></li>
-            {% endif %}
-          </ul>
-        </div>
-
-        {% if request.user.is_authenticated %}
-        <div style="margin-left: 10px;" class="nav-item dropdown btn btn-outline-secondary">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Керування
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" aria-current="page" href="/admin">Адмін панель</a></li>
-            <li><a class="dropdown-item" href="{% url 'scanner:scan' %}">Сканер</a></li>
-            <li><a class="dropdown-item" href="{% url 'stats:index' %}">Статистика</a></li>
-          </ul>
-        </div>
-        {% endif %}
-
+  <div class="container-fluid container">
+    <a class="navbar-brand" href="{% url 'main:index' %}">FDA.IF</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'main:car_producers_catalog' %}">Каталог 🚗</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'main:part_producers_catalog' %}">Виробники 🏭</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'garage:garage' %}">Гараж 🛠️</a>
+        </li>
+        <li class="nav-item">
+          <a target=”_blank” class="nav-link" href="https://t.me/FDA_bot">Телеграм бот 🤖</a>
+        </li>
+      </ul>
+      <div style="margin-right: 10px" class="nav-item">
+        <a href="{% url 'selection:list' %}" class="nav-link">Підбір запчастин 🔍</a>
       </div>
+      <div style="margin-right: 10px" class="nav-item">
+        <a href="{% url 'store:cart' %}" class="nav-link">Корзина 🛒</a>
+      </div>
+      <div class="nav-item dropdown btn btn-outline-secondary ml-3">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {% if request.user.is_authenticated %}
+          {{ request.user.username }}
+          {% else %}
+          Not authenticated
+          {% endif %}
+        </a>
+        <ul class="dropdown-menu">
+          {% if request.user.is_authenticated %}
+          <li><a class="dropdown-item" href="{% url 'user:shipping' %}">Дані доставки 🚚</a></li>
+          <li><a class="dropdown-item" href="{% url 'store:orders_history' %}">Мої замовлення 📜</a></li>
+          <li><a class="dropdown-item text-danger-emphasis" href="{% url 'auth:logout' %}">Вийти <i class="bi bi-box-arrow-left"></i></a></li>
+          {% else %}
+          <li><a class="dropdown-item" href="{% url 'auth:login' %}">Увійти</a></li>
+          <li><a class="dropdown-item" href="{% url 'auth:register' %}">Реєстрація</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      {% if request.user.is_authenticated %}
+      <div style="margin-left: 10px;" class="nav-item dropdown btn btn-outline-secondary">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Керування 🛠️
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" aria-current="page" href="/admin">Адмін панель ⚙️</a></li>
+          <li><a class="dropdown-item" href="{% url 'scanner:scan' %}">Сканер 📷</a></li>
+          <li><a class="dropdown-item" href="{% url 'stats:index' %}">Статистика 📊</a></li>
+        </ul>
+      </div>
+      {% endif %}
+
     </div>
-  </nav>
+  </div>
+</nav>
