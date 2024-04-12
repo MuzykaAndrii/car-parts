@@ -29,7 +29,7 @@ checkout_window = Window(
 
 order_submitted_window = Window(
     Const("Ваше замовлення надійшло на обробку!"),
-    kbd.Cancel(Const("Вийти")),
+    kbd.Cancel(Const("Вийти"), id="cancel_from_order"),
     state=OrderStates.submitted,
 )
 

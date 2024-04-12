@@ -7,8 +7,7 @@ from aiogram_dialog.widgets.text import Const, Format, Jinja, Case
 from aiogram_dialog import Dialog
 
 
-from orders.states import OrderStates
-from common.selectors import cart_is_present
+from common.selectors import cart_is_present, cart_is_not_present
 from common import messages as cm
 from catalog.states import CatalogStates
 from .states import CartStates
@@ -46,6 +45,8 @@ cart_window = Window(
         id="cart_products_group",
         when=cart_is_present,
     ),
+    Cancel(Const("❌ Вийти"), when=cart_is_not_present),
+
 
     state=CartStates.cart_detail,
     getter=actions.get_user_cart,
