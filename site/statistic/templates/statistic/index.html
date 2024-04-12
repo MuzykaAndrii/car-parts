@@ -3,6 +3,14 @@
 
 {% block title %}Статистика | FDA.if{% endblock title %}
 
+{% block style %}
+  <style>
+    h3, h6 {
+        color: #212529;
+    }
+  </style>
+{% endblock style %}
+
 {% block head-scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock head-scripts %}
@@ -16,7 +24,7 @@
         <h6>Статистика за:</h6>
         <div class="ranges btn-group-vertical w-100">
             {% for range in stat_ranges %}
-                <a role="button" class="btn w-100 btn-outline-primary{% if request.GET.from == range.from and request.GET.to == range.to %} active {% endif %}"
+                <a role="button" class="btn w-100 btn-light{% if request.GET.from == range.from and request.GET.to == range.to %} active {% endif %}"
                 href="{% url 'stats:index' %}?from={{ range.from }}&to={{ range.to }}">{{ range.label }}</a>
             {% endfor %}
         </div>
@@ -39,7 +47,7 @@
 
 
     <div class="col-10">
-        <canvas id="myChart"></canvas>
+        <canvas style="background-color: white;" id="myChart"></canvas>
     </div>
 </div>
 

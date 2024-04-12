@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block style %}
+<style>
+    h1, h3, h4, span, b {
+        color: #212529;
+    }
+
+</style>
 {% endblock style %}
 
 {% block content %}
@@ -36,7 +42,9 @@
         <h4>Адреса доставки:</h4>
 
         {% if not shipping %}
+        <span>
             Адресу не знайдено. Вкажіть адресу доставки в <a class="link-warning" href="{% url 'user:shipping' %}">налаштуваннях доставки</a>
+        </span>
         {% else %}
         <div class="card">
             <div class="card-body">
